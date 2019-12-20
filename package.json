@@ -1,34 +1,48 @@
 {
-  "name": "vue-responsive-dash",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "core-js": "^3.4.3",
-    "vue": "^2.6.10"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.19",
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-plugin-eslint": "^4.1.0",
-    "@vue/cli-plugin-typescript": "^4.1.0",
-    "@vue/cli-plugin-unit-jest": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
-    "@vue/eslint-config-prettier": "^5.0.0",
-    "@vue/eslint-config-typescript": "^4.0.0",
-    "@vue/test-utils": "1.0.0-beta.29",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.12.0",
-    "prettier": "^1.19.1",
-    "sass-loader": "^8.0.0",
-    "typescript": "~3.5.3",
-    "vue-template-compiler": "^2.6.10"
-  }
+	"name": "vue-responsive-dash",
+	"version": "0.1.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bensladden/vue-responsive-dash.git"
+	},
+	"files": [
+		"dist"
+	],
+	"author": "Ben Sladden",
+	"main": "dist/vue-responsive-dash.common.js",
+	"unpkg": "dist/vue-responsive-dash.umd.min.js",
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "rimraf dist && vue-cli-service build",
+		"build:lib": "rimraf dist && vue-cli-service build --target lib ./src/components/index.js",
+		"docs:dev": "vuepress dev docs",
+		"docs:build": "vuepress build docs",
+		"test:unit": "vue-cli-service test:unit",
+		"lint": "vue-cli-service lint"
+	},
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {
+		"@types/jest": "^24.0.19",
+		"@vue/cli-plugin-babel": "^4.1.0",
+		"@vue/cli-plugin-eslint": "^4.1.0",
+		"@vue/cli-plugin-typescript": "^4.1.0",
+		"@vue/cli-plugin-unit-jest": "^4.1.0",
+		"@vue/cli-service": "^4.1.0",
+		"@vue/eslint-config-prettier": "^5.0.0",
+		"@vue/eslint-config-typescript": "^4.0.0",
+		"@vue/test-utils": "1.0.0-beta.29",
+		"core-js": "^3.4.3",
+		"eslint": "^5.16.0",
+		"eslint-plugin-prettier": "^3.1.1",
+		"eslint-plugin-vue": "^5.0.0",
+		"node-sass": "^4.12.0",
+		"prettier": "^1.19.1",
+		"rimraf": "^3.0.0",
+		"sass-loader": "^8.0.0",
+		"typescript": "~3.5.3",
+		"vue": "^2.6.10",
+		"vue-template-compiler": "^2.6.10",
+		"vuepress": "^1.2.0"
+	}
 }

@@ -1,10 +1,16 @@
 import Vue from "vue";
 
-const VueResponsiveDash = {};
+import DashItem from "./DashItem.vue";
+import Dashboard from "./Dashboard.vue";
+
+const VueResponsiveDash = {
+	DashItem,
+	Dashboard
+};
 
 Object.keys(VueResponsiveDash).forEach(name => {
 	Vue.component(name, VueResponsiveDash[name]);
 });
 
 export default VueResponsiveDash;
-export { };
+export { DashItem, Dashboard };

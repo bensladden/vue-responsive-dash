@@ -22,7 +22,9 @@
 		"lint": "vue-cli-service lint"
 	},
 	"license": "MIT",
-	"dependencies": {},
+	"dependencies": {
+		"interactjs": "^1.7.3"
+	},
 	"devDependencies": {
 		"@types/jest": "^24.0.19",
 		"@vue/cli-plugin-babel": "^4.1.0",

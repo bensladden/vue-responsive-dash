@@ -1,17 +1,19 @@
-import { Breakpoints, Layout } from "./types"
-
+import { Breakpoints, Layout, Margins } from "../types"
 
 class Dashboard {
 	private id: String | Number;
 	private breakpoints: Breakpoints;
 	private layouts: Layout[];
+	private margins: Margins;
 
 	constructor(
 		id: String | Number,
 		breakpoints?: Breakpoints,
-		layouts?: Layout[]
+		layouts?: Layout[],
+		margins?: Margins
 	) {
 		this.id = id
+		//Setup Breakpoints
 		if (typeof breakpoints !== "undefined") {
 			this.breakpoints = breakpoints
 		} else {
@@ -23,7 +25,7 @@ class Dashboard {
 				{ name: "xs", numberOfCols: 2 },
 				{ name: "xxs", numberOfCols: 1 }
 			]
-		}
+		}//Import or create new layouts baded on breakpoints
 		if (typeof layouts !== "undefined") {
 			this.layouts = layouts
 		} else {
@@ -32,6 +34,12 @@ class Dashboard {
 				this.layouts.push({ breakpoint: b.name, items: [] })
 			}
 
+		}
+		//Setup Margins
+		if (typeof margins !== "undefined") {
+			this.margins = margins
+		} else {
+			this.margins = { x: 10, y: 10 }
 		}
 	}
 	getId() {
@@ -62,5 +70,11 @@ class Dashboard {
 		if (index >= 0) {
 			this.layouts[index].items = layout.items
 		}
+	}
+	getMargins() {
+		return this.margins
+	}
+	setMargins() {
+		return this.margins
 	}
 }

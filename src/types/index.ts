@@ -3,7 +3,9 @@ export type DashItem = {
 	width: Number,
 	height: Number,
 	xPos: Number,
-	yPos: Number
+	yPos: Number,
+	draggable?: Boolean,
+	resizable?: Boolean
 }
 
 export type Layout = {
@@ -19,3 +21,7 @@ export type Breakpoint = {
 
 export type Breakpoints = Breakpoint[]
 
+export type Margins = {
+	x: Number,
+	y: Number
+}

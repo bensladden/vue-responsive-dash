@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <dash-item :id="'test'" />
+    <dash-item :id="'test'">
+      <div class="content">Hello</div>
+    </dash-item>
   </div>
 </template>
 
@@ -16,4 +18,10 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.content {
+  height: 100px;
+  width: 100px;
+  background-color: lightblue;
+}
+</style>

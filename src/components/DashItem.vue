@@ -1,33 +1,153 @@
 <template>
   <div
-    ref="id"
     :id="id"
-    :draggable="draggable"
-    :style="{ width: width + 'px', height: height + 'px' }"
-    style="position:absolute; border:1px solid;"
-    @dragstart="dragStart($event)"
-    @drag="drag($event)"
-    @dragend="dragEnd($event)"
+    :ref="id"
+    :style="{
+      boxSizing: 'border-box',
+      position: 'absolute',
+      display: 'inline-block'
+    }"
   >
-    <slot></slot>
     <div
-      :id="id + '-resize'"
-      v-if="resizeable"
-      :draggable="true"
-      @dragstart.stop="resizeStart($event)"
-      @drag.stop="resize($event)"
-      @dragend.stop="resizeEnd($event)"
-      class="resizeClass"
+      id="overlay"
+      :ref="id + '-overlay'"
+      :style="{
+        top: 0 + 'px',
+        left: 0 + 'px',
+        bottom: 0 + 'px',
+        right: 0 + 'px',
+        position: 'absolute',
+        cursor: 'move'
+      }"
+      v-if="draggable"
+      @dragstart.stop="onDragStart($event)"
+      @drag.stop="onDrag($event)"
+      @dragend.stop="onDragEnd($event)"
+      draggable
     >
-      <svg viewBox="-6 -6 12 12" width="20" height="20">
-        <g opacity="0.302">
-          <path
-            d="M 6 6 L 0 6 L 0 4.2 L 4 4.2 L 4.2 4.2 L 4.2 0 L 6 0 L 6 6 L 6 6 Z"
-            fill="#000000"
-          />
-        </g>
-      </svg>
+      <div
+        draggable
+        :style="{
+          height: resizeHandleSize + 'px',
+          left: 0,
+          right: 0,
+          cursor: 'ns-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeTop"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          height: resizeHandleSize + 'px',
+          left: 0 + 'px',
+          right: 0 + 'px',
+          bottom: 0 + 'px',
+          cursor: 'ns-resize',
+          position: 'absolute'
+        }"
+        class="bottom edge"
+        v-if="resizeBottom"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize + 'px',
+          top: 0 + 'px',
+          bottom: 0 + 'px',
+          right: 0 + 'px',
+          cursor: 'ew-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeRight"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize + 'px',
+          top: 0 + 'px',
+          bottom: 0 + 'px',
+          left: 0 + 'px',
+          cursor: 'ew-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeLeft"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize * 2 + 'px',
+          height: resizeHandleSize * 2 + 'px',
+          top: resizeHandleSize / -2 + 'px',
+          left: resizeHandleSize / -2 + 'px',
+          cursor: 'nw-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeTopLeft"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize * 2 + 'px',
+          height: resizeHandleSize * 2 + 'px',
+          top: resizeHandleSize / -2 + 'px',
+          right: resizeHandleSize / -2 + 'px',
+          cursor: 'ne-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeTopRight"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize * 2 + 'px',
+          height: resizeHandleSize * 2 + 'px',
+          bottom: resizeHandleSize / -2 + 'px',
+          left: resizeHandleSize / -2 + 'px',
+          cursor: 'ne-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeBottomLeft"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
+      <div
+        draggable
+        :style="{
+          width: resizeHandleSize * 2 + 'px',
+          height: resizeHandleSize * 2 + 'px',
+          bottom: resizeHandleSize / -2 + 'px',
+          right: resizeHandleSize / -2 + 'px',
+          cursor: 'nw-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeBottomRight"
+        @dragstart.stop="onResizeStart($event)"
+        @drag.stop="onResize($event)"
+        @dragend.stop="onResizeEnd($event)"
+      ></div>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -35,63 +155,64 @@
 export default {
   name: "DashItem",
   inheritAttrs: false,
-  //inject: [$dashboard],
   props: {
-    id: { type: [Number, String], required: true },
-    x: { type: Number, default: 0 },
-    y: { type: Number, default: 0 },
-    // width: { type: Number, default: 100 },
-    // height: { type: Number, default: 100 },
+    id: { type: [Number, String], default: "test", required: true },
     draggable: { type: Boolean, default: true },
-    resizeable: { type: Boolean, default: true }
+    resizeable: { type: Boolean, default: true },
+    resizeEdges: { type: String, default: "top bottom left right" },
+    resizeHandleSize: { type: Number, default: 8 }
   },
-  data() {
-    return {
-      dragging: false,
-      width: 100,
-      height: 100,
-      origWidth: 0,
-      origHeight: 0
-    };
-  },
-  methods: {
-    dragStart(event) {
-      console.log("dragStart", event);
-      this.dragging = true;
+  computed: {
+    resizeTop() {
+      return this.resizeEdges.includes("top");
     },
-    dragEnd(event) {
-      console.log("dragEnd", event);
-      this.dragging = false;
+    resizeBottom() {
+      return this.resizeEdges.includes("bottom");
     },
-    drag(event) {
-      console.log("drag", event);
+    resizeLeft() {
+      return this.resizeEdges.includes("left");
     },
-    resizeStart(event) {
-      console.log("resizeStart", event.offsetX);
-      this.origWidth = this.width;
-      this.origHeight = this.height;
+    resizeRight() {
+      return this.resizeEdges.includes("right");
     },
-    resize(event) {
-      console.log("resize", event.offsetX);
-      this.width = this.origWidth + event.offsetX;
-      this.height = this.origHeight + event.offsetY;
+    resizeTopLeft() {
+      return this.resizeTop && this.resizeLeft;
     },
-    resizeEnd(event) {
-      console.log("resizeEnd", event.offsetX);
+    resizeBottomLeft() {
+      return this.resizeBottom && this.resizeLeft;
+    },
+    resizeTopRight() {
+      return this.resizeTop && this.resizeRight;
+    },
+    resizeBottomRight() {
+      return this.resizeBottom && this.resizeRight;
     }
   },
-  beforeDestroy() {}
+  methods: {
+    onDragStart(event) {
+      this.$emit("dragStart", event);
+    },
+    onDrag(event) {
+      this.$emit("drag", event);
+    },
+    onDragEnd(event) {
+      this.$emit("dragEnd", event);
+    },
+    onResizeStart(event) {
+      this.$emit("resizeStart", event);
+    },
+    onResize(event) {
+      this.$emit("resize", event);
+    },
+    onResizeEnd(event) {
+      this.$emit("resizeEnd", event);
+    }
+  }
 };
 </script>
 
-<style>
-.resizeClass {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  bottom: 0;
-  right: 0;
-  padding: 0 3px 3px 0;
-  cursor: se-resize;
+<style lang="css" module>
+.invisible {
+  display: none;
 }
 </style>

@@ -9,7 +9,7 @@
     }"
   >
     <div
-      id="overlay"
+      :id="id + '-overlay'"
       :ref="id + '-overlay'"
       :style="{
         top: 0 + 'px',
@@ -27,6 +27,8 @@
     >
       <div
         draggable
+        :id="id + '-resizeTop'"
+        :ref="id + '-resizeTop'"
         :style="{
           height: resizeHandleSize + 'px',
           left: 0,
@@ -41,6 +43,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeBottom'"
+        :ref="id + '-resizeBottom'"
         :style="{
           height: resizeHandleSize + 'px',
           left: 0 + 'px',
@@ -49,7 +53,6 @@
           cursor: 'ns-resize',
           position: 'absolute'
         }"
-        class="bottom edge"
         v-if="resizeBottom"
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
@@ -57,6 +60,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeRight'"
+        :ref="id + '-resizeRight'"
         :style="{
           width: resizeHandleSize + 'px',
           top: 0 + 'px',
@@ -73,6 +78,8 @@
 
       <div
         draggable
+        :id="id + '-resizeLeft'"
+        :ref="id + '-resizeLeft'"
         :style="{
           width: resizeHandleSize + 'px',
           top: 0 + 'px',
@@ -88,6 +95,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeTopLeft'"
+        :ref="id + '-resizeTopLeft'"
         :style="{
           width: resizeHandleSize * 2 + 'px',
           height: resizeHandleSize * 2 + 'px',
@@ -103,6 +112,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeTopRight'"
+        :ref="id + '-resizeTopRight'"
         :style="{
           width: resizeHandleSize * 2 + 'px',
           height: resizeHandleSize * 2 + 'px',
@@ -118,6 +129,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeBottomLeft'"
+        :ref="id + '-resizeBottomLeft'"
         :style="{
           width: resizeHandleSize * 2 + 'px',
           height: resizeHandleSize * 2 + 'px',
@@ -133,6 +146,8 @@
       ></div>
       <div
         draggable
+        :id="id + '-resizeBottomRight'"
+        :ref="id + '-resizeBottomRight'"
         :style="{
           width: resizeHandleSize * 2 + 'px',
           height: resizeHandleSize * 2 + 'px',
@@ -161,6 +176,11 @@ export default {
     resizeable: { type: Boolean, default: true },
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
+  },
+  data() {
+    return {
+      dragging: false
+    };
   },
   computed: {
     resizeTop() {
@@ -191,6 +211,8 @@ export default {
   methods: {
     onDragStart(event) {
       this.$emit("dragStart", event);
+      //   event.target.style.opacity = 0.5;
+      event.dataTransfer.setData("text/plain", "dummy");
     },
     onDrag(event) {
       this.$emit("drag", event);
@@ -206,8 +228,28 @@ export default {
     },
     onResizeEnd(event) {
       this.$emit("resizeEnd", event);
+    },
+    addClass(el, cls) {
+      if (arguments.length < 2) {
+        el.classList.add(cls);
+      } else {
+        for (let i = 1, len = arguments.length; i < len; i++) {
+          el.classList.add(arguments[i]);
+        }
+      }
+    },
+    removeClass(el, cls) {
+      if (arguments.length < 2) {
+        el.classList.remove(cls);
+      } else {
+        for (let i = 1, len = arguments.length; i < len; i++) {
+          el.classList.remove(arguments[i]);
+        }
+      }
     }
-  }
+  },
+  mounted() {},
+  beforeDestroy() {}
 };
 </script>
 

@@ -5,7 +5,11 @@
     :style="{
       boxSizing: 'border-box',
       position: 'absolute',
-      display: 'inline-block'
+      display: 'inline-block',
+      width: internalWidth + 'px',
+      height: internalHeight + 'px',
+      left: internalX + 'px',
+      top: internalY + 'px'
     }"
   >
     <div
@@ -37,9 +41,9 @@
           position: 'absolute'
         }"
         v-if="resizeTop"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'top')"
+        @drag.stop="onResize($event, 'top')"
+        @dragend.stop="onResizeEnd($event, 'top')"
       >
         <slot name="resizeTop"></slot>
       </div>
@@ -56,11 +60,30 @@
           position: 'absolute'
         }"
         v-if="resizeBottom"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'bottom')"
+        @drag.stop="onResize($event, 'bottom')"
+        @dragend.stop="onResizeEnd($event, 'bottom')"
       >
         <slot name="resizeBottom"></slot>
+      </div>
+      <div
+        draggable
+        :id="id + '-resizeLeft'"
+        :ref="id + '-resizeLeft'"
+        :style="{
+          width: resizeHandleSize + 'px',
+          top: 0 + 'px',
+          bottom: 0 + 'px',
+          left: 0 + 'px',
+          cursor: 'ew-resize',
+          position: 'absolute'
+        }"
+        v-if="resizeLeft"
+        @dragstart.stop="onResizeStart($event, 'left')"
+        @drag.stop="onResize($event, 'left')"
+        @dragend.stop="onResizeEnd($event, 'left')"
+      >
+        <slot name="resizeLeft"></slot>
       </div>
       <div
         draggable
@@ -75,31 +98,11 @@
           position: 'absolute'
         }"
         v-if="resizeRight"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'right')"
+        @drag.stop="onResize($event, 'right')"
+        @dragend.stop="onResizeEnd($event, 'right')"
       >
         <slot name="resizeRight"></slot>
-      </div>
-
-      <div
-        draggable
-        :id="id + '-resizeLeft'"
-        :ref="id + '-resizeLeft'"
-        :style="{
-          width: resizeHandleSize + 'px',
-          top: 0 + 'px',
-          bottom: 0 + 'px',
-          left: 0 + 'px',
-          cursor: 'ew-resize',
-          position: 'absolute'
-        }"
-        v-if="resizeLeft"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
-      >
-        <slot name="resizeLeft"></slot>
       </div>
       <div
         draggable
@@ -114,9 +117,9 @@
           position: 'absolute'
         }"
         v-if="resizeTopLeft"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'top left')"
+        @drag.stop="onResize($event, 'top left')"
+        @dragend.stop="onResizeEnd($event, 'top left')"
       >
         <slot name="resizeTopLeft"></slot>
       </div>
@@ -133,9 +136,9 @@
           position: 'absolute'
         }"
         v-if="resizeTopRight"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'top right')"
+        @drag.stop="onResize($event, 'top right')"
+        @dragend.stop="onResizeEnd($event, 'top right')"
       >
         <slot name="resizeTopRight"></slot>
       </div>
@@ -152,9 +155,9 @@
           position: 'absolute'
         }"
         v-if="resizeBottomLeft"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'bottom left')"
+        @drag.stop="onResize($event, 'bottom left')"
+        @dragend.stop="onResizeEnd($event, 'bottom left')"
       >
         <slot name="resizeBottomLeft"></slot>
       </div>
@@ -171,9 +174,9 @@
           position: 'absolute'
         }"
         v-if="resizeBottomRight"
-        @dragstart.stop="onResizeStart($event)"
-        @drag.stop="onResize($event)"
-        @dragend.stop="onResizeEnd($event)"
+        @dragstart.stop="onResizeStart($event, 'bottom right')"
+        @drag.stop="onResize($event, 'bottom right')"
+        @dragend.stop="onResizeEnd($event, 'bottom right')"
       >
         <slot name="resizeBottomRight"></slot>
       </div>
@@ -189,14 +192,28 @@ export default {
   props: {
     id: { type: [Number, String], default: "test", required: true },
     draggable: { type: Boolean, default: true },
+    x: { type: Number, default: 100 },
+    y: { type: Number, default: 100 },
     resizeable: { type: Boolean, default: true },
+    width: { type: Number, default: 100 },
+    height: { type: Number, default: 100 },
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
   data() {
     return {
       dragging: false,
-      resizing: false
+      resizing: false,
+      internalWidth: 0,
+      internalHeight: 0,
+      internalX: 0,
+      internalY: 0,
+      startingX: 0,
+      startingY: 0,
+      startingWidth: 0,
+      startingHeight: 0,
+      startingClientX: 0,
+      startingClientY: 0
     };
   },
   computed: {
@@ -226,29 +243,96 @@ export default {
     }
   },
   methods: {
-    onDragStart(event) {
+    async onDragStart(event) {
       this.$emit("dragStart", event);
-      //   event.target.style.opacity = 0.5;
-      this.dragging = true;
       event.dataTransfer.setData("text/plain", this.id);
+      this.dragging = true;
+      this.startingClientX = event.clientX;
+      this.startingClientY = event.clientY;
+      this.startingX = this.internalX;
+      this.startingY = this.internalY;
+      event.target.style.opacity = 0.0;
+      //return false;
     },
     onDrag(event) {
       this.$emit("drag", event);
+      this.internalX = this.startingX - this.startingClientX + event.clientX;
+      this.internalY = this.startingY - this.startingClientY + event.clientY;
     },
     onDragEnd(event) {
+      event.preventDefault();
       this.$emit("dragEnd", event);
+      this.internalX = this.startingX - this.startingClientX + event.clientX;
+      this.internalY = this.startingY - this.startingClientY + event.clientY;
       this.dragging = false;
+      this.startingClientX = 0;
+      this.startingClientY = 0;
+      this.startingX = 0;
+      this.startingY = 0;
+      event.target.style.opacity = 1;
+      event.dataTransfer.clearData();
     },
-    onResizeStart(event) {
+    onResizeStart(event, type) {
       this.$emit("resizeStart", event);
+      event.dataTransfer.setData("text/plain", this.id);
       this.resizing = true;
+      this.startingWidth = this.internalWidth;
+      this.startingHeight = this.internalHeight;
+      this.startingClientX = event.clientX;
+      this.startingClientY = event.clientY;
+      this.startingX = this.internalX;
+      this.startingY = this.internalY;
     },
-    onResize(event) {
+    onResize(event, type) {
       this.$emit("resize", event);
+      if (type.includes("right")) {
+        this.internalWidth =
+          this.startingWidth - this.startingClientX + event.clientX;
+      }
+      if (type.includes("bottom")) {
+        this.internalHeight =
+          this.startingHeight - this.startingClientY + event.clientY;
+      }
+      if (type.includes("top")) {
+        this.internalY = this.startingY - this.startingClientY + event.clientY;
+        this.internalHeight =
+          this.startingHeight + this.startingClientY - event.clientY;
+      }
+      if (type.includes("left")) {
+        this.internalX = this.startingX - this.startingClientX + event.clientX;
+        this.internalWidth =
+          this.startingWidth + this.startingClientX - event.clientX;
+      }
     },
-    onResizeEnd(event) {
+    onResizeEnd(event, type) {
+      event.preventDefault();
+      if (type.includes("right")) {
+        this.internalWidth =
+          this.startingWidth - this.startingClientX + event.clientX;
+      }
+      if (type.includes("bottom")) {
+        this.internalHeight =
+          this.startingHeight - this.startingClientY + event.clientY;
+      }
+      if (type.includes("top")) {
+        this.internalY = this.startingY - this.startingClientY + event.clientY;
+        this.internalHeight =
+          this.startingHeight + this.startingClientY - event.clientY;
+      }
+      if (type.includes("left")) {
+        this.internalX = this.startingX - this.startingClientX + event.clientX;
+        this.internalWidth =
+          this.startingWidth + this.startingClientX - event.clientX;
+      }
       this.$emit("resizeEnd", event);
       this.resizing = false;
+      this.startingX = 0;
+      this.startingY = 0;
+      this.startingWidth = 0;
+      this.startingHeight = 0;
+      this.startingClientX = 0;
+      this.startingClientY = 0;
+      event.dataTransfer.clearData();
     },
     addClass(el, cls) {
       if (arguments.length < 2) {
@@ -269,7 +353,12 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.internalWidth = this.width;
+    this.internalHeight = this.height;
+    this.internalX = this.x;
+    this.internalY = this.y;
+  },
   beforeDestroy() {}
 };
 </script>

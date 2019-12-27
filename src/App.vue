@@ -20,8 +20,8 @@ export default Vue.extend({
 
 <style lang="scss">
 .content {
-  height: 100px;
-  width: 100px;
+  height: 100%;
+  width: 100%;
   background-color: lightblue;
 }
 </style>

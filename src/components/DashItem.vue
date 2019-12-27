@@ -9,6 +9,7 @@
     }"
   >
     <div
+      draggable
       :id="id + '-overlay'"
       :ref="id + '-overlay'"
       :style="{
@@ -23,7 +24,6 @@
       @dragstart.stop="onDragStart($event)"
       @drag.stop="onDrag($event)"
       @dragend.stop="onDragEnd($event)"
-      draggable
     >
       <div
         draggable
@@ -40,7 +40,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeTop"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeBottom'"
@@ -57,7 +59,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeBottom"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeRight'"
@@ -74,7 +78,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeRight"></slot>
+      </div>
 
       <div
         draggable
@@ -92,7 +98,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeLeft"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeTopLeft'"
@@ -109,7 +117,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeTopLeft"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeTopRight'"
@@ -126,7 +136,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeTopRight"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeBottomLeft'"
@@ -143,7 +155,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeBottomLeft"></slot>
+      </div>
       <div
         draggable
         :id="id + '-resizeBottomRight'"
@@ -160,7 +174,9 @@
         @dragstart.stop="onResizeStart($event)"
         @drag.stop="onResize($event)"
         @dragend.stop="onResizeEnd($event)"
-      ></div>
+      >
+        <slot name="resizeBottomRight"></slot>
+      </div>
     </div>
     <slot></slot>
   </div>
@@ -179,7 +195,8 @@ export default {
   },
   data() {
     return {
-      dragging: false
+      dragging: false,
+      resizing: false
     };
   },
   computed: {
@@ -212,22 +229,26 @@ export default {
     onDragStart(event) {
       this.$emit("dragStart", event);
       //   event.target.style.opacity = 0.5;
-      event.dataTransfer.setData("text/plain", "dummy");
+      this.dragging = true;
+      event.dataTransfer.setData("text/plain", this.id);
     },
     onDrag(event) {
       this.$emit("drag", event);
     },
     onDragEnd(event) {
       this.$emit("dragEnd", event);
+      this.dragging = false;
     },
     onResizeStart(event) {
       this.$emit("resizeStart", event);
+      this.resizing = true;
     },
     onResize(event) {
       this.$emit("resize", event);
     },
     onResizeEnd(event) {
       this.$emit("resizeEnd", event);
+      this.resizing = false;
     },
     addClass(el, cls) {
       if (arguments.length < 2) {

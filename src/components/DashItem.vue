@@ -2,6 +2,7 @@
   <div
     :id="id"
     :ref="id"
+    v-if="item"
     :style="{
       boxSizing: 'border-box',
       position: 'absolute',
@@ -186,11 +187,12 @@
 </template>
 
 <script>
+import { DashItem } from "./DashItem.model";
 export default {
-  name: "DashItem",
+  name: "item",
   inheritAttrs: false,
   props: {
-    id: { type: [Number, String], default: "test", required: true },
+    id: { type: [Number, String], required: true },
     draggable: { type: Boolean, default: true },
     x: { type: Number, default: 100 },
     y: { type: Number, default: 100 },
@@ -202,21 +204,24 @@ export default {
   },
   data() {
     return {
+      item: null,
       dragging: false,
-      resizing: false,
-      internalWidth: 0,
-      internalHeight: 0,
-      internalX: 0,
-      internalY: 0,
-      startingX: 0,
-      startingY: 0,
-      startingWidth: 0,
-      startingHeight: 0,
-      startingScreenX: 0,
-      startingScreenY: 0
+      resizing: false
     };
   },
   computed: {
+    internalX() {
+      return this.item.x;
+    },
+    internalY() {
+      return this.item.y;
+    },
+    internalWidth() {
+      return this.item.width;
+    },
+    internalHeight() {
+      return this.item.height;
+    },
     resizeTop() {
       return this.resizeEdges.includes("top");
     },
@@ -245,96 +250,31 @@ export default {
   methods: {
     async onDragStart(event) {
       this.$emit("dragStart", event);
-      event.dataTransfer.setData("text/plain", this.id);
-      this.dragging = true;
-      this.startingScreenX = event.screenX;
-      this.startingScreenY = event.screenY;
-      this.startingX = this.internalX;
-      this.startingY = this.internalY;
+      this.item.onDragStart(event);
       event.target.style.opacity = 0.0;
-      this.internalX = this.startingX - this.startingScreenX + event.screenX;
-      this.internalY = this.startingY - this.startingScreenY + event.screenY;
     },
     onDrag(event) {
       this.$emit("drag", event);
-      this.internalX = this.startingX - this.startingScreenX + event.screenX;
-      this.internalY = this.startingY - this.startingScreenY + event.screenY;
+      this.item.onDrag(event);
     },
     onDragEnd(event) {
       event.preventDefault();
       this.$emit("dragEnd", event);
-      this.internalX = this.startingX - this.startingScreenX + event.screenX;
-      this.internalY = this.startingY - this.startingScreenY + event.screenY;
-      this.dragging = false;
-      this.startingScreenX = 0;
-      this.startingScreenY = 0;
-      this.startingX = 0;
-      this.startingY = 0;
+      this.item.onDragEnd(event);
       event.target.style.opacity = 1;
-      event.dataTransfer.clearData();
     },
-    onResizeStart(event, type) {
+    onResizeStart(event, location) {
       this.$emit("resizeStart", event);
-      event.dataTransfer.setData("text/plain", this.id);
-      this.resizing = true;
-      this.startingWidth = this.internalWidth;
-      this.startingHeight = this.internalHeight;
-      this.startingScreenX = event.screenX;
-      this.startingScreenY = event.screenY;
-      this.startingX = this.internalX;
-      this.startingY = this.internalY;
+      this.item.onResizeStart(event, location);
       event.target.style.opacity = 0.0;
     },
-    onResize(event, type) {
+    onResize(event, location) {
       this.$emit("resize", event);
-      if (type.includes("right")) {
-        this.internalWidth =
-          this.startingWidth - this.startingScreenX + event.screenX;
-      }
-      if (type.includes("bottom")) {
-        this.internalHeight =
-          this.startingHeight - this.startingScreenY + event.screenY;
-      }
-      if (type.includes("top")) {
-        this.internalY = this.startingY - this.startingScreenY + event.screenY;
-        this.internalHeight =
-          this.startingHeight + this.startingScreenY - event.screenY;
-      }
-      if (type.includes("left")) {
-        this.internalX = this.startingX - this.startingScreenX + event.screenX;
-        this.internalWidth =
-          this.startingWidth + this.startingScreenX - event.screenX;
-      }
+      this.item.onResize(event, location);
     },
-    onResizeEnd(event, type) {
-      event.preventDefault();
-      if (type.includes("right")) {
-        this.internalWidth =
-          this.startingWidth - this.startingScreenX + event.screenX;
-      }
-      if (type.includes("bottom")) {
-        this.internalHeight =
-          this.startingHeight - this.startingScreenY + event.screenY;
-      }
-      if (type.includes("top")) {
-        this.internalY = this.startingY - this.startingScreenY + event.screenY;
-        this.internalHeight =
-          this.startingHeight + this.startingScreenY - event.screenY;
-      }
-      if (type.includes("left")) {
-        this.internalX = this.startingX - this.startingScreenX + event.screenX;
-        this.internalWidth =
-          this.startingWidth + this.startingScreenX - event.screenX;
-      }
+    onResizeEnd(event, location) {
       this.$emit("resizeEnd", event);
-      this.resizing = false;
-      this.startingX = 0;
-      this.startingY = 0;
-      this.startingWidth = 0;
-      this.startingHeight = 0;
-      this.startingScreenX = 0;
-      this.startingScreenY = 0;
-      event.dataTransfer.clearData();
+      this.item.onResizeEnd(event, location);
       event.target.style.opacity = 1.0;
     },
     addClass(el, cls) {
@@ -357,10 +297,7 @@ export default {
     }
   },
   mounted() {
-    this.internalWidth = this.width;
-    this.internalHeight = this.height;
-    this.internalX = this.x;
-    this.internalY = this.y;
+    this.item = new DashItem(this.$props);
   },
   beforeDestroy() {}
 };

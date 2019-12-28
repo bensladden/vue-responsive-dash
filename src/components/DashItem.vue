@@ -212,8 +212,8 @@ export default {
       startingY: 0,
       startingWidth: 0,
       startingHeight: 0,
-      startingClientX: 0,
-      startingClientY: 0
+      startingScreenX: 0,
+      startingScreenY: 0
     };
   },
   computed: {
@@ -247,26 +247,27 @@ export default {
       this.$emit("dragStart", event);
       event.dataTransfer.setData("text/plain", this.id);
       this.dragging = true;
-      this.startingClientX = event.clientX;
-      this.startingClientY = event.clientY;
+      this.startingScreenX = event.screenX;
+      this.startingScreenY = event.screenY;
       this.startingX = this.internalX;
       this.startingY = this.internalY;
       event.target.style.opacity = 0.0;
-      //return false;
+      this.internalX = this.startingX - this.startingScreenX + event.screenX;
+      this.internalY = this.startingY - this.startingScreenY + event.screenY;
     },
     onDrag(event) {
       this.$emit("drag", event);
-      this.internalX = this.startingX - this.startingClientX + event.clientX;
-      this.internalY = this.startingY - this.startingClientY + event.clientY;
+      this.internalX = this.startingX - this.startingScreenX + event.screenX;
+      this.internalY = this.startingY - this.startingScreenY + event.screenY;
     },
     onDragEnd(event) {
       event.preventDefault();
       this.$emit("dragEnd", event);
-      this.internalX = this.startingX - this.startingClientX + event.clientX;
-      this.internalY = this.startingY - this.startingClientY + event.clientY;
+      this.internalX = this.startingX - this.startingScreenX + event.screenX;
+      this.internalY = this.startingY - this.startingScreenY + event.screenY;
       this.dragging = false;
-      this.startingClientX = 0;
-      this.startingClientY = 0;
+      this.startingScreenX = 0;
+      this.startingScreenY = 0;
       this.startingX = 0;
       this.startingY = 0;
       event.target.style.opacity = 1;
@@ -278,51 +279,52 @@ export default {
       this.resizing = true;
       this.startingWidth = this.internalWidth;
       this.startingHeight = this.internalHeight;
-      this.startingClientX = event.clientX;
-      this.startingClientY = event.clientY;
+      this.startingScreenX = event.screenX;
+      this.startingScreenY = event.screenY;
       this.startingX = this.internalX;
       this.startingY = this.internalY;
+      event.target.style.opacity = 0.0;
     },
     onResize(event, type) {
       this.$emit("resize", event);
       if (type.includes("right")) {
         this.internalWidth =
-          this.startingWidth - this.startingClientX + event.clientX;
+          this.startingWidth - this.startingScreenX + event.screenX;
       }
       if (type.includes("bottom")) {
         this.internalHeight =
-          this.startingHeight - this.startingClientY + event.clientY;
+          this.startingHeight - this.startingScreenY + event.screenY;
       }
       if (type.includes("top")) {
-        this.internalY = this.startingY - this.startingClientY + event.clientY;
+        this.internalY = this.startingY - this.startingScreenY + event.screenY;
         this.internalHeight =
-          this.startingHeight + this.startingClientY - event.clientY;
+          this.startingHeight + this.startingScreenY - event.screenY;
       }
       if (type.includes("left")) {
-        this.internalX = this.startingX - this.startingClientX + event.clientX;
+        this.internalX = this.startingX - this.startingScreenX + event.screenX;
         this.internalWidth =
-          this.startingWidth + this.startingClientX - event.clientX;
+          this.startingWidth + this.startingScreenX - event.screenX;
       }
     },
     onResizeEnd(event, type) {
       event.preventDefault();
       if (type.includes("right")) {
         this.internalWidth =
-          this.startingWidth - this.startingClientX + event.clientX;
+          this.startingWidth - this.startingScreenX + event.screenX;
       }
       if (type.includes("bottom")) {
         this.internalHeight =
-          this.startingHeight - this.startingClientY + event.clientY;
+          this.startingHeight - this.startingScreenY + event.screenY;
       }
       if (type.includes("top")) {
-        this.internalY = this.startingY - this.startingClientY + event.clientY;
+        this.internalY = this.startingY - this.startingScreenY + event.screenY;
         this.internalHeight =
-          this.startingHeight + this.startingClientY - event.clientY;
+          this.startingHeight + this.startingScreenY - event.screenY;
       }
       if (type.includes("left")) {
-        this.internalX = this.startingX - this.startingClientX + event.clientX;
+        this.internalX = this.startingX - this.startingScreenX + event.screenX;
         this.internalWidth =
-          this.startingWidth + this.startingClientX - event.clientX;
+          this.startingWidth + this.startingScreenX - event.screenX;
       }
       this.$emit("resizeEnd", event);
       this.resizing = false;
@@ -330,9 +332,10 @@ export default {
       this.startingY = 0;
       this.startingWidth = 0;
       this.startingHeight = 0;
-      this.startingClientX = 0;
-      this.startingClientY = 0;
+      this.startingScreenX = 0;
+      this.startingScreenY = 0;
       event.dataTransfer.clearData();
+      event.target.style.opacity = 1.0;
     },
     addClass(el, cls) {
       if (arguments.length < 2) {

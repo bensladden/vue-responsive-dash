@@ -74,7 +74,7 @@ class Dashboard {
 	getMargins() {
 		return this.margins
 	}
-	setMargins() {
-		return this.margins
+	setMargins(m: Margins) {
+		this.margins = m
 	}
 }

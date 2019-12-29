@@ -1,17 +1,23 @@
 import { Breakpoints, Layout, Margins } from "../types"
+import { DashItem } from "./DashItem.model"
 
-class Dashboard {
-	private id: String | Number;
-	private breakpoints: Breakpoints;
-	private layouts: Layout[];
-	private margins: Margins;
+export class Dashboard {
+	protected id: String | Number;
+	protected breakpoints: Breakpoints;
+	protected layouts: Layout[];
+	protected margins: Margins;
+	protected placeholder = new DashItem({
+		id: -1,
+		draggable: false,
+		resizeable: false,
+		x: 0,
+		y: 0,
+		width: 0,
+		height: 0
+	}) as DashItem
 
 	constructor(
-		id: String | Number,
-		breakpoints?: Breakpoints,
-		layouts?: Layout[],
-		margins?: Margins
-	) {
+		{ id, breakpoints, layouts, margins }: { id: String | Number; breakpoints?: Breakpoints; layouts?: Layout[]; margins?: Margins; }) {
 		this.id = id
 		//Setup Breakpoints
 		if (typeof breakpoints !== "undefined") {
@@ -42,14 +48,8 @@ class Dashboard {
 			this.margins = { x: 10, y: 10 }
 		}
 	}
-	getId() {
-		return this.id
-	}
 	setId(id: String | Number) {
 		this.id = id
-	}
-	getBreakpoints() {
-		return this.breakpoints
 	}
 	setBreakpoints(breakpoints: Breakpoints) {
 		this.breakpoints = breakpoints
@@ -70,9 +70,6 @@ class Dashboard {
 		if (index >= 0) {
 			this.layouts[index].items = layout.items
 		}
-	}
-	getMargins() {
-		return this.margins
 	}
 	setMargins(m: Margins) {
 		this.margins = m

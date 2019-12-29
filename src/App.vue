@@ -3,17 +3,20 @@
     <dash-item :id="'test'">
       <div class="content">Hello</div>
     </dash-item>
+    <dashboard :id="'dashTest'"></dashboard>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import DashItem from "./components/DashItem.vue";
+import Dashboard from "./components/Dashboard.vue";
 
 export default Vue.extend({
   name: "app",
   components: {
-    DashItem
+    DashItem,
+    Dashboard
   }
 });
 </script>

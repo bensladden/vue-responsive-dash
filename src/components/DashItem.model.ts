@@ -88,6 +88,18 @@ export class DashItem {
 	setHeight(h: Number) {
 		this.height = h
 	}
+	setDraggable(d: Boolean) {
+		this.draggable = d
+	}
+	setResizeable(r: Boolean) {
+		this.resizeable = r
+	}
+	setResizeEdges(e: String) {
+		this.resizeEdges = e
+	}
+	setResizeHandleSize(rhs: Number) {
+		this.resizeHandleSize = rhs
+	}
 
 	onDragStart(event: DragEvent) {
 		if (event && event.dataTransfer) {

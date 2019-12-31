@@ -6,6 +6,8 @@ export class Dashboard {
 	protected breakpoints: Breakpoints;
 	protected layouts: Layout[];
 	protected margins: Margins;
+	protected width: Number;
+	protected height: Number;
 	protected placeholder = new DashItem({
 		id: -1,
 		draggable: false,
@@ -17,7 +19,7 @@ export class Dashboard {
 	}) as DashItem
 
 	constructor(
-		{ id, breakpoints, layouts, margins }: { id: String | Number; breakpoints?: Breakpoints; layouts?: Layout[]; margins?: Margins; }) {
+		{ id, breakpoints, layouts, margins, width, height }: { id: String | Number; breakpoints?: Breakpoints; layouts?: Layout[]; margins?: Margins; width?: Number, height?: Number }) {
 		this.id = id
 		//Setup Breakpoints
 		if (typeof breakpoints !== "undefined") {
@@ -47,6 +49,18 @@ export class Dashboard {
 		} else {
 			this.margins = { x: 10, y: 10 }
 		}
+
+		if (typeof width !== "undefined") {
+			this.width = width
+		} else {
+			this.width = 400
+		}
+
+		if (typeof height !== "undefined") {
+			this.height = height
+		} else {
+			this.height = 400
+		}
 	}
 	setId(id: String | Number) {
 		this.id = id
@@ -73,5 +87,11 @@ export class Dashboard {
 	}
 	setMargins(m: Margins) {
 		this.margins = m
+	}
+	setWidth(w: Number) {
+		this.width = w
+	}
+	setHeight(h: Number) {
+		this.height = h
 	}
 }

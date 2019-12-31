@@ -31,6 +31,7 @@ export default {
   methods: {
     onResize(e) {
       console.log("resize event", e.detail.width);
+      this.d.setWidth(e.detail.width);
     }
   },
   mounted() {

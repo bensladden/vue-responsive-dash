@@ -188,17 +188,58 @@
 
 <script>
 import { DashItem } from "./DashItem.model";
+
+//Monitor the Props and update the item with the changed value
+const watchProp = (key, deep) => ({
+  handler(newValue) {
+    //If the prop did not cause the update there is no updating the canvas
+    if (this.item[key] === newValue) {
+      return;
+    }
+    switch (key) {
+      case "id":
+        this.item.setId(newValue);
+        break;
+      case "x":
+        this.item.setX(newValue);
+        break;
+      case "y":
+        this.item.setY(newValue);
+        break;
+      case "width":
+        this.item.setWidth(newValue);
+        break;
+      case "height":
+        this.item.setHeight(newValue);
+        break;
+      case "draggable":
+        this.item.setDraggable(newValue);
+        break;
+      case "resizeable":
+        this.item.setResizeable(newValue);
+        break;
+      case "resizeEdges":
+        this.item.setResizeEdges(newValue);
+        break;
+      case "resizeHandleSize":
+        this.item.setResizeHandleSize(newValue);
+        break;
+    }
+  },
+  deep
+});
+
 export default {
   name: "item",
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
-    draggable: { type: Boolean, default: true },
     x: { type: Number, default: 100 },
     y: { type: Number, default: 100 },
-    resizeable: { type: Boolean, default: true },
     width: { type: Number, default: 100 },
     height: { type: Number, default: 100 },
+    draggable: { type: Boolean, default: true },
+    resizeable: { type: Boolean, default: true },
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
@@ -276,6 +317,12 @@ export default {
       this.$emit("resizeEnd", event);
       this.item.onResizeEnd(event, location);
       event.target.style.opacity = 1.0;
+    },
+    createPropWatchers() {
+      //Setup prop watches to sync with fabric
+      Object.keys(this.$props).forEach(key => {
+        this.$watch(key, watchProp(key, true));
+      });
     },
     addClass(el, cls) {
       if (arguments.length < 2) {

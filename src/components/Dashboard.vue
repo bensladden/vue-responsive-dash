@@ -7,15 +7,11 @@
 <script>
 import { Dashboard } from "./Dashboard.model";
 import DashItem from "./DashItem";
-import resize from "../directive/elementResizeDetector";
 export default {
   name: "Dashboard",
   props: { id: { type: [Number, String], required: true } },
   components: {
     DashItem
-  },
-  directives: {
-    resize
   },
   data() {
     return {

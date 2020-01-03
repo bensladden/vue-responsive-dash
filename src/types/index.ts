@@ -1,12 +1,4 @@
-export type DashItem = {
-	id: Number | String,
-	width: Number,
-	height: Number,
-	xPos: Number,
-	yPos: Number,
-	draggable?: Boolean,
-	resizable?: Boolean
-}
+import { DashItem } from "../components/DashItem.model"
 
 export type Layout = {
 	items: DashItem[]

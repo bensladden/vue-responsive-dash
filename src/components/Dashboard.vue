@@ -1,6 +1,7 @@
 <template>
   <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
     <DashItem v-bind="placeholder" v-if="dragging"></DashItem>
+    {{currentBreakpoint}}
   </div>
 </template>
 
@@ -21,12 +22,17 @@ export default {
   },
   computed: {
     placeholder() {
-      return this.dashboard.placeholder;
+      return this.d.placeholder;
+    },
+    breakpoints() {
+      return this.d.breakpoints;
+    },
+    currentBreakpoint() {
+      return this.d.currentBreakpoint;
     }
   },
   methods: {
     onResize(e) {
-      console.log("resize event", e.detail.width);
       this.d.setWidth(e.detail.width);
     }
   },

@@ -4,12 +4,12 @@ import DashItem from "./DashItem.vue";
 import Dashboard from "./Dashboard.vue";
 
 const VueResponsiveDash = {
-	DashItem,
-	Dashboard
+  DashItem,
+  Dashboard
 };
 
 Object.keys(VueResponsiveDash).forEach(name => {
-	Vue.component(name, VueResponsiveDash[name]);
+  Vue.component(name, VueResponsiveDash[name]);
 });
 
 export default VueResponsiveDash;

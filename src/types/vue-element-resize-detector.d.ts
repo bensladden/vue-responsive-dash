@@ -1,1 +1,1 @@
-declare module 'vue-element-resize-detector'
+declare module "vue-element-resize-detector";

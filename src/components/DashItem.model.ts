@@ -1,25 +1,25 @@
 export class DashItem {
-	protected id: Number | String
-	protected x: Number
-	protected y: Number
-	protected width: Number
-	protected height: Number
-	protected draggable: Boolean
-	protected resizeable: Boolean
-	protected resizeEdges: String
-	protected resizeHandleSize: Number
+	protected id: number | string
+	protected x: number
+	protected y: number
+	protected width: number
+	protected height: number
+	protected draggable: boolean
+	protected resizeable: boolean
+	protected resizeEdges: string
+	protected resizeHandleSize: number
 
 	private onDragStartEvent = undefined as DragEvent | undefined
-	private onDragStartX = 0 as Number
-	private onDragStartY = 0 as Number
+	private onDragStartX = 0 as number
+	private onDragStartY = 0 as number
 	private onResizeStartEvent = undefined as DragEvent | undefined
-	private onResizeStartX = 0 as Number
-	private onResizeStartY = 0 as Number
-	private onResizeStartingWidth = 0 as Number
-	private onResizeStartingHeight = 0 as Number
+	private onResizeStartX = 0 as number
+	private onResizeStartY = 0 as number
+	private onResizeStartingWidth = 0 as number
+	private onResizeStartingHeight = 0 as number
 
 	constructor(
-		{ id, x, y, width, height, draggable, resizeable, resizeEdges, resizeHandleSize }: { id: String | Number; x?: Number; y?: Number; width?: Number; height?: Number; draggable?: Boolean; resizeable?: Boolean; resizeEdges?: String; resizeHandleSize?: Number }) {
+		{ id, x, y, width, height, draggable, resizeable, resizeEdges, resizeHandleSize }: { id: string | number; x?: number; y?: number; width?: number; height?: number; draggable?: boolean; resizeable?: boolean; resizeEdges?: string; resizeHandleSize?: number }) {
 		this.id = id
 
 		if (typeof x !== "undefined") {
@@ -76,31 +76,30 @@ export class DashItem {
 			this.resizeHandleSize = 8
 		}
 	}
-	setX(x: Number) {
+	setX(x: number) {
 		this.x = x
 	}
-	setY(y: Number) {
+	setY(y: number) {
 		this.y = y
 	}
-	setWidth(w: Number) {
+	setWidth(w: number) {
 		this.width = w
 	}
-	setHeight(h: Number) {
+	setHeight(h: number) {
 		this.height = h
 	}
-	setDraggable(d: Boolean) {
+	setDraggable(d: boolean) {
 		this.draggable = d
 	}
-	setResizeable(r: Boolean) {
+	setResizeable(r: boolean) {
 		this.resizeable = r
 	}
-	setResizeEdges(e: String) {
+	setResizeEdges(e: string) {
 		this.resizeEdges = e
 	}
-	setResizeHandleSize(rhs: Number) {
+	setResizeHandleSize(rhs: number) {
 		this.resizeHandleSize = rhs
 	}
-
 	onDragStart(event: DragEvent) {
 		if (event && event.dataTransfer) {
 			this.onDragStartEvent = event

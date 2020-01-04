@@ -2,18 +2,18 @@ import { DashItem } from "../components/DashItem.model"
 
 export type Layout = {
 	items: DashItem[]
-	breakpoint: String
+	breakpoint: string
 }
 
 export type Breakpoint = {
-	name: String,
-	numberOfCols: Number,
-	setpoint?: Number,
+	name: string,
+	numberOfCols: number,
+	setpoint?: number,
 }
 
 export type Breakpoints = Breakpoint[]
 
 export type Margins = {
-	x: Number,
-	y: Number
+	x: number,
+	y: number
 }

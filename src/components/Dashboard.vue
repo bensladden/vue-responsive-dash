@@ -1,7 +1,8 @@
 <template>
   <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
     <DashItem v-bind="placeholder" v-if="dragging"></DashItem>
-    {{currentBreakpoint}}
+    Current Breakpoint: {{ currentBreakpoint }}
+    Current ColWidth: {{ colWidth }}
   </div>
 </template>
 
@@ -29,6 +30,9 @@ export default {
     },
     currentBreakpoint() {
       return this.d.currentBreakpoint;
+    },
+    colWidth() {
+      return this.d.getColWidth();
     }
   },
   methods: {

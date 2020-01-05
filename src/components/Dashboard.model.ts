@@ -182,4 +182,17 @@ export class Dashboard {
     const rowHeight = this.getRowHeight();
     return Math.round((h + this.margins.y) / (rowHeight + this.margins.y));
   }
+  addItemtoLayouts(d: DashItem) {
+    let ids = this.layouts[0].items.map(i => {
+      return i.getId();
+    });
+    if (!ids.includes(d.getId()) && d.getId() !== this.placeholder.getId()) {
+      for (let l of this.layouts) {
+        l.items.push(d);
+      }
+      console.log("Item Added => Commence verifying layouts");
+    } else {
+      throw Error("Must be Unique ID");
+    }
+  }
 }

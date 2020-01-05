@@ -95,6 +95,9 @@ export class DashItem {
       this.resizeHandleSize = 8;
     }
   }
+  getId() {
+    return this.id;
+  }
   setX(x: number) {
     this.x = x;
   }

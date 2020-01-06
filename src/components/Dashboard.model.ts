@@ -1,45 +1,44 @@
-import { Breakpoints, Layout, Margins } from "../types";
-import { DashItem } from "./DashItem.model";
+import { Item, Layout, Margin, Breakpoint } from "../inferfaces";
 
 export class Dashboard {
   protected id: string | number;
-  protected breakpoints: Breakpoints;
+  protected breakpoints: Breakpoint[];
   protected currentBreakpoint: string;
   protected layouts: Layout[];
-  protected margins: Margins;
+  protected margin: Margin;
   protected width: number;
   protected height: number;
-  protected placeholder = new DashItem({
+  protected placeholder = {
     id: -1,
     draggable: false,
     resizeable: false,
     x: 0,
     y: 0,
-    width: 0,
-    height: 0
-  }) as DashItem;
+    width: 1,
+    height: 1
+  } as Item;
 
   constructor({
     id,
     breakpoints,
     layouts,
-    margins,
+    margin,
     width,
     height
   }: {
     id: string | number;
-    breakpoints?: Breakpoints;
+    breakpoints?: Breakpoint[];
     layouts?: Layout[];
-    margins?: Margins;
+    margin?: Margin;
     width?: number;
     height?: number;
   }) {
     this.id = id;
     //Setup Margins
-    if (typeof margins !== "undefined") {
-      this.margins = margins;
+    if (typeof margin !== "undefined") {
+      this.margin = margin;
     } else {
-      this.margins = { x: 10, y: 10 };
+      this.margin = { x: 10, y: 10 };
     }
 
     if (typeof width !== "undefined") {
@@ -85,12 +84,13 @@ export class Dashboard {
   setId(id: string | number) {
     this.id = id;
   }
-  setBreakpoints(breakpoints: Breakpoints) {
+  setBreakpoints(breakpoints: Breakpoint[]) {
     this.breakpoints = breakpoints;
     this.sortBreakpoints();
     this.updateCurrentBreakpoint();
   }
   updateCurrentBreakpoint() {
+    //TODO check if we are right on the edge of a breakpoint (i.e. dont allow a change if a scroll bar is added)
     let previousBreakpoint = this.currentBreakpoint;
     let matching = this.breakpoints[0].name;
     for (let i = 1; i < this.breakpoints.length; i++) {
@@ -135,8 +135,8 @@ export class Dashboard {
       this.layouts[index].items = layout.items;
     }
   }
-  setMargins(m: Margins) {
-    this.margins = m;
+  setMargins(m: Margin) {
+    this.margin = m;
   }
   setWidth(w: number) {
     this.width = w;
@@ -161,32 +161,42 @@ export class Dashboard {
   }
   getColWidth() {
     const numberOfCols = this.getnumberOfColsFromCurrentBreakpoint();
-    return (this.width - (this.margins.x + numberOfCols + 1)) / numberOfCols;
+    return (this.width - (this.margin.x + numberOfCols + 1)) / numberOfCols;
   }
   getRowHeight() {
-    return 400; //TODO
+    return 130; //TODO
   }
-  getABSPositionX(x: number) {
+  getLeftFromX(x: number) {
     const colWidth = this.getColWidth();
-    return Math.round((x - this.margins.x) / (colWidth + this.margins.x));
+    return  Math.round(colWidth * x + (x + 1) * this.margin.x)
   }
-  getABSPositionY(y: number) {
+  getXFromLeft(l: number) {
+    const colWidth = this.getColWidth();
+    return Math.round((l - this.margin.x) / (colWidth + this.margin.x));
+  }
+  getTopFromY(y: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round((y - this.margins.y) / (rowHeight + this.margins.y));
+    return Math.round(rowHeight * y + (y + 1) * this.margin.y)
+  }
+  getYFromTop(t:number) {
+    const rowHeight = this.getRowHeight();
+    return Math.round((t - this.margin.y) / (rowHeight + this.margin.y));
   }
   getWidthInPx(w: number) {
     const colWidth = this.getColWidth();
-    return Math.round((w + this.margins.x) / (colWidth + this.margins.x));
+    return Math.round(colWidth * w + Math.max(0, w - 1) * this.margin.x)
   }
+  getWidthFromPx(widthPx: number) {}
   getHeightInPx(h: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round((h + this.margins.y) / (rowHeight + this.margins.y));
+    return  Math.round(rowHeight * h + Math.max(0, h - 1) * this.margin.y)
   }
-  addItemtoLayouts(d: DashItem) {
+  getHeightFromPx(heightPx: number) {}
+  addItemtoLayouts(d: Item) {
     let ids = this.layouts[0].items.map(i => {
-      return i.getId();
+      return i.id;
     });
-    if (!ids.includes(d.getId()) && d.getId() !== this.placeholder.getId()) {
+    if (!ids.includes(d.id) && d.id !== this.placeholder.id) {
       for (let l of this.layouts) {
         l.items.push(d);
       }

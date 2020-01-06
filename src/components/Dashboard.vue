@@ -1,6 +1,10 @@
 <template>
   <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
-    <DashItem v-bind="placeholder" v-if="dragging"></DashItem>
+    <slot></slot>
+    <DashItem v-bind="test"></DashItem>
+    <DashItem v-bind="placeholder" v-if="dragging">
+      <div class="placeholder"></div>
+    </DashItem>
     Current Breakpoint: {{ currentBreakpoint }} Current ColWidth: {{ colWidth }}
   </div>
 </template>
@@ -17,12 +21,29 @@ export default {
   data() {
     return {
       d: null,
-      dragging: false
+      dragging: true,
+      test: {
+        id: 11,
+        x: 0,
+        y: 0,
+        width: 1,
+        height: 1
+      }
     };
   },
   computed: {
     placeholder() {
-      return this.d.placeholder;
+      let p = this.d.placeholder;
+      let modifiedPos = {
+        x: this.d.getLeftFromX(p.x),
+        y: this.d.getTopFromY(p.y),
+        width: this.d.getWidthInPx(p.width),
+        height: this.d.getHeightInPx(p.height)
+      };
+      return {
+        ...p,
+        ...modifiedPos
+      };
     },
     breakpoints() {
       return this.d.breakpoints;
@@ -45,4 +66,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.placeholder {
+  height: 100%;
+  width: 100%;
+  background-color: red;
+  opacity: 0.2;
+}
+</style>

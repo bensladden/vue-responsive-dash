@@ -131,7 +131,11 @@ export class DashItem {
     this.onDragStartY = this.y;
   }
   onDrag(event: DragEvent) {
-    if (typeof this.onDragStartEvent !== "undefined") {
+    if (
+      typeof this.onDragStartEvent !== "undefined" &&
+      event.screenX > 0 &&
+      event.screenY > 0
+    ) {
       let x =
         +this.onDragStartX - this.onDragStartEvent.screenX + event.screenX;
       let y =

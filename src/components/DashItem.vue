@@ -313,35 +313,35 @@ export default {
   methods: {
     async onDragStart(event) {
       this.dragging = true;
-      this.$emit("dragStart", event);
       this.item.onDragStart(event);
+      this.$emit("dragStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onDrag(event) {
-      this.$emit("drag", event);
       this.item.onDrag(event);
+      this.$emit("drag", this.item);
     },
     async onDragEnd(event) {
       event.preventDefault();
-      this.$emit("dragEnd", event);
       this.item.onDragEnd(event);
+      this.$emit("dragEnd", this.item);
       event.target.style.opacity = 1;
       await this.$nextTick();
       this.dragging = false;
     },
     onResizeStart(event, location) {
       this.resizing = true;
-      this.$emit("resizeStart", event);
       this.item.onResizeStart(event, location);
+      this.$emit("resizeStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onResize(event, location) {
-      this.$emit("resize", event);
       this.item.onResize(event, location);
+      this.$emit("resize", this, item);
     },
     async onResizeEnd(event, location) {
-      this.$emit("resizeEnd", event);
       this.item.onResizeEnd(event, location);
+      this.$emit("resizeEnd", this.item);
       event.target.style.opacity = 1.0;
       await this.$nextTick();
       this.resize = false;
@@ -395,7 +395,7 @@ export default {
   box-sizing: border-box;
   position: absolute;
   display: inline-block;
-  /* transition: all 200ms ease; */
+  transition: all 200ms ease;
   transition-property: left, top, right;
 }
 .item.dragging {

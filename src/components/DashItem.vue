@@ -3,14 +3,13 @@
     :id="id"
     :ref="id"
     v-if="item"
+    class="item"
+    :class="classObj"
     :style="{
-      boxSizing: 'border-box',
-      position: 'absolute',
-      display: 'inline-block',
       width: internalWidth + 'px',
       height: internalHeight + 'px',
-      left: internalX + 'px',
-      top: internalY + 'px'
+      left: left + 'px',
+      top: top + 'px'
     }"
   >
     <div
@@ -41,7 +40,7 @@
           cursor: 'ns-resize',
           position: 'absolute'
         }"
-        v-if="resizeTop"
+        v-if="resizeTop && !dragging"
         @dragstart.stop="onResizeStart($event, 'top')"
         @drag.stop="onResize($event, 'top')"
         @dragend.stop="onResizeEnd($event, 'top')"
@@ -60,7 +59,7 @@
           cursor: 'ns-resize',
           position: 'absolute'
         }"
-        v-if="resizeBottom"
+        v-if="resizeBottom && !dragging"
         @dragstart.stop="onResizeStart($event, 'bottom')"
         @drag.stop="onResize($event, 'bottom')"
         @dragend.stop="onResizeEnd($event, 'bottom')"
@@ -79,7 +78,7 @@
           cursor: 'ew-resize',
           position: 'absolute'
         }"
-        v-if="resizeLeft"
+        v-if="resizeLeft && !dragging"
         @dragstart.stop="onResizeStart($event, 'left')"
         @drag.stop="onResize($event, 'left')"
         @dragend.stop="onResizeEnd($event, 'left')"
@@ -98,7 +97,7 @@
           cursor: 'ew-resize',
           position: 'absolute'
         }"
-        v-if="resizeRight"
+        v-if="resizeRight && !dragging"
         @dragstart.stop="onResizeStart($event, 'right')"
         @drag.stop="onResize($event, 'right')"
         @dragend.stop="onResizeEnd($event, 'right')"
@@ -117,7 +116,7 @@
           cursor: 'nw-resize',
           position: 'absolute'
         }"
-        v-if="resizeTopLeft"
+        v-if="resizeTopLeft && !dragging"
         @dragstart.stop="onResizeStart($event, 'top left')"
         @drag.stop="onResize($event, 'top left')"
         @dragend.stop="onResizeEnd($event, 'top left')"
@@ -136,7 +135,7 @@
           cursor: 'ne-resize',
           position: 'absolute'
         }"
-        v-if="resizeTopRight"
+        v-if="resizeTopRight && !dragging"
         @dragstart.stop="onResizeStart($event, 'top right')"
         @drag.stop="onResize($event, 'top right')"
         @dragend.stop="onResizeEnd($event, 'top right')"
@@ -155,7 +154,7 @@
           cursor: 'ne-resize',
           position: 'absolute'
         }"
-        v-if="resizeBottomLeft"
+        v-if="resizeBottomLeft && !dragging"
         @dragstart.stop="onResizeStart($event, 'bottom left')"
         @drag.stop="onResize($event, 'bottom left')"
         @dragend.stop="onResizeEnd($event, 'bottom left')"
@@ -174,7 +173,7 @@
           cursor: 'nw-resize',
           position: 'absolute'
         }"
-        v-if="resizeBottomRight"
+        v-if="resizeBottomRight && !dragging"
         @dragstart.stop="onResizeStart($event, 'bottom right')"
         @drag.stop="onResize($event, 'bottom right')"
         @dragend.stop="onResizeEnd($event, 'bottom right')"
@@ -183,6 +182,7 @@
       </div>
     </div>
     <slot></slot>
+    <!-- <button @click="dragging = !dragging">{{ dragging }}</button> -->
   </div>
 </template>
 
@@ -192,7 +192,7 @@ import { DashItem } from "./DashItem.model";
 //Monitor the Props and update the item with the changed value
 const watchProp = (key, deep) => ({
   handler(newValue) {
-    //If the prop did not cause the update there is no updating the canvas
+    //If the prop did not cause the update there is no updating
     if (this.item[key] === newValue) {
       return;
     }
@@ -229,6 +229,20 @@ const watchProp = (key, deep) => ({
   deep
 });
 
+//Props to change via interaction and need to be emitted for prop.sync usage
+const EMIT_PROPS = ["x", "y", "width", "height"];
+//Monitor the item and emit an update to allow .sync usage
+const watchEmitProp = (key, deep) => ({
+  handler(newValue) {
+    //If the prop caused the update there is no point emitting it back
+    if (this.$props[key] === newValue) {
+      return;
+    }
+    this.$emit("update:" + key, newValue);
+  },
+  deep
+});
+
 export default {
   name: "item",
   inheritAttrs: false,
@@ -251,10 +265,18 @@ export default {
     };
   },
   computed: {
-    internalX() {
+    resizingOrDragging() {
+      return this.resizing || this.dragging;
+    },
+    classObj() {
+      return {
+        dragging: this.resizingOrDragging
+      };
+    },
+    left() {
       return this.item.x;
     },
-    internalY() {
+    top() {
       return this.item.y;
     },
     internalWidth() {
@@ -290,38 +312,50 @@ export default {
   },
   methods: {
     async onDragStart(event) {
-      this.$emit("dragStart", event);
+      this.dragging = true;
       this.item.onDragStart(event);
+      this.$emit("dragStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onDrag(event) {
-      this.$emit("drag", event);
       this.item.onDrag(event);
+      this.$emit("drag", this.item);
     },
-    onDragEnd(event) {
+    async onDragEnd(event) {
       event.preventDefault();
-      this.$emit("dragEnd", event);
       this.item.onDragEnd(event);
+      this.$emit("dragEnd", this.item);
       event.target.style.opacity = 1;
+      await this.$nextTick();
+      this.dragging = false;
     },
     onResizeStart(event, location) {
-      this.$emit("resizeStart", event);
+      this.resizing = true;
       this.item.onResizeStart(event, location);
+      this.$emit("resizeStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onResize(event, location) {
-      this.$emit("resize", event);
       this.item.onResize(event, location);
+      this.$emit("resize", this, item);
     },
-    onResizeEnd(event, location) {
-      this.$emit("resizeEnd", event);
+    async onResizeEnd(event, location) {
       this.item.onResizeEnd(event, location);
+      this.$emit("resizeEnd", this.item);
       event.target.style.opacity = 1.0;
+      await this.$nextTick();
+      this.resize = false;
     },
     createPropWatchers() {
-      //Setup prop watches to sync with fabric
+      //Setup prop watches to sync with the Dash Item
       Object.keys(this.$props).forEach(key => {
         this.$watch(key, watchProp(key, true));
+      });
+    },
+    createDashItemWatchers() {
+      //Setup Watchers for emmit sync option
+      EMIT_PROPS.forEach(prop => {
+        this.$watch("item." + prop, watchEmitProp(prop, true));
       });
     },
     addClass(el, cls) {
@@ -345,13 +379,27 @@ export default {
   },
   mounted() {
     this.item = new DashItem(this.$props);
+    this.createPropWatchers();
+    this.createDashItemWatchers();
   },
   beforeDestroy() {}
 };
 </script>
 
-<style lang="css" module>
+<style lang="css">
 .invisible {
   display: none;
+}
+
+.item {
+  box-sizing: border-box;
+  position: absolute;
+  display: inline-block;
+  transition: all 200ms ease;
+  transition-property: left, top, right;
+}
+.item.dragging {
+  transition: none;
+  z-index: 3;
 }
 </style>

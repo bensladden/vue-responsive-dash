@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <dash-item :id="'test'">
+    <dash-item :id="'test'" :x.sync="x" :y.sync="y">
       <div class="content">Hello</div>
     </dash-item>
+    x:<input v-model.number="x" type="number" /> y:
+    <input v-model.number="y" type="number" />
     <dashboard :id="'dashTest'"></dashboard>
   </div>
 </template>
@@ -17,6 +19,12 @@ export default Vue.extend({
   components: {
     DashItem,
     Dashboard
+  },
+  data() {
+    return {
+      x: 100,
+      y: 100
+    };
   }
 });
 </script>

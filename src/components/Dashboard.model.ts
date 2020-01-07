@@ -1,5 +1,14 @@
 import { Item, Layout, Margin, Breakpoint } from "../inferfaces";
-
+import {
+  getLeftFromX,
+  getXFromLeft,
+  getTopFromY,
+  getYFromTop,
+  getWidthInPx,
+  getWidthFromPx,
+  getHeightInPx,
+  getHeightFromPx
+} from "./commonFunctions";
 export class Dashboard {
   protected id: string | number;
   protected breakpoints: Breakpoint[];
@@ -168,28 +177,28 @@ export class Dashboard {
   }
   getLeftFromX(x: number) {
     const colWidth = this.getColWidth();
-    return Math.round(colWidth * x + (x + 1) * this.margin.x);
+    return getLeftFromX(x, colWidth, this.margin);
   }
   getXFromLeft(l: number) {
     const colWidth = this.getColWidth();
-    return Math.round((l - this.margin.x) / (colWidth + this.margin.x));
+    return getXFromLeft(l, colWidth, this.margin);
   }
   getTopFromY(y: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round(rowHeight * y + (y + 1) * this.margin.y);
+    return getTopFromY(y, rowHeight, this.margin);
   }
   getYFromTop(t: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round((t - this.margin.y) / (rowHeight + this.margin.y));
+    return getYFromTop(t, rowHeight, this.margin);
   }
   getWidthInPx(w: number) {
     const colWidth = this.getColWidth();
-    return Math.round(colWidth * w + Math.max(0, w - 1) * this.margin.x);
+    return getWidthInPx(w, colWidth, this.margin);
   }
   getWidthFromPx(widthPx: number) {}
   getHeightInPx(h: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round(rowHeight * h + Math.max(0, h - 1) * this.margin.y);
+    return getHeightInPx(h, rowHeight, this.margin);
   }
   getHeightFromPx(heightPx: number) {}
   addItemtoLayouts(d: Item) {

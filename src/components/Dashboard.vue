@@ -31,19 +31,25 @@ export default {
       }
     };
   },
+  provide() {
+    return {
+      $dashboard: () => this.d
+    };
+  },
   computed: {
     placeholder() {
       let p = this.d.placeholder;
-      let modifiedPos = {
-        x: this.d.getLeftFromX(p.x),
-        y: this.d.getTopFromY(p.y),
-        width: this.d.getWidthInPx(p.width),
-        height: this.d.getHeightInPx(p.height)
-      };
-      return {
-        ...p,
-        ...modifiedPos
-      };
+      // let modifiedPos = {
+      //   x: this.d.getLeftFromX(p.x),
+      //   y: this.d.getTopFromY(p.y),
+      //   width: this.d.getWidthInPx(p.width),
+      //   height: this.d.getHeightInPx(p.height)
+      // };
+      // return {
+      //   ...p,
+      //   ...modifiedPos
+      // };
+      return p;
     },
     breakpoints() {
       return this.d.breakpoints;

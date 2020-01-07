@@ -6,8 +6,8 @@
     class="item"
     :class="classObj"
     :style="{
-      width: internalWidth + 'px',
-      height: internalHeight + 'px',
+      width: widthPx + 'px',
+      height: heightPx + 'px',
       left: left + 'px',
       top: top + 'px'
     }"
@@ -201,16 +201,16 @@ const watchProp = (key, deep) => ({
         this.item.setId(newValue);
         break;
       case "x":
-        this.item.setX(newValue);
+        this.item.setXAndUpdateLeft(newValue);
         break;
       case "y":
-        this.item.setY(newValue);
+        this.item.setYAndUpdateTop(newValue);
         break;
       case "width":
-        this.item.setWidth(newValue);
+        this.item.setWidthAndUpdatePx(newValue);
         break;
       case "height":
-        this.item.setHeight(newValue);
+        this.item.setHeightAndUpdatePx(newValue);
         break;
       case "draggable":
         this.item.setDraggable(newValue);
@@ -242,6 +242,27 @@ const watchEmitProp = (key, deep) => ({
   },
   deep
 });
+//Sync Dashboard variables
+// const DASHBOARD_WATCH_VARS = ["colWidth", "rowHeight", "margin"];
+
+// const watchDashboardVars = (key, deep) => ({
+//   handler(newValue) {
+//     console.log("dashVarChanges", key, newValue);
+//     switch (key) {
+//       case "colWidth":
+//         this.item.setColWidth(newValue);
+//         break;
+//       case "rowHeight":
+//         this.item.setRowHeight(newValue);
+//         break;
+//       case "margin":
+//         this.item.setMargin(newValue);
+//         break;
+//     }
+//     this.item;
+//   },
+//   deep
+// });
 
 export default {
   name: "item",
@@ -256,6 +277,12 @@ export default {
     resizeable: { type: Boolean, default: true },
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
+  },
+  inject: ["$dashboard"],
+  provide() {
+    return {
+      $item: () => this.item
+    };
   },
   data() {
     return {
@@ -273,17 +300,29 @@ export default {
         dragging: this.resizingOrDragging
       };
     },
+    dashboard() {
+      return this.$dashboard();
+    },
+    colWidth() {
+      return this.dashboard.getColWidth();
+    },
+    rowHeight() {
+      return this.dashboard.getRowHeight();
+    },
+    margin() {
+      return this.dashboard.margin;
+    },
     left() {
-      return this.item.x;
+      return this.item.left;
     },
     top() {
-      return this.item.y;
+      return this.item.top;
     },
-    internalWidth() {
-      return this.item.width;
+    widthPx() {
+      return this.item.widthPx;
     },
-    internalHeight() {
-      return this.item.height;
+    heightPx() {
+      return this.item.heightPx;
     },
     resizeTop() {
       return this.resizeEdges.includes("top");
@@ -357,30 +396,15 @@ export default {
       EMIT_PROPS.forEach(prop => {
         this.$watch("item." + prop, watchEmitProp(prop, true));
       });
-    },
-    addClass(el, cls) {
-      if (arguments.length < 2) {
-        el.classList.add(cls);
-      } else {
-        for (let i = 1, len = arguments.length; i < len; i++) {
-          el.classList.add(arguments[i]);
-        }
-      }
-    },
-    removeClass(el, cls) {
-      if (arguments.length < 2) {
-        el.classList.remove(cls);
-      } else {
-        for (let i = 1, len = arguments.length; i < len; i++) {
-          el.classList.remove(arguments[i]);
-        }
-      }
     }
   },
   mounted() {
     this.item = new DashItem(this.$props);
     this.createPropWatchers();
     this.createDashItemWatchers();
+    // DASHBOARD_WATCH_VARS.forEach(prop => {
+    //   this.$watch("dashboard." + prop, watchDashboardVars(prop, true));
+    // });
   },
   beforeDestroy() {}
 };

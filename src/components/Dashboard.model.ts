@@ -168,7 +168,7 @@ export class Dashboard {
   }
   getLeftFromX(x: number) {
     const colWidth = this.getColWidth();
-    return  Math.round(colWidth * x + (x + 1) * this.margin.x)
+    return Math.round(colWidth * x + (x + 1) * this.margin.x);
   }
   getXFromLeft(l: number) {
     const colWidth = this.getColWidth();
@@ -176,20 +176,20 @@ export class Dashboard {
   }
   getTopFromY(y: number) {
     const rowHeight = this.getRowHeight();
-    return Math.round(rowHeight * y + (y + 1) * this.margin.y)
+    return Math.round(rowHeight * y + (y + 1) * this.margin.y);
   }
-  getYFromTop(t:number) {
+  getYFromTop(t: number) {
     const rowHeight = this.getRowHeight();
     return Math.round((t - this.margin.y) / (rowHeight + this.margin.y));
   }
   getWidthInPx(w: number) {
     const colWidth = this.getColWidth();
-    return Math.round(colWidth * w + Math.max(0, w - 1) * this.margin.x)
+    return Math.round(colWidth * w + Math.max(0, w - 1) * this.margin.x);
   }
   getWidthFromPx(widthPx: number) {}
   getHeightInPx(h: number) {
     const rowHeight = this.getRowHeight();
-    return  Math.round(rowHeight * h + Math.max(0, h - 1) * this.margin.y)
+    return Math.round(rowHeight * h + Math.max(0, h - 1) * this.margin.y);
   }
   getHeightFromPx(heightPx: number) {}
   addItemtoLayouts(d: Item) {

@@ -1,4 +1,8 @@
 # vue-responsive-dash
 
 Nightly notes TODO:
-consider adding dash items to a seperate array so the dashboard can send updats to its children (may need to consider what happens in mounted event however)
+Next Task: dragging and resizing events to dashboard.
+Need to link to placeholder
+When finished set position to placeholder
+
+After this need to create moving and compacting methods.

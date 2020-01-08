@@ -1,58 +1,71 @@
 <template>
-  <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
-    <slot></slot>
-    <DashItem v-bind="test"></DashItem>
-    <DashItem v-bind="placeholder" v-if="dragging">
-      <div class="placeholder"></div>
-    </DashItem>
-    Current Breakpoint: {{ currentBreakpoint }} Current ColWidth: {{ colWidth }}
+  <div>
+    <div
+      :id="id"
+      :ref="id"
+      v-if="d"
+      v-resize
+      @resize="onResize"
+      :style="{ height: height }"
+    >
+      <slot></slot>
+      <DashItem v-bind="placeholder" v-if="dragging">
+        <div class="placeholder"></div>
+      </DashItem>
+    </div>
+    <div>
+      Current Breakpoint: {{ currentBreakpoint }} Current ColWidth:
+      {{ colWidth }}
+    </div>
   </div>
 </template>
 
 <script>
 import { Dashboard } from "./Dashboard.model";
+import { Layout } from "../inferfaces";
 import DashItem from "./DashItem";
 export default {
   name: "Dashboard",
-  props: { id: { type: [Number, String], required: true } },
+  props: {
+    id: { type: [Number, String], required: true },
+    layouts: Array,
+    currentLayout: Object
+  },
   components: {
     DashItem
   },
   data() {
     return {
       d: null,
-      dragging: true,
-      test: {
-        id: 11,
-        x: 0,
-        y: 0,
-        width: 1,
-        height: 1
-      }
+      dragging: false
+    };
+  },
+  provide() {
+    return {
+      $dashboard: () => this.d
     };
   },
   computed: {
     placeholder() {
-      let p = this.d.placeholder;
-      let modifiedPos = {
-        x: this.d.getLeftFromX(p.x),
-        y: this.d.getTopFromY(p.y),
-        width: this.d.getWidthInPx(p.width),
-        height: this.d.getHeightInPx(p.height)
-      };
-      return {
-        ...p,
-        ...modifiedPos
-      };
+      return this.d.placeholder;
     },
     breakpoints() {
       return this.d.breakpoints;
     },
     currentBreakpoint() {
-      return this.d.currentBreakpoint;
+      if (this.d) {
+        return this.d.currentBreakpoint;
+      }
+      return "";
     },
     colWidth() {
-      return this.d.getColWidth();
+      return this.d.colWidth;
+    },
+    height() {
+      if (this.d) {
+        return this.d.height + "px";
+      }
+      return "0px";
     }
   },
   methods: {
@@ -60,7 +73,15 @@ export default {
       this.d.setWidth(e.detail.width);
     }
   },
-  mounted() {
+  watch: {
+    currentBreakpoint(newValue) {
+      if (newValue && newValue !== "") {
+        let currentLayout = this.d.getLayoutFromBreakpoint(newValue);
+        this.$emit("update:currentLayout", currentLayout);
+      }
+    }
+  },
+  created() {
     this.d = new Dashboard(this.$props);
   }
 };

@@ -1,13 +1,27 @@
 import { Item, Layout, Margin, Breakpoint } from "../inferfaces";
-
+import {
+  getLeftFromX,
+  getXFromLeft,
+  getTopFromY,
+  getYFromTop,
+  getWidthInPx,
+  getWidthFromPx,
+  getHeightInPx,
+  getHeightFromPx
+} from "./commonFunctions";
+import { DashItem } from "./DashItem.model";
 export class Dashboard {
   protected id: string | number;
   protected breakpoints: Breakpoint[];
   protected currentBreakpoint: string;
   protected layouts: Layout[];
   protected margin: Margin;
+  protected autoHeight: boolean;
   protected width: number;
   protected height: number;
+  protected colWidth: number;
+  protected rowHeight: number;
+  protected dashItems: DashItem[];
   protected placeholder = {
     id: -1,
     draggable: false,
@@ -23,22 +37,33 @@ export class Dashboard {
     breakpoints,
     layouts,
     margin,
+    autoHeight,
     width,
-    height
+    height,
+    rowHeight
   }: {
     id: string | number;
     breakpoints?: Breakpoint[];
     layouts?: Layout[];
     margin?: Margin;
+    autoHeight?: boolean;
     width?: number;
     height?: number;
+    rowHeight?: number;
   }) {
     this.id = id;
+    this.dashItems = [];
     //Setup Margins
     if (typeof margin !== "undefined") {
       this.margin = margin;
     } else {
       this.margin = { x: 10, y: 10 };
+    }
+
+    if (typeof autoHeight !== "undefined") {
+      this.autoHeight = autoHeight;
+    } else {
+      this.autoHeight = true;
     }
 
     if (typeof width !== "undefined") {
@@ -52,6 +77,12 @@ export class Dashboard {
     } else {
       this.height = 400;
     }
+    if (typeof rowHeight !== "undefined") {
+      this.rowHeight = rowHeight;
+    } else {
+      this.rowHeight = 200;
+    }
+
     //Setup Breakpoints
     if (typeof breakpoints !== "undefined") {
       this.breakpoints = breakpoints;
@@ -80,14 +111,40 @@ export class Dashboard {
         this.layouts.push({ breakpoint: b.name, items: [] });
       }
     }
+    //Dummy Set to keep ts happy
+    this.colWidth = 10;
+    this.calculateColWidth();
+    //Update Height
+    if (this.autoHeight) {
+      this.calculateHeight();
+    }
   }
   setId(id: string | number) {
     this.id = id;
   }
+  addDashItem(d: DashItem) {
+    this.dashItems.push(d);
+    this.updateDashItems();
+  }
+  removeDashItem(d: DashItem) {
+    let index = this.dashItems.findIndex(item => {
+      return item.getId() === d.getId();
+    });
+    if (index >= 0) {
+      this.dashItems.splice(index, 1);
+    }
+  }
+  updateDashItems() {
+    this.dashItems.forEach(item => {
+      item.setColWidth(this.colWidth);
+      item.setRowHeight(this.rowHeight);
+      item.setMargin(this.margin);
+    });
+  }
   setBreakpoints(breakpoints: Breakpoint[]) {
     this.breakpoints = breakpoints;
     this.sortBreakpoints();
-    this.updateCurrentBreakpoint();
+    this.updateResponsiveVariables();
   }
   updateCurrentBreakpoint() {
     //TODO check if we are right on the edge of a breakpoint (i.e. dont allow a change if a scroll bar is added)
@@ -137,10 +194,11 @@ export class Dashboard {
   }
   setMargins(m: Margin) {
     this.margin = m;
+    this.updateResponsiveVariables();
   }
   setWidth(w: number) {
     this.width = w;
-    this.updateCurrentBreakpoint();
+    this.updateResponsiveVariables();
   }
   setHeight(h: number) {
     this.height = h;
@@ -159,37 +217,54 @@ export class Dashboard {
       return -1;
     });
   }
-  getColWidth() {
+  updateResponsiveVariables() {
+    this.updateCurrentBreakpoint();
+    this.calculateColWidth();
+    //Update Height
+    if (this.autoHeight) {
+      this.calculateHeight();
+    }
+    //Update dash items
+    this.updateDashItems();
+  }
+  calculateColWidth() {
     const numberOfCols = this.getnumberOfColsFromCurrentBreakpoint();
-    return (this.width - (this.margin.x + numberOfCols + 1)) / numberOfCols;
+    this.colWidth =
+      (this.width - (this.margin.x + numberOfCols + 1)) / numberOfCols;
+  }
+  calculateHeight() {
+    let layout = this.getLayoutFromBreakpoint(this.currentBreakpoint);
+    let maxY = 0;
+    let bottomY = 0;
+    for (let item of layout!.items) {
+      bottomY = item.y + item.height;
+      if (bottomY > maxY) {
+        maxY = bottomY;
+      }
+    }
+    this.setHeight(maxY * (this.rowHeight + this.margin.y) + this.margin.y);
   }
   getRowHeight() {
-    return 130; //TODO
+    return this.rowHeight;
   }
   getLeftFromX(x: number) {
-    const colWidth = this.getColWidth();
-    return Math.round(colWidth * x + (x + 1) * this.margin.x);
+    return getLeftFromX(x, this.colWidth, this.margin);
   }
   getXFromLeft(l: number) {
-    const colWidth = this.getColWidth();
-    return Math.round((l - this.margin.x) / (colWidth + this.margin.x));
+    return getXFromLeft(l, this.colWidth, this.margin);
   }
   getTopFromY(y: number) {
-    const rowHeight = this.getRowHeight();
-    return Math.round(rowHeight * y + (y + 1) * this.margin.y);
+    return getTopFromY(y, this.rowHeight, this.margin);
   }
   getYFromTop(t: number) {
-    const rowHeight = this.getRowHeight();
-    return Math.round((t - this.margin.y) / (rowHeight + this.margin.y));
+    return getYFromTop(t, this.rowHeight, this.margin);
   }
   getWidthInPx(w: number) {
-    const colWidth = this.getColWidth();
-    return Math.round(colWidth * w + Math.max(0, w - 1) * this.margin.x);
+    return getWidthInPx(w, this.colWidth, this.margin);
   }
   getWidthFromPx(widthPx: number) {}
   getHeightInPx(h: number) {
-    const rowHeight = this.getRowHeight();
-    return Math.round(rowHeight * h + Math.max(0, h - 1) * this.margin.y);
+    return getHeightInPx(h, this.rowHeight, this.margin);
   }
   getHeightFromPx(heightPx: number) {}
   addItemtoLayouts(d: Item) {

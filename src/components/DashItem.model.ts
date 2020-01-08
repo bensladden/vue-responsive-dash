@@ -1,20 +1,39 @@
+import {
+  getLeftFromX,
+  getXFromLeft,
+  getTopFromY,
+  getYFromTop,
+  getWidthInPx,
+  getWidthFromPx,
+  getHeightInPx,
+  getHeightFromPx
+} from "./commonFunctions";
+import { Margin } from "../inferfaces";
+
 export class DashItem {
   protected id: number | string;
   protected x: number;
   protected y: number;
+  protected colWidth: number;
+  protected rowHeight: number;
+  protected margin: Margin;
+  protected left: number;
+  protected top: number;
   protected width: number;
   protected height: number;
+  protected widthPx: number;
+  protected heightPx: number;
   protected draggable: boolean;
   protected resizeable: boolean;
   protected resizeEdges: string;
   protected resizeHandleSize: number;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
-  private onDragStartX = 0 as number;
-  private onDragStartY = 0 as number;
+  private onDragStartLeft = 0 as number;
+  private onDragStartTop = 0 as number;
   private onResizeStartEvent = undefined as DragEvent | undefined;
-  private onResizeStartX = 0 as number;
-  private onResizeStartY = 0 as number;
+  private onResizeStartLeft = 0 as number;
+  private onResizeStartTop = 0 as number;
   private onResizeStartingWidth = 0 as number;
   private onResizeStartingHeight = 0 as number;
 
@@ -24,6 +43,9 @@ export class DashItem {
     y,
     width,
     height,
+    colWidth,
+    rowHeight,
+    margin,
     draggable,
     resizeable,
     resizeEdges,
@@ -34,6 +56,9 @@ export class DashItem {
     y?: number;
     width?: number;
     height?: number;
+    colWidth?: number;
+    rowHeight?: number;
+    margin?: Margin;
     draggable?: boolean;
     resizeable?: boolean;
     resizeEdges?: string;
@@ -41,30 +66,45 @@ export class DashItem {
   }) {
     this.id = id;
 
+    if (typeof colWidth !== "undefined") {
+      this.colWidth = colWidth;
+    } else {
+      this.colWidth = 1;
+    }
+    if (typeof rowHeight !== "undefined") {
+      this.rowHeight = rowHeight;
+    } else {
+      this.rowHeight = 1;
+    }
+    if (typeof margin !== "undefined") {
+      this.margin = margin;
+    } else {
+      this.margin = { x: 1, y: 1 };
+    }
     if (typeof x !== "undefined") {
       this.x = x;
     } else {
       this.x = 0;
     }
-
+    this.left = getLeftFromX(this.x, this.colWidth, this.margin);
     if (typeof y !== "undefined") {
       this.y = y;
     } else {
       this.y = 0;
     }
-
+    this.top = getTopFromY(this.y, this.rowHeight, this.margin);
     if (typeof width !== "undefined") {
       this.width = width;
     } else {
       this.width = 0;
     }
-
+    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin);
     if (typeof height !== "undefined") {
       this.height = height;
     } else {
       this.height = 0;
     }
-
+    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin);
     if (typeof draggable !== "undefined") {
       this.draggable = draggable;
     } else {
@@ -100,9 +140,37 @@ export class DashItem {
   }
   setX(x: number) {
     this.x = x;
+    this.updatePositionAndSize();
   }
   setY(y: number) {
     this.y = y;
+    this.updatePositionAndSize();
+  }
+  setColWidth(c: number) {
+    this.colWidth = c;
+    this.updatePositionAndSize();
+  }
+  setRowHeight(r: number) {
+    this.rowHeight = r;
+    this.updatePositionAndSize();
+  }
+  setMargin(m: Margin) {
+    this.margin = m;
+    this.updatePositionAndSize();
+  }
+  setLeft(l: number) {
+    this.left = l;
+  }
+  setTop(t: number) {
+    this.top = t;
+  }
+  setXAndUpdateLeft(x: number) {
+    this.setX(x);
+    this.setLeft(getLeftFromX(x, this.colWidth, this.margin));
+  }
+  setYAndUpdateTop(y: number) {
+    this.setY(y);
+    this.setTop(getTopFromY(y, this.rowHeight, this.margin));
   }
   setWidth(w: number) {
     this.width = w;
@@ -110,8 +178,28 @@ export class DashItem {
   setHeight(h: number) {
     this.height = h;
   }
+  setWidthPx(w: number) {
+    this.widthPx = w;
+  }
+  setHeightPx(h: number) {
+    this.heightPx = h;
+  }
+  setWidthAndUpdatePx(w: number) {
+    this.setWidth(w);
+    this.setWidthPx(getWidthInPx(w, this.colWidth, this.margin));
+  }
+  setHeightAndUpdatePx(h: number) {
+    this.setHeight(h);
+    this.setHeightPx(getHeightInPx(h, this.rowHeight, this.margin));
+  }
   setDraggable(d: boolean) {
     this.draggable = d;
+  }
+  updatePositionAndSize() {
+    this.setLeft(getLeftFromX(this.x, this.colWidth, this.margin));
+    this.setTop(getTopFromY(this.y, this.rowHeight, this.margin));
+    this.setWidthPx(getWidthInPx(this.width, this.colWidth, this.margin));
+    this.setHeightPx(getHeightInPx(this.height, this.rowHeight, this.margin));
   }
   setResizeable(r: boolean) {
     this.resizeable = r;
@@ -127,8 +215,8 @@ export class DashItem {
       this.onDragStartEvent = event;
       event.dataTransfer.setData("text/plain", this.id.toString());
     }
-    this.onDragStartX = this.x;
-    this.onDragStartY = this.y;
+    this.onDragStartLeft = this.left;
+    this.onDragStartTop = this.top;
   }
   onDrag(event: DragEvent) {
     if (
@@ -136,43 +224,41 @@ export class DashItem {
       event.screenX > 0 &&
       event.screenY > 0
     ) {
-      let x =
-        +this.onDragStartX - this.onDragStartEvent.screenX + event.screenX;
-      let y =
-        +this.onDragStartY - this.onDragStartEvent.screenY + event.screenY;
-      this.setX(x);
-      this.setY(y);
+      let left =
+        +this.onDragStartLeft - this.onDragStartEvent.screenX + event.screenX;
+      let top =
+        +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
+      this.setLeft(left);
+      this.setTop(top);
     }
   }
   onDragEnd(event: DragEvent) {
     event.preventDefault();
-    let x = +this.onDragStartX - this.onDragStartEvent!.screenX + event.screenX;
-    let y = +this.onDragStartY - this.onDragStartEvent!.screenY + event.screenY;
-    this.setX(x);
-    this.setY(y);
+    this.onDrag(event);
     this.onDragStartEvent = undefined;
-    this.onDragStartX = 0;
-    this.onDragStartY = 0;
+    this.onDragStartLeft = 0;
+    this.onDragStartTop = 0;
     if (event.dataTransfer) {
       event.dataTransfer.clearData();
     }
   }
-
   onResizeStart(event: DragEvent, _: string) {
     if (event && event.dataTransfer) {
       this.onResizeStartEvent = event;
       event.dataTransfer.setData("text/plain", this.id.toString());
     }
-    this.onResizeStartX = this.x;
-    this.onResizeStartY = this.y;
+    this.onResizeStartLeft = this.left;
+    this.onResizeStartTop = this.top;
     this.onResizeStartingWidth = this.width;
     this.onResizeStartingHeight = this.height;
   }
   onResize(event: DragEvent, location: string) {
     if (location.includes("left")) {
-      let x =
-        +this.onResizeStartX - this.onResizeStartEvent!.screenX + event.screenX;
-      this.setX(x);
+      let left =
+        +this.onResizeStartLeft -
+        this.onResizeStartEvent!.screenX +
+        event.screenX;
+      this.setLeft(left);
       let width =
         +this.onResizeStartingWidth +
         this.onResizeStartEvent!.screenX -
@@ -187,9 +273,11 @@ export class DashItem {
       this.setWidth(width);
     }
     if (location.includes("top")) {
-      let y =
-        +this.onResizeStartY - this.onResizeStartEvent!.screenY + event.screenY;
-      this.setY(y);
+      let top =
+        +this.onResizeStartTop -
+        this.onResizeStartEvent!.screenY +
+        event.screenY;
+      this.setTop(top);
       let height =
         +this.onResizeStartingHeight +
         this.onResizeStartEvent!.screenY -
@@ -208,8 +296,8 @@ export class DashItem {
     event.preventDefault();
     this.onResize(event, location);
     this.onResizeStartEvent = undefined;
-    this.onResizeStartX = 0;
-    this.onResizeStartY = 0;
+    this.onResizeStartLeft = 0;
+    this.onResizeStartTop = 0;
     this.onResizeStartingHeight = 0;
     this.onResizeStartingWidth = 0;
   }

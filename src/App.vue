@@ -1,11 +1,18 @@
 <template>
   <div id="app">
-    <dash-item :id="'test'" :x.sync="x" :y.sync="y">
-      <div class="content">Hello</div>
-    </dash-item>
-    x:<input v-model.number="x" type="number" /> y:
-    <input v-model.number="y" type="number" />
-    <dashboard :id="'dashTest'"></dashboard>
+    <dashboard
+      :id="'dashTest'"
+      :layouts="layouts"
+      :currentLayout.sync="currentLayout"
+    >
+      <Dash-Item
+        v-for="item in currentLayout.items"
+        v-bind="item"
+        :key="item.id"
+      >
+        <div class="content">{{ item.id }}</div>
+      </Dash-Item>
+    </dashboard>
   </div>
 </template>
 
@@ -13,7 +20,6 @@
 import Vue from "vue";
 import DashItem from "./components/DashItem.vue";
 import Dashboard from "./components/Dashboard.vue";
-
 export default Vue.extend({
   name: "app",
   components: {
@@ -22,8 +28,99 @@ export default Vue.extend({
   },
   data() {
     return {
-      x: 100,
-      y: 100
+      layouts: [
+        {
+          breakpoint: "xl",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        },
+        {
+          breakpoint: "lg",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        },
+        {
+          breakpoint: "md",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        },
+        {
+          breakpoint: "sm",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        },
+        {
+          breakpoint: "xs",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        },
+        {
+          breakpoint: "xxs",
+          items: [
+            {
+              id: "1",
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1
+            },
+            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+          ]
+        }
+      ],
+      currentLayout: {
+        breakpoint: "xl",
+        items: [
+          {
+            id: "1",
+            x: 0,
+            y: 0,
+            width: 1,
+            height: 1
+          },
+          { id: "2", x: 1, y: 1, width: 1, height: 1 }
+        ]
+      }
     };
   }
 });

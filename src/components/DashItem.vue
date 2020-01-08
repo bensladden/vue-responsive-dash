@@ -6,8 +6,8 @@
     class="item"
     :class="classObj"
     :style="{
-      width: internalWidth + 'px',
-      height: internalHeight + 'px',
+      width: widthPx + 'px',
+      height: heightPx + 'px',
       left: left + 'px',
       top: top + 'px'
     }"
@@ -201,16 +201,16 @@ const watchProp = (key, deep) => ({
         this.item.setId(newValue);
         break;
       case "x":
-        this.item.setX(newValue);
+        this.item.setXAndUpdateLeft(newValue);
         break;
       case "y":
-        this.item.setY(newValue);
+        this.item.setYAndUpdateTop(newValue);
         break;
       case "width":
-        this.item.setWidth(newValue);
+        this.item.setWidthAndUpdatePx(newValue);
         break;
       case "height":
-        this.item.setHeight(newValue);
+        this.item.setHeightAndUpdatePx(newValue);
         break;
       case "draggable":
         this.item.setDraggable(newValue);
@@ -257,6 +257,12 @@ export default {
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
+  inject: ["$dashboard"],
+  provide() {
+    return {
+      $item: () => this.item
+    };
+  },
   data() {
     return {
       item: null,
@@ -273,17 +279,20 @@ export default {
         dragging: this.resizingOrDragging
       };
     },
+    dashboard() {
+      return this.$dashboard();
+    },
     left() {
-      return this.item.x;
+      return this.item.left;
     },
     top() {
-      return this.item.y;
+      return this.item.top;
     },
-    internalWidth() {
-      return this.item.width;
+    widthPx() {
+      return this.item.widthPx;
     },
-    internalHeight() {
-      return this.item.height;
+    heightPx() {
+      return this.item.heightPx;
     },
     resizeTop() {
       return this.resizeEdges.includes("top");
@@ -357,32 +366,17 @@ export default {
       EMIT_PROPS.forEach(prop => {
         this.$watch("item." + prop, watchEmitProp(prop, true));
       });
-    },
-    addClass(el, cls) {
-      if (arguments.length < 2) {
-        el.classList.add(cls);
-      } else {
-        for (let i = 1, len = arguments.length; i < len; i++) {
-          el.classList.add(arguments[i]);
-        }
-      }
-    },
-    removeClass(el, cls) {
-      if (arguments.length < 2) {
-        el.classList.remove(cls);
-      } else {
-        for (let i = 1, len = arguments.length; i < len; i++) {
-          el.classList.remove(arguments[i]);
-        }
-      }
     }
   },
   mounted() {
     this.item = new DashItem(this.$props);
+    this.dashboard.addDashItem(this.item);
     this.createPropWatchers();
     this.createDashItemWatchers();
   },
-  beforeDestroy() {}
+  beforeDestroy() {
+    this.dashboard.removeDashItem(this.item);
+  }
 };
 </script>
 

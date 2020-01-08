@@ -46,6 +46,6 @@
 		"vuepress": "^1.2.0"
 	},
 	"dependencies": {
-		"vue-element-resize-detector": "^0.3.0"
+		"vue-element-resize-detector": "^1.0.1"
 	}
 }

@@ -16,6 +16,7 @@ export class Dashboard {
   protected currentBreakpoint: string;
   protected layouts: Layout[];
   protected margin: Margin;
+  protected autoHeight: boolean;
   protected width: number;
   protected height: number;
   protected colWidth: number;
@@ -36,6 +37,7 @@ export class Dashboard {
     breakpoints,
     layouts,
     margin,
+    autoHeight,
     width,
     height,
     rowHeight
@@ -44,6 +46,7 @@ export class Dashboard {
     breakpoints?: Breakpoint[];
     layouts?: Layout[];
     margin?: Margin;
+    autoHeight?: boolean;
     width?: number;
     height?: number;
     rowHeight?: number;
@@ -57,6 +60,12 @@ export class Dashboard {
       this.margin = { x: 10, y: 10 };
     }
 
+    if (typeof autoHeight !== "undefined") {
+      this.autoHeight = autoHeight;
+    } else {
+      this.autoHeight = true;
+    }
+
     if (typeof width !== "undefined") {
       this.width = width;
     } else {
@@ -68,11 +77,10 @@ export class Dashboard {
     } else {
       this.height = 400;
     }
-
     if (typeof rowHeight !== "undefined") {
       this.rowHeight = rowHeight;
     } else {
-      this.rowHeight = 400;
+      this.rowHeight = 200;
     }
 
     //Setup Breakpoints
@@ -106,6 +114,10 @@ export class Dashboard {
     //Dummy Set to keep ts happy
     this.colWidth = 10;
     this.calculateColWidth();
+    //Update Height
+    if (this.autoHeight) {
+      this.calculateHeight();
+    }
   }
   setId(id: string | number) {
     this.id = id;
@@ -208,6 +220,10 @@ export class Dashboard {
   updateResponsiveVariables() {
     this.updateCurrentBreakpoint();
     this.calculateColWidth();
+    //Update Height
+    if (this.autoHeight) {
+      this.calculateHeight();
+    }
     //Update dash items
     this.updateDashItems();
   }
@@ -215,6 +231,18 @@ export class Dashboard {
     const numberOfCols = this.getnumberOfColsFromCurrentBreakpoint();
     this.colWidth =
       (this.width - (this.margin.x + numberOfCols + 1)) / numberOfCols;
+  }
+  calculateHeight() {
+    let layout = this.getLayoutFromBreakpoint(this.currentBreakpoint);
+    let maxY = 0;
+    let bottomY = 0;
+    for (let item of layout!.items) {
+      bottomY = item.y + item.height;
+      if (bottomY > maxY) {
+        maxY = bottomY;
+      }
+    }
+    this.setHeight(maxY * (this.rowHeight + this.margin.y) + this.margin.y);
   }
   getRowHeight() {
     return this.rowHeight;

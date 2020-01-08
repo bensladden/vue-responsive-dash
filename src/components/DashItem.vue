@@ -242,27 +242,6 @@ const watchEmitProp = (key, deep) => ({
   },
   deep
 });
-//Sync Dashboard variables
-// const DASHBOARD_WATCH_VARS = ["colWidth", "rowHeight", "margin"];
-
-// const watchDashboardVars = (key, deep) => ({
-//   handler(newValue) {
-//     console.log("dashVarChanges", key, newValue);
-//     switch (key) {
-//       case "colWidth":
-//         this.item.setColWidth(newValue);
-//         break;
-//       case "rowHeight":
-//         this.item.setRowHeight(newValue);
-//         break;
-//       case "margin":
-//         this.item.setMargin(newValue);
-//         break;
-//     }
-//     this.item;
-//   },
-//   deep
-// });
 
 export default {
   name: "item",
@@ -302,15 +281,6 @@ export default {
     },
     dashboard() {
       return this.$dashboard();
-    },
-    colWidth() {
-      return this.dashboard.getColWidth();
-    },
-    rowHeight() {
-      return this.dashboard.getRowHeight();
-    },
-    margin() {
-      return this.dashboard.margin;
     },
     left() {
       return this.item.left;
@@ -400,13 +370,13 @@ export default {
   },
   mounted() {
     this.item = new DashItem(this.$props);
+    this.dashboard.addDashItem(this.item);
     this.createPropWatchers();
     this.createDashItemWatchers();
-    // DASHBOARD_WATCH_VARS.forEach(prop => {
-    //   this.$watch("dashboard." + prop, watchDashboardVars(prop, true));
-    // });
   },
-  beforeDestroy() {}
+  beforeDestroy() {
+    this.dashboard.removeDashItem(this.item);
+  }
 };
 </script>
 

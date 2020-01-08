@@ -38,18 +38,7 @@ export default {
   },
   computed: {
     placeholder() {
-      let p = this.d.placeholder;
-      // let modifiedPos = {
-      //   x: this.d.getLeftFromX(p.x),
-      //   y: this.d.getTopFromY(p.y),
-      //   width: this.d.getWidthInPx(p.width),
-      //   height: this.d.getHeightInPx(p.height)
-      // };
-      // return {
-      //   ...p,
-      //   ...modifiedPos
-      // };
-      return p;
+      return this.d.placeholder;
     },
     breakpoints() {
       return this.d.breakpoints;
@@ -58,7 +47,7 @@ export default {
       return this.d.currentBreakpoint;
     },
     colWidth() {
-      return this.d.getColWidth();
+      return this.d.colWidth;
     }
   },
   methods: {
@@ -66,7 +55,7 @@ export default {
       this.d.setWidth(e.detail.width);
     }
   },
-  mounted() {
+  created() {
     this.d = new Dashboard(this.$props);
   }
 };

@@ -140,15 +140,23 @@ export class DashItem {
   }
   setX(x: number) {
     this.x = x;
+    this.updatePositionAndSize();
   }
   setY(y: number) {
     this.y = y;
+    this.updatePositionAndSize();
   }
   setColWidth(c: number) {
     this.colWidth = c;
+    this.updatePositionAndSize();
   }
   setRowHeight(r: number) {
     this.rowHeight = r;
+    this.updatePositionAndSize();
+  }
+  setMargin(m: Margin) {
+    this.margin = m;
+    this.updatePositionAndSize();
   }
   setLeft(l: number) {
     this.left = l;
@@ -186,6 +194,12 @@ export class DashItem {
   }
   setDraggable(d: boolean) {
     this.draggable = d;
+  }
+  updatePositionAndSize() {
+    this.setLeft(getLeftFromX(this.x, this.colWidth, this.margin));
+    this.setTop(getTopFromY(this.y, this.rowHeight, this.margin));
+    this.setWidthPx(getWidthInPx(this.width, this.colWidth, this.margin));
+    this.setHeightPx(getHeightInPx(this.height, this.rowHeight, this.margin));
   }
   setResizeable(r: boolean) {
     this.resizeable = r;

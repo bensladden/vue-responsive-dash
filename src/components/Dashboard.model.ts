@@ -175,6 +175,36 @@ export class Dashboard {
     }
     return null;
   }
+  getItemById(id: number): Item | null {
+    let currentLayout = this.getLayoutFromBreakpoint(this.currentBreakpoint);
+    if (currentLayout) {
+      let index = currentLayout.items.findIndex(item => {
+        return item.id === id;
+      });
+      if (index >= 0) {
+        return currentLayout.items[index];
+      }
+    }
+    return null;
+  }
+  collides(item1: Item, item2: Item) {
+    if (item1.id === item2.id) {
+      return false;
+    }
+    if (item1.x + item1.width <= item2.x) {
+      return false;
+    }
+    if (item1.x >= item2.x + item2.width) {
+      return false;
+    }
+    if (item1.y + item1.height <= item2.y) {
+      return false;
+    }
+    if (item1.y >= item2.y + item2.height) {
+      return false;
+    }
+    return true;
+  }
   getnumberOfColsFromCurrentBreakpoint() {
     let index = this.breakpoints.findIndex(el => {
       return this.currentBreakpoint === el.name;

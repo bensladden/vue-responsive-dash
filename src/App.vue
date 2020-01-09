@@ -1,17 +1,15 @@
 <template>
   <div id="app">
-    <dashboard
-      :id="'dashTest'"
-      :layouts="layouts"
-      :currentLayout.sync="currentLayout"
-    >
-      <Dash-Item
-        v-for="item in currentLayout.items"
-        v-bind="item"
-        :key="item.id"
+    <dashboard :id="'dashTest'" :layouts="layouts">
+      <layout
+        v-for="layout in layouts"
+        v-bind="layout"
+        :key="layout.breakpoint"
       >
-        <div class="content">{{ item.id }}</div>
-      </Dash-Item>
+        <Dash-Item v-for="item in layout.items" v-bind="item" :key="item.id">
+          <div class="content">{{ item.id }}</div>
+        </Dash-Item>
+      </layout>
     </dashboard>
   </div>
 </template>
@@ -19,11 +17,13 @@
 <script lang="ts">
 import Vue from "vue";
 import DashItem from "./components/DashItem.vue";
+import Layout from "./components/Layout.vue";
 import Dashboard from "./components/Dashboard.vue";
 export default Vue.extend({
   name: "app",
   components: {
     DashItem,
+    Layout,
     Dashboard
   },
   data() {
@@ -31,6 +31,7 @@ export default Vue.extend({
       layouts: [
         {
           breakpoint: "xl",
+          numberOfCols: 12,
           items: [
             {
               id: "1",
@@ -44,6 +45,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "lg",
+          numberOfCols: 10,
           items: [
             {
               id: "1",
@@ -57,6 +59,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "md",
+          numberOfCols: 8,
           items: [
             {
               id: "1",
@@ -70,6 +73,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "sm",
+          numberOfCols: 4,
           items: [
             {
               id: "1",
@@ -83,6 +87,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "xs",
+          numberOfCols: 2,
           items: [
             {
               id: "1",
@@ -96,6 +101,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "xxs",
+          numberOfCols: 1,
           items: [
             {
               id: "1",
@@ -104,23 +110,10 @@ export default Vue.extend({
               width: 1,
               height: 1
             },
-            { id: "2", x: 1, y: 1, width: 1, height: 1 }
+            { id: "2", x: 0, y: 1, width: 1, height: 1 }
           ]
         }
-      ],
-      currentLayout: {
-        breakpoint: "xl",
-        items: [
-          {
-            id: "1",
-            x: 0,
-            y: 0,
-            width: 1,
-            height: 1
-          },
-          { id: "2", x: 1, y: 1, width: 1, height: 1 }
-        ]
-      }
+      ]
     };
   }
 });

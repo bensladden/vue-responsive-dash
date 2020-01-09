@@ -248,16 +248,16 @@ export default {
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
-    x: { type: Number, default: 100 },
-    y: { type: Number, default: 100 },
-    width: { type: Number, default: 100 },
-    height: { type: Number, default: 100 },
+    x: { type: Number, default: 1 },
+    y: { type: Number, default: 1 },
+    width: { type: Number, default: 1 },
+    height: { type: Number, default: 1 },
     draggable: { type: Boolean, default: true },
     resizeable: { type: Boolean, default: true },
     resizeEdges: { type: String, default: "top bottom left right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
-  inject: ["$dashboard"],
+  inject: ["$layout"],
   provide() {
     return {
       $item: () => this.item
@@ -279,8 +279,8 @@ export default {
         dragging: this.resizingOrDragging
       };
     },
-    dashboard() {
-      return this.$dashboard();
+    layout() {
+      return this.$layout();
     },
     left() {
       return this.item.left;
@@ -370,12 +370,14 @@ export default {
   },
   mounted() {
     this.item = new DashItem(this.$props);
-    this.dashboard.addDashItem(this.item);
+    this.layout.addDashItem(this.item);
     this.createPropWatchers();
     this.createDashItemWatchers();
   },
   beforeDestroy() {
-    this.dashboard.removeDashItem(this.item);
+    if (this.layout) {
+      this.layout.removeDashItem(this.item);
+    }
   }
 };
 </script>

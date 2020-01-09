@@ -1,21 +1,7 @@
 <template>
   <div>
-    <div
-      :id="id"
-      :ref="id"
-      v-if="d"
-      v-resize
-      @resize="onResize"
-      :style="{ height: height }"
-    >
+    <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
       <slot></slot>
-      <DashItem v-bind="placeholder" v-if="dragging">
-        <div class="placeholder"></div>
-      </DashItem>
-    </div>
-    <div>
-      Current Breakpoint: {{ currentBreakpoint }} Current ColWidth:
-      {{ colWidth }}
     </div>
   </div>
 </template>
@@ -23,17 +9,14 @@
 <script>
 import { Dashboard } from "./Dashboard.model";
 import { Layout } from "../inferfaces";
-import DashItem from "./DashItem";
+
 export default {
   name: "Dashboard",
   props: {
     id: { type: [Number, String], required: true },
-    layouts: Array,
-    currentLayout: Object
+    layouts: Array
   },
-  components: {
-    DashItem
-  },
+  components: {},
   data() {
     return {
       d: null,
@@ -45,44 +28,14 @@ export default {
       $dashboard: () => this.d
     };
   },
-  computed: {
-    placeholder() {
-      return this.d.placeholder;
-    },
-    breakpoints() {
-      return this.d.breakpoints;
-    },
-    currentBreakpoint() {
-      if (this.d) {
-        return this.d.currentBreakpoint;
-      }
-      return "";
-    },
-    colWidth() {
-      return this.d.colWidth;
-    },
-    height() {
-      if (this.d) {
-        return this.d.height + "px";
-      }
-      return "0px";
-    }
-  },
+  computed: {},
   methods: {
     onResize(e) {
       this.d.setWidth(e.detail.width);
     }
   },
-  watch: {
-    currentBreakpoint(newValue) {
-      if (newValue && newValue !== "") {
-        let currentLayout = this.d.getLayoutFromBreakpoint(newValue);
-        this.$emit("update:currentLayout", currentLayout);
-      }
-    }
-  },
   created() {
-    this.d = new Dashboard(this.$props);
+    this.d = new Dashboard(this.id);
   }
 };
 </script>

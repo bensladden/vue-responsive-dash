@@ -1,15 +1,6 @@
-import { Item, Layout, Margin, Breakpoint } from "../inferfaces";
-import {
-  getLeftFromX,
-  getXFromLeft,
-  getTopFromY,
-  getYFromTop,
-  getWidthInPx,
-  getWidthFromPx,
-  getHeightInPx,
-  getHeightFromPx
-} from "./commonFunctions";
-import { DashItem } from "./DashItem.model";
+import { Margin, Breakpoint } from "../inferfaces";
+import { Layout } from "./Layout.model";
+
 export class Dashboard {
   protected id: string | number;
   protected breakpoints: Breakpoint[];
@@ -18,41 +9,22 @@ export class Dashboard {
   protected margin: Margin;
   protected autoHeight: boolean;
   protected width: number;
-  protected height: number;
-  protected colWidth: number;
-  protected rowHeight: number;
-  protected dashItems: DashItem[];
-  protected placeholder = {
-    id: -1,
-    draggable: false,
-    resizeable: false,
-    x: 0,
-    y: 0,
-    width: 1,
-    height: 1
-  } as Item;
 
   constructor({
     id,
     breakpoints,
-    layouts,
     margin,
     autoHeight,
-    width,
-    height,
-    rowHeight
+    width
   }: {
     id: string | number;
     breakpoints?: Breakpoint[];
-    layouts?: Layout[];
     margin?: Margin;
     autoHeight?: boolean;
     width?: number;
-    height?: number;
-    rowHeight?: number;
   }) {
     this.id = id;
-    this.dashItems = [];
+    this.layouts = [];
     //Setup Margins
     if (typeof margin !== "undefined") {
       this.margin = margin;
@@ -72,17 +44,6 @@ export class Dashboard {
       this.width = 400;
     }
 
-    if (typeof height !== "undefined") {
-      this.height = height;
-    } else {
-      this.height = 400;
-    }
-    if (typeof rowHeight !== "undefined") {
-      this.rowHeight = rowHeight;
-    } else {
-      this.rowHeight = 200;
-    }
-
     //Setup Breakpoints
     if (typeof breakpoints !== "undefined") {
       this.breakpoints = breakpoints;
@@ -98,53 +59,35 @@ export class Dashboard {
     }
     //Sort Breakpoints to make finding the current breakpoint easy
     this.sortBreakpoints();
-    //Dummy Set to keep ts happy
-    this.currentBreakpoint = "";
     //Update current breakpoint using true method
-    this.updateCurrentBreakpoint();
-    //Import or create new layouts baded on breakpoints
-    if (typeof layouts !== "undefined") {
-      this.layouts = layouts;
-    } else {
-      this.layouts = [];
-      for (let b of this.breakpoints) {
-        this.layouts.push({ breakpoint: b.name, items: [] });
-      }
-    }
-    //Dummy Set to keep ts happy
-    this.colWidth = 10;
-    this.calculateColWidth();
-    //Update Height
-    if (this.autoHeight) {
-      this.calculateHeight();
-    }
+    this.currentBreakpoint = this.updateCurrentBreakpoint();
   }
   setId(id: string | number) {
     this.id = id;
   }
-  addDashItem(d: DashItem) {
-    this.dashItems.push(d);
-    this.updateDashItems();
-  }
-  removeDashItem(d: DashItem) {
-    let index = this.dashItems.findIndex(item => {
-      return item.getId() === d.getId();
-    });
-    if (index >= 0) {
-      this.dashItems.splice(index, 1);
-    }
-  }
-  updateDashItems() {
-    this.dashItems.forEach(item => {
-      item.setColWidth(this.colWidth);
-      item.setRowHeight(this.rowHeight);
-      item.setMargin(this.margin);
-    });
-  }
+  // addDashItem(d: DashItem) {
+  //   this.dashItems.push(d);
+  //   this.updateDashItems();
+  // }
+  // removeDashItem(d: DashItem) {
+  //   let index = this.dashItems.findIndex(item => {
+  //     return item.getId() === d.getId();
+  //   });
+  //   if (index >= 0) {
+  //     this.dashItems.splice(index, 1);
+  //   }
+  // }
+  // updateDashItems() {
+  //   this.dashItems.forEach(item => {
+  //     item.setColWidth(this.colWidth);
+  //     item.setRowHeight(this.rowHeight);
+  //     item.setMargin(this.margin);
+  //   });
+  // }
   setBreakpoints(breakpoints: Breakpoint[]) {
     this.breakpoints = breakpoints;
     this.sortBreakpoints();
-    this.updateResponsiveVariables();
+    //this.updateResponsiveVariables();
   }
   updateCurrentBreakpoint() {
     //TODO check if we are right on the edge of a breakpoint (i.e. dont allow a change if a scroll bar is added)
@@ -165,43 +108,16 @@ export class Dashboard {
         this.currentBreakpoint
       );
     }
-  }
-  getLayoutFromBreakpoint(breakpoint: string): Layout | null {
-    let index = this.layouts.findIndex(el => {
-      return breakpoint === el.breakpoint;
-    });
-    if (index >= 0) {
-      return this.layouts[index];
-    }
-    return null;
-  }
-  getnumberOfColsFromCurrentBreakpoint() {
-    let index = this.breakpoints.findIndex(el => {
-      return this.currentBreakpoint === el.name;
-    });
-    if (index >= 0) {
-      return this.breakpoints[index].numberOfCols;
-    }
-    return 12;
-  }
-  setLayout(layout: Layout) {
-    let index = this.layouts.findIndex(el => {
-      el.breakpoint === layout.breakpoint;
-    });
-    if (index >= 0) {
-      this.layouts[index].items = layout.items;
-    }
+    return this.currentBreakpoint;
   }
   setMargins(m: Margin) {
     this.margin = m;
-    this.updateResponsiveVariables();
+    //this.updateResponsiveVariables();
   }
   setWidth(w: number) {
     this.width = w;
-    this.updateResponsiveVariables();
-  }
-  setHeight(h: number) {
-    this.height = h;
+    this.updateCurrentBreakpoint();
+    this.updateLayouts();
   }
   sortBreakpoints() {
     this.breakpoints.sort((a, b) => {
@@ -217,67 +133,20 @@ export class Dashboard {
       return -1;
     });
   }
-  updateResponsiveVariables() {
-    this.updateCurrentBreakpoint();
-    this.calculateColWidth();
-    //Update Height
-    if (this.autoHeight) {
-      this.calculateHeight();
-    }
-    //Update dash items
-    this.updateDashItems();
+  addLayoutInstance(l: Layout) {
+    this.layouts.push(l);
   }
-  calculateColWidth() {
-    const numberOfCols = this.getnumberOfColsFromCurrentBreakpoint();
-    this.colWidth =
-      (this.width - (this.margin.x + numberOfCols + 1)) / numberOfCols;
-  }
-  calculateHeight() {
-    let layout = this.getLayoutFromBreakpoint(this.currentBreakpoint);
-    let maxY = 0;
-    let bottomY = 0;
-    for (let item of layout!.items) {
-      bottomY = item.y + item.height;
-      if (bottomY > maxY) {
-        maxY = bottomY;
-      }
-    }
-    this.setHeight(maxY * (this.rowHeight + this.margin.y) + this.margin.y);
-  }
-  getRowHeight() {
-    return this.rowHeight;
-  }
-  getLeftFromX(x: number) {
-    return getLeftFromX(x, this.colWidth, this.margin);
-  }
-  getXFromLeft(l: number) {
-    return getXFromLeft(l, this.colWidth, this.margin);
-  }
-  getTopFromY(y: number) {
-    return getTopFromY(y, this.rowHeight, this.margin);
-  }
-  getYFromTop(t: number) {
-    return getYFromTop(t, this.rowHeight, this.margin);
-  }
-  getWidthInPx(w: number) {
-    return getWidthInPx(w, this.colWidth, this.margin);
-  }
-  getWidthFromPx(widthPx: number) {}
-  getHeightInPx(h: number) {
-    return getHeightInPx(h, this.rowHeight, this.margin);
-  }
-  getHeightFromPx(heightPx: number) {}
-  addItemtoLayouts(d: Item) {
-    let ids = this.layouts[0].items.map(i => {
-      return i.id;
+  updateLayouts() {
+    this.layouts.forEach(layout => {
+      layout.setWidth(this.width);
     });
-    if (!ids.includes(d.id) && d.id !== this.placeholder.id) {
-      for (let l of this.layouts) {
-        l.items.push(d);
-      }
-      console.log("Item Added => Commence verifying layouts");
-    } else {
-      throw Error("Must be Unique ID");
+  }
+  removeLayoutInstance(l: Layout) {
+    let index = this.layouts.findIndex(layout => {
+      return l.getBreakpoint() === layout.getBreakpoint();
+    });
+    if (index >= 0) {
+      this.layouts.splice(index, 1);
     }
   }
 }

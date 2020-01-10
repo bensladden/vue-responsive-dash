@@ -1,3 +1,4 @@
+import { SimpleEventDispatcher } from "ste-simple-events";
 import {
   getLeftFromX,
   getXFromLeft,
@@ -8,10 +9,10 @@ import {
   getHeightInPx,
   getHeightFromPx
 } from "./commonFunctions";
-import { Margin } from "../inferfaces";
+import { Margin, Item } from "../inferfaces";
 
 export class DashItem {
-  protected id: number | string;
+  protected readonly _id: number | string;
   protected x: number;
   protected y: number;
   protected colWidth: number;
@@ -31,6 +32,9 @@ export class DashItem {
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
   private onDragStartTop = 0 as number;
+  private _onDragStartEvent = new SimpleEventDispatcher<Item>();
+  private _onDragEvent = new SimpleEventDispatcher<Item>();
+  private _onDragEndEvent = new SimpleEventDispatcher<Item>();
   private onResizeStartEvent = undefined as DragEvent | undefined;
   private onResizeStartLeft = 0 as number;
   private onResizeStartTop = 0 as number;
@@ -64,7 +68,7 @@ export class DashItem {
     resizeEdges?: string;
     resizeHandleSize?: number;
   }) {
-    this.id = id;
+    this._id = id;
 
     if (typeof colWidth !== "undefined") {
       this.colWidth = colWidth;
@@ -136,7 +140,10 @@ export class DashItem {
     }
   }
   getId() {
-    return this.id;
+    return this._id;
+  }
+  get id() {
+    return this._id;
   }
   setX(x: number) {
     this.x = x;
@@ -210,15 +217,28 @@ export class DashItem {
   setResizeHandleSize(rhs: number) {
     this.resizeHandleSize = rhs;
   }
-  onDragStart(event: DragEvent) {
+  //Drag Event Management
+  _onDragStart(event: DragEvent) {
     if (event && event.dataTransfer) {
       this.onDragStartEvent = event;
       event.dataTransfer.setData("text/plain", this.id.toString());
     }
     this.onDragStartLeft = this.left;
     this.onDragStartTop = this.top;
+    let item = {
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      top: this.top,
+      left: this.left,
+      width: this.width,
+      widthPx: this.widthPx,
+      height: this.height,
+      heightPx: this.heightPx
+    } as Item;
+    this._onDragStartEvent.dispatch(item);
   }
-  onDrag(event: DragEvent) {
+  _onDrag(event: DragEvent) {
     if (
       typeof this.onDragStartEvent !== "undefined" &&
       event.screenX > 0 &&
@@ -230,18 +250,52 @@ export class DashItem {
         +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
       this.setLeft(left);
       this.setTop(top);
+      let item = {
+        id: this.id,
+        x: this.x,
+        y: this.y,
+        top: this.top,
+        left: this.left,
+        width: this.width,
+        widthPx: this.widthPx,
+        height: this.height,
+        heightPx: this.heightPx
+      } as Item;
+      this._onDragEvent.dispatch(item);
     }
   }
-  onDragEnd(event: DragEvent) {
+  _onDragEnd(event: DragEvent) {
     event.preventDefault();
-    this.onDrag(event);
+    this._onDrag(event);
     this.onDragStartEvent = undefined;
     this.onDragStartLeft = 0;
     this.onDragStartTop = 0;
     if (event.dataTransfer) {
       event.dataTransfer.clearData();
     }
+    let item = {
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      top: this.top,
+      left: this.left,
+      width: this.width,
+      widthPx: this.widthPx,
+      height: this.height,
+      heightPx: this.heightPx
+    } as Item;
+    this._onDragEndEvent.dispatch(item);
   }
+  get onDragStart() {
+    return this._onDragStartEvent.asEvent();
+  }
+  get onDrag() {
+    return this._onDragEvent.asEvent();
+  }
+  get onDragEnd() {
+    return this._onDragEndEvent.asEvent();
+  }
+  //ResizeEventManagement
   onResizeStart(event: DragEvent, _: string) {
     if (event && event.dataTransfer) {
       this.onResizeStartEvent = event;

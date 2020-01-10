@@ -46,6 +46,7 @@
 		"vuepress": "^1.2.0"
 	},
 	"dependencies": {
+		"ste-simple-events": "^1.6.4",
 		"vue-element-resize-detector": "^1.0.1"
 	}
 }

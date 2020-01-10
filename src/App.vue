@@ -6,7 +6,11 @@
         v-bind="layout"
         :key="layout.breakpoint"
       >
-        <Dash-Item v-for="item in layout.items" v-bind="item" :key="item.id">
+        <Dash-Item
+          v-for="item in layout.items"
+          v-bind.sync="item"
+          :key="item.id"
+        >
           <div class="content">{{ item.id }}</div>
         </Dash-Item>
       </layout>

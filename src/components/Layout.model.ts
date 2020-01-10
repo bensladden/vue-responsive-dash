@@ -1,4 +1,14 @@
-import { Item, Margin } from "@/inferfaces";
+import { Item, Margin, Subscription } from "@/inferfaces";
+import {
+  getLeftFromX,
+  getXFromLeft,
+  getTopFromY,
+  getYFromTop,
+  getWidthInPx,
+  getWidthFromPx,
+  getHeightInPx,
+  getHeightFromPx
+} from "./commonFunctions";
 import { DashItem } from "./DashItem.model";
 
 export class Layout {
@@ -11,7 +21,21 @@ export class Layout {
   protected autoHeight: boolean;
   protected rowHeight: number;
   protected colWidth: number;
-  protected dashItems: DashItem[];
+  protected itemBeingDragged: boolean = false;
+  protected placeholder: Item = {
+    id: "placeholder",
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  };
+  private dashItems: DashItem[] = [];
+  private dragStartListeners: Subscription[] = [];
+  private dragListeners: Subscription[] = [];
+  private dragEndListeners: Subscription[] = [];
+  private resizeStartListeners: Subscription[] = [];
+  private resizeListeners: Subscription[] = [];
+  private resizeEndListeners: Subscription[] = [];
 
   constructor({
     breakpoint,
@@ -35,7 +59,6 @@ export class Layout {
     this.breakpoint = breakpoint;
     this.items = items;
     this.numberOfCols = numberOfCols;
-    this.dashItems = [];
 
     if (typeof margin !== "undefined") {
       this.margin = margin;
@@ -186,13 +209,82 @@ export class Layout {
   addDashItem(d: DashItem) {
     this.dashItems.push(d);
     this.updateDashItems();
+    //Drag Subscriptions
+    let unDragStart = d.onDragStart.subscribe(item => {
+      this.itemDragging(item);
+    });
+    this.dragStartListeners.push({
+      id: d.id,
+      unsubscribe: unDragStart
+    });
+    let unDrag = d.onDrag.subscribe(item => {
+      this.itemDragging(item);
+    });
+    this.dragListeners.push({
+      id: d.id,
+      unsubscribe: unDrag
+    });
+    let unDragEnd = d.onDragEnd.subscribe(item => {
+      this.itemDraggingComplete(item);
+    });
+    this.dragEndListeners.push({ id: d.id, unsubscribe: unDragEnd });
   }
   removeDashItem(d: DashItem) {
     let index = this.dashItems.findIndex(item => {
-      return item.getId() === d.getId();
+      return item.id === d.id;
     });
     if (index >= 0) {
       this.dashItems.splice(index, 1);
     }
+    //Remove Event Listerners
+    index = this.dragStartListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index > 0) {
+      this.dragStartListeners[index].unsubscribe();
+      this.dragStartListeners.splice(index, 1);
+    }
+    index = this.dragListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index > 0) {
+      this.dragListeners[index].unsubscribe();
+      this.dragListeners.splice(index, 1);
+    }
+    index = this.dragEndListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index > 0) {
+      this.dragEndListeners[index].unsubscribe();
+      this.dragEndListeners.splice(index, 1);
+    }
+  }
+  getDashItemById(id: string | number) {
+    let index = this.dashItems.findIndex(item => {
+      return item.id === id;
+    });
+    if (index >= 0) {
+      return this.dashItems[index];
+    }
+    return null;
+  }
+  itemDragging(item: Item) {
+    this.itemBeingDragged = true;
+    this.placeholder.x = getXFromLeft(item.left!, this.colWidth, this.margin);
+    this.placeholder.y = getYFromTop(item.top!, this.rowHeight, this.margin);
+    this.placeholder.width = item.width;
+    this.placeholder.height = item.height;
+  }
+  itemDraggingComplete(item: Item) {
+    this.itemBeingDragged = false;
+    let dashItem = this.getDashItemById(item.id);
+    if (dashItem) {
+      dashItem.setX(this.placeholder.x);
+      dashItem.setY(this.placeholder.y);
+    }
+    this.placeholder.x = 0;
+    this.placeholder.y = 0;
+    this.placeholder.width = 0;
+    this.placeholder.height = 0;
   }
 }

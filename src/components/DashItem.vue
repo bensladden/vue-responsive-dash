@@ -248,13 +248,13 @@ export default {
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
-    x: { type: Number, default: 1 },
-    y: { type: Number, default: 1 },
+    x: { type: Number, default: 0 },
+    y: { type: Number, default: 0 },
     width: { type: Number, default: 1 },
     height: { type: Number, default: 1 },
     draggable: { type: Boolean, default: true },
     resizeable: { type: Boolean, default: true },
-    resizeEdges: { type: String, default: "top bottom left right" },
+    resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
   inject: ["$layout"],
@@ -322,17 +322,16 @@ export default {
   methods: {
     async onDragStart(event) {
       this.dragging = true;
-      this.item.onDragStart(event);
+      this.item._onDragStart(event);
       this.$emit("dragStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onDrag(event) {
-      this.item.onDrag(event);
+      this.item._onDrag(event);
       this.$emit("drag", this.item);
     },
     async onDragEnd(event) {
-      event.preventDefault();
-      this.item.onDragEnd(event);
+      this.item._onDragEnd(event);
       this.$emit("dragEnd", this.item);
       event.target.style.opacity = 1;
       await this.$nextTick();

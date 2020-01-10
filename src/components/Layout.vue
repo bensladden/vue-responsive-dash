@@ -57,8 +57,7 @@ export default {
   },
   data() {
     return {
-      l: null,
-      dragging: false
+      l: null
     };
   },
   provide() {
@@ -76,6 +75,9 @@ export default {
         return this.dashboard.currentBreakpoint;
       }
       return "";
+    },
+    dragging() {
+      return this.l.itemBeingDragged;
     },
     placeholder() {
       return this.l.placeholder;

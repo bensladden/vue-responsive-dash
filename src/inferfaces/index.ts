@@ -1,16 +1,16 @@
 export interface Item {
-  id: number | String;
+  id: number | string;
   x: number;
   y: number;
+  top?: number;
+  left?: number;
   width: number;
+  widthPx?: number;
   height: number;
-  draggable: boolean;
-  resizeable: boolean;
-}
-
-export interface Layout {
-  items: Item[];
-  breakpoint: string;
+  heightPx?: number;
+  draggable?: boolean;
+  static?: boolean;
+  resizeable?: boolean;
 }
 
 export interface Breakpoint {
@@ -22,4 +22,9 @@ export interface Breakpoint {
 export interface Margin {
   x: number;
   y: number;
+}
+
+export interface Subscription {
+  id: number | string;
+  unsubscribe: () => void;
 }

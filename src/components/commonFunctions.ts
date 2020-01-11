@@ -19,7 +19,9 @@ export function getWidthFromPx(
   widthPx: number,
   colWidth: number,
   margin: Margin
-) {}
+) {
+  return Math.round((widthPx + margin.x) / (colWidth + margin.x));
+}
 export function getHeightInPx(h: number, rowHeight: number, margin: Margin) {
   return Math.round(rowHeight * h + Math.max(0, h - 1) * margin.y);
 }
@@ -27,4 +29,6 @@ export function getHeightFromPx(
   heightPx: number,
   rowHeight: number,
   margin: Margin
-) {}
+) {
+  return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
+}

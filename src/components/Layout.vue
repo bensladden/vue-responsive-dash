@@ -2,7 +2,7 @@
   <div v-show="currentBreakpoint === breakpoint">
     <div v-if="l" :style="{ height: height }">
       <slot></slot>
-      <DashItem v-bind="placeholder" v-if="dragging">
+      <DashItem v-bind="placeholder" v-if="dragging || resizing">
         <div class="placeholder"></div>
       </DashItem>
     </div>
@@ -78,6 +78,9 @@ export default {
     },
     dragging() {
       return this.l.itemBeingDragged;
+    },
+    resizing() {
+      return this.l.itemBeingResized;
     },
     placeholder() {
       return this.l.placeholder;

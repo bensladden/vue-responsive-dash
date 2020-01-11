@@ -12,22 +12,22 @@ import {
 import { Margin, Item } from "../inferfaces";
 
 export class DashItem {
-  protected readonly _id: number | string;
-  protected x: number;
-  protected y: number;
-  protected colWidth: number;
-  protected rowHeight: number;
-  protected margin: Margin;
-  protected left: number;
-  protected top: number;
-  protected width: number;
-  protected height: number;
-  protected widthPx: number;
-  protected heightPx: number;
-  protected draggable: boolean;
-  protected resizeable: boolean;
-  protected resizeEdges: string;
-  protected resizeHandleSize: number;
+  private readonly _id: number | string;
+  private _x: number;
+  private _y: number;
+  private _colWidth: number;
+  private _rowHeight: number;
+  private _margin: Margin;
+  private _left: number;
+  private _top: number;
+  private _width: number;
+  private _height: number;
+  private _widthPx: number;
+  private _heightPx: number;
+  private _draggable: boolean;
+  private _resizeable: boolean;
+  private _resizeEdges: string;
+  private _resizeHandleSize: number;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
@@ -40,6 +40,9 @@ export class DashItem {
   private onResizeStartTop = 0 as number;
   private onResizeStartingWidth = 0 as number;
   private onResizeStartingHeight = 0 as number;
+  private _onResizeStartEvent = new SimpleEventDispatcher<Item>();
+  private _onResizeEvent = new SimpleEventDispatcher<Item>();
+  private _onResizeEndEvent = new SimpleEventDispatcher<Item>();
 
   constructor({
     id,
@@ -71,151 +74,170 @@ export class DashItem {
     this._id = id;
 
     if (typeof colWidth !== "undefined") {
-      this.colWidth = colWidth;
+      this._colWidth = colWidth;
     } else {
-      this.colWidth = 1;
+      this._colWidth = 1;
     }
     if (typeof rowHeight !== "undefined") {
-      this.rowHeight = rowHeight;
+      this._rowHeight = rowHeight;
     } else {
-      this.rowHeight = 1;
+      this._rowHeight = 1;
     }
     if (typeof margin !== "undefined") {
-      this.margin = margin;
+      this._margin = margin;
     } else {
-      this.margin = { x: 1, y: 1 };
+      this._margin = { x: 1, y: 1 };
     }
     if (typeof x !== "undefined") {
-      this.x = x;
+      this._x = x;
     } else {
-      this.x = 0;
+      this._x = 0;
     }
-    this.left = getLeftFromX(this.x, this.colWidth, this.margin);
+    this._left = getLeftFromX(this._x, this._colWidth, this._margin);
     if (typeof y !== "undefined") {
-      this.y = y;
+      this._y = y;
     } else {
-      this.y = 0;
+      this._y = 0;
     }
-    this.top = getTopFromY(this.y, this.rowHeight, this.margin);
+    this._top = getTopFromY(this._y, this._rowHeight, this._margin);
     if (typeof width !== "undefined") {
-      this.width = width;
+      this._width = width;
     } else {
-      this.width = 0;
+      this._width = 0;
     }
-    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin);
+    this._widthPx = getWidthInPx(this._width, this._colWidth, this._margin);
     if (typeof height !== "undefined") {
-      this.height = height;
+      this._height = height;
     } else {
-      this.height = 0;
+      this._height = 0;
     }
-    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin);
+    this._heightPx = getHeightInPx(this._height, this._rowHeight, this._margin);
     if (typeof draggable !== "undefined") {
-      this.draggable = draggable;
+      this._draggable = draggable;
     } else {
-      this.draggable = true;
+      this._draggable = true;
     }
-
-    if (typeof draggable !== "undefined") {
-      this.draggable = draggable;
-    } else {
-      this.draggable = true;
-    }
-
     if (typeof resizeable !== "undefined") {
-      this.resizeable = resizeable;
+      this._resizeable = resizeable;
     } else {
-      this.resizeable = true;
+      this._resizeable = true;
     }
-
     if (typeof resizeEdges !== "undefined") {
-      this.resizeEdges = resizeEdges;
+      this._resizeEdges = resizeEdges;
     } else {
-      this.resizeEdges = "top bottom left right";
+      this._resizeEdges = "top bottom left right";
     }
-
     if (typeof resizeHandleSize !== "undefined") {
-      this.resizeHandleSize = resizeHandleSize;
+      this._resizeHandleSize = resizeHandleSize;
     } else {
-      this.resizeHandleSize = 8;
+      this._resizeHandleSize = 8;
     }
-  }
-  getId() {
-    return this._id;
   }
   get id() {
     return this._id;
   }
-  setX(x: number) {
-    this.x = x;
+  get x() {
+    return this._x;
+  }
+  set x(x: number) {
+    this._x = x;
     this.updatePositionAndSize();
   }
-  setY(y: number) {
-    this.y = y;
+  get y() {
+    return this._y;
+  }
+  set y(y: number) {
+    this._y = y;
     this.updatePositionAndSize();
   }
-  setColWidth(c: number) {
-    this.colWidth = c;
+  get colWidth() {
+    return this._colWidth;
+  }
+  set colWidth(c: number) {
+    this._colWidth = c;
     this.updatePositionAndSize();
   }
-  setRowHeight(r: number) {
-    this.rowHeight = r;
+  get rowHeight() {
+    return this._rowHeight;
+  }
+  set rowHeight(r: number) {
+    this._rowHeight = r;
     this.updatePositionAndSize();
   }
-  setMargin(m: Margin) {
-    this.margin = m;
+  get margin() {
+    return this._margin;
+  }
+  set margin(m: Margin) {
+    this._margin = m;
     this.updatePositionAndSize();
   }
-  setLeft(l: number) {
-    this.left = l;
+  get left() {
+    return this._left;
   }
-  setTop(t: number) {
-    this.top = t;
+  set left(l: number) {
+    this._left = l;
   }
-  setXAndUpdateLeft(x: number) {
-    this.setX(x);
-    this.setLeft(getLeftFromX(x, this.colWidth, this.margin));
+  get top() {
+    return this._top;
   }
-  setYAndUpdateTop(y: number) {
-    this.setY(y);
-    this.setTop(getTopFromY(y, this.rowHeight, this.margin));
+  set top(t: number) {
+    this._top = t;
   }
-  setWidth(w: number) {
-    this.width = w;
+  get width() {
+    return this._width;
   }
-  setHeight(h: number) {
-    this.height = h;
+  set width(w: number) {
+    this._width = w;
+    this.updatePositionAndSize();
   }
-  setWidthPx(w: number) {
-    this.widthPx = w;
+  get height() {
+    return this._height;
   }
-  setHeightPx(h: number) {
-    this.heightPx = h;
+  set height(h: number) {
+    this._height = h;
+    this.updatePositionAndSize();
   }
-  setWidthAndUpdatePx(w: number) {
-    this.setWidth(w);
-    this.setWidthPx(getWidthInPx(w, this.colWidth, this.margin));
+  get widthPx() {
+    return this._widthPx;
   }
-  setHeightAndUpdatePx(h: number) {
-    this.setHeight(h);
-    this.setHeightPx(getHeightInPx(h, this.rowHeight, this.margin));
+  set widthPx(w: number) {
+    this._widthPx = w;
   }
-  setDraggable(d: boolean) {
-    this.draggable = d;
+  get heightPx() {
+    return this._heightPx;
+  }
+  set heightPx(h: number) {
+    this._heightPx = h;
   }
   updatePositionAndSize() {
-    this.setLeft(getLeftFromX(this.x, this.colWidth, this.margin));
-    this.setTop(getTopFromY(this.y, this.rowHeight, this.margin));
-    this.setWidthPx(getWidthInPx(this.width, this.colWidth, this.margin));
-    this.setHeightPx(getHeightInPx(this.height, this.rowHeight, this.margin));
+    this.left = getLeftFromX(this.x, this.colWidth, this.margin);
+    this.top = getTopFromY(this.y, this.rowHeight, this.margin);
+    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin);
+    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin);
   }
-  setResizeable(r: boolean) {
-    this.resizeable = r;
+  get draggable() {
+    return this.draggable;
   }
-  setResizeEdges(e: string) {
-    this.resizeEdges = e;
+  set draggable(d: boolean) {
+    this._draggable = d;
   }
-  setResizeHandleSize(rhs: number) {
-    this.resizeHandleSize = rhs;
+  get resizeable() {
+    return this._resizeable;
+  }
+  set resizeable(r: boolean) {
+    this._resizeable = r;
+  }
+  get resizeEdges() {
+    return this._resizeEdges;
+  }
+  set resizeEdges(e: string) {
+    this._resizeEdges = e;
+  }
+  get resizeHandleSize() {
+    return this._resizeHandleSize;
+  }
+  set resizeHandleSize(rhs: number) {
+    this._resizeHandleSize = rhs;
   }
   //Drag Event Management
   _onDragStart(event: DragEvent) {
@@ -248,8 +270,8 @@ export class DashItem {
         +this.onDragStartLeft - this.onDragStartEvent.screenX + event.screenX;
       let top =
         +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
-      this.setLeft(left);
-      this.setTop(top);
+      this.left = left;
+      this.top = top;
       let item = {
         id: this.id,
         x: this.x,
@@ -296,63 +318,112 @@ export class DashItem {
     return this._onDragEndEvent.asEvent();
   }
   //ResizeEventManagement
-  onResizeStart(event: DragEvent, _: string) {
+  _onResizeStart(event: DragEvent, _: string) {
     if (event && event.dataTransfer) {
       this.onResizeStartEvent = event;
       event.dataTransfer.setData("text/plain", this.id.toString());
     }
     this.onResizeStartLeft = this.left;
     this.onResizeStartTop = this.top;
-    this.onResizeStartingWidth = this.width;
-    this.onResizeStartingHeight = this.height;
+    this.onResizeStartingWidth = this.widthPx;
+    this.onResizeStartingHeight = this.heightPx;
+    let item = {
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      top: this.top,
+      left: this.left,
+      width: this.width,
+      widthPx: this.widthPx,
+      height: this.height,
+      heightPx: this.heightPx
+    } as Item;
+    this._onResizeStartEvent.dispatch(item);
   }
-  onResize(event: DragEvent, location: string) {
+  _onResize(event: DragEvent, location: string) {
+    //Should never fire at present
     if (location.includes("left")) {
       let left =
         +this.onResizeStartLeft -
         this.onResizeStartEvent!.screenX +
         event.screenX;
-      this.setLeft(left);
+      this.left = left;
       let width =
         +this.onResizeStartingWidth +
         this.onResizeStartEvent!.screenX -
         event.screenX;
-      this.setWidth(width);
+      this.widthPx = width;
     }
+    //will fire
     if (location.includes("right")) {
       let width =
         +this.onResizeStartingWidth -
         this.onResizeStartEvent!.screenX +
         event.screenX;
-      this.setWidth(width);
+      this.widthPx = width;
     }
+    //Should never fire currently
     if (location.includes("top")) {
       let top =
         +this.onResizeStartTop -
         this.onResizeStartEvent!.screenY +
         event.screenY;
-      this.setTop(top);
+      this.top = top;
       let height =
         +this.onResizeStartingHeight +
         this.onResizeStartEvent!.screenY -
         event.screenY;
-      this.setHeight(height);
+      this.heightPx = height;
     }
+    //will fire
     if (location.includes("bottom")) {
       let height =
         +this.onResizeStartingHeight -
         this.onResizeStartEvent!.screenY +
         event.screenY;
-      this.setHeight(height);
+      this.heightPx = height;
     }
+    let item = {
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      top: this.top,
+      left: this.left,
+      width: this.width,
+      widthPx: this.widthPx,
+      height: this.height,
+      heightPx: this.heightPx
+    } as Item;
+    this._onResizeEvent.dispatch(item);
   }
-  onResizeEnd(event: DragEvent, location: string) {
+  _onResizeEnd(event: DragEvent, location: string) {
     event.preventDefault();
-    this.onResize(event, location);
+    this._onResize(event, location);
     this.onResizeStartEvent = undefined;
     this.onResizeStartLeft = 0;
     this.onResizeStartTop = 0;
     this.onResizeStartingHeight = 0;
     this.onResizeStartingWidth = 0;
+    let item = {
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      top: this.top,
+      left: this.left,
+      width: this.width,
+      widthPx: this.widthPx,
+      height: this.height,
+      heightPx: this.heightPx
+    } as Item;
+    this._onResizeEndEvent.dispatch(item);
+  }
+  get onResizeStart() {
+    return this._onResizeStartEvent.asEvent();
+  }
+  get onResize() {
+    return this._onResizeEvent.asEvent();
+  }
+  get onResizeEnd() {
+    return this._onResizeEndEvent.asEvent();
   }
 }

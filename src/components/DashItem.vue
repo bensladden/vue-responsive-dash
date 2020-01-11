@@ -196,35 +196,7 @@ const watchProp = (key, deep) => ({
     if (this.item[key] === newValue) {
       return;
     }
-    switch (key) {
-      case "id":
-        this.item.setId(newValue);
-        break;
-      case "x":
-        this.item.setXAndUpdateLeft(newValue);
-        break;
-      case "y":
-        this.item.setYAndUpdateTop(newValue);
-        break;
-      case "width":
-        this.item.setWidthAndUpdatePx(newValue);
-        break;
-      case "height":
-        this.item.setHeightAndUpdatePx(newValue);
-        break;
-      case "draggable":
-        this.item.setDraggable(newValue);
-        break;
-      case "resizeable":
-        this.item.setResizeable(newValue);
-        break;
-      case "resizeEdges":
-        this.item.setResizeEdges(newValue);
-        break;
-      case "resizeHandleSize":
-        this.item.setResizeHandleSize(newValue);
-        break;
-    }
+    this.item[key] = newValue;
   },
   deep
 });
@@ -339,16 +311,16 @@ export default {
     },
     onResizeStart(event, location) {
       this.resizing = true;
-      this.item.onResizeStart(event, location);
+      this.item._onResizeStart(event, location);
       this.$emit("resizeStart", this.item);
       event.target.style.opacity = 0.0;
     },
     onResize(event, location) {
-      this.item.onResize(event, location);
-      this.$emit("resize", this, item);
+      this.item._onResize(event, location);
+      this.$emit("resize", this.item);
     },
     async onResizeEnd(event, location) {
-      this.item.onResizeEnd(event, location);
+      this.item._onResizeEnd(event, location);
       this.$emit("resizeEnd", this.item);
       event.target.style.opacity = 1.0;
       await this.$nextTick();

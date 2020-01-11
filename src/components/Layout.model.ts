@@ -22,6 +22,7 @@ export class Layout {
   protected rowHeight: number;
   protected colWidth: number;
   protected itemBeingDragged: boolean = false;
+  protected itemBeingResized: boolean = false;
   protected placeholder: Item = {
     id: "placeholder",
     x: 0,
@@ -191,9 +192,9 @@ export class Layout {
   }
   updateDashItems() {
     this.dashItems.forEach(item => {
-      item.setColWidth(this.colWidth);
-      item.setRowHeight(this.rowHeight);
-      item.setMargin(this.margin);
+      item.colWidth = this.colWidth;
+      item.rowHeight = this.rowHeight;
+      item.margin = this.margin;
     });
   }
   updateResponsiveVariables() {
@@ -228,6 +229,28 @@ export class Layout {
       this.itemDraggingComplete(item);
     });
     this.dragEndListeners.push({ id: d.id, unsubscribe: unDragEnd });
+    //Resize Subscirptions
+    let unResizeStart = d.onResizeStart.subscribe(item => {
+      this.itemResizing(item);
+    });
+    this.resizeStartListeners.push({
+      id: d.id,
+      unsubscribe: unResizeStart
+    });
+    let unResize = d.onResize.subscribe(item => {
+      this.itemResizing(item);
+    });
+    this.resizeListeners.push({
+      id: d.id,
+      unsubscribe: unResize
+    });
+    let unResizeEnd = d.onResizeEnd.subscribe(item => {
+      this.itemResizingComplete(item);
+    });
+    this.resizeEndListeners.push({
+      id: d.id,
+      unsubscribe: unResizeEnd
+    });
   }
   removeDashItem(d: DashItem) {
     let index = this.dashItems.findIndex(item => {
@@ -240,23 +263,45 @@ export class Layout {
     index = this.dragStartListeners.findIndex(item => {
       return item.id === d.id;
     });
-    if (index > 0) {
+    if (index >= 0) {
       this.dragStartListeners[index].unsubscribe();
       this.dragStartListeners.splice(index, 1);
     }
     index = this.dragListeners.findIndex(item => {
       return item.id === d.id;
     });
-    if (index > 0) {
+    if (index >= 0) {
       this.dragListeners[index].unsubscribe();
       this.dragListeners.splice(index, 1);
     }
     index = this.dragEndListeners.findIndex(item => {
       return item.id === d.id;
     });
-    if (index > 0) {
+    if (index >= 0) {
       this.dragEndListeners[index].unsubscribe();
       this.dragEndListeners.splice(index, 1);
+    }
+    //Remove Drag Listerners
+    index = this.resizeStartListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index >= 0) {
+      this.resizeStartListeners[index].unsubscribe();
+      this.resizeStartListeners.splice(index, 1);
+    }
+    index = this.resizeListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index >= 0) {
+      this.resizeListeners[index].unsubscribe();
+      this.resizeListeners.splice(index, 1);
+    }
+    index = this.resizeEndListeners.findIndex(item => {
+      return item.id === d.id;
+    });
+    if (index >= 0) {
+      this.resizeEndListeners[index].unsubscribe();
+      this.resizeEndListeners.splice(index, 1);
     }
   }
   getDashItemById(id: string | number) {
@@ -279,8 +324,37 @@ export class Layout {
     this.itemBeingDragged = false;
     let dashItem = this.getDashItemById(item.id);
     if (dashItem) {
-      dashItem.setX(this.placeholder.x);
-      dashItem.setY(this.placeholder.y);
+      dashItem.x = this.placeholder.x;
+      dashItem.y = this.placeholder.y;
+    }
+    this.placeholder.x = 0;
+    this.placeholder.y = 0;
+    this.placeholder.width = 0;
+    this.placeholder.height = 0;
+  }
+  itemResizing(item: Item) {
+    this.itemBeingResized = true;
+    this.placeholder.x = getXFromLeft(item.left!, this.colWidth, this.margin);
+    this.placeholder.y = getYFromTop(item.top!, this.rowHeight, this.margin);
+    this.placeholder.width = getWidthFromPx(
+      item.widthPx!,
+      this.colWidth,
+      this.margin
+    );
+    this.placeholder.height = getHeightFromPx(
+      item.heightPx!,
+      this.rowHeight,
+      this.margin
+    );
+  }
+  itemResizingComplete(item: Item) {
+    this.itemBeingResized = false;
+    let dashItem = this.getDashItemById(item.id);
+    if (dashItem) {
+      dashItem.x = this.placeholder.x;
+      dashItem.y = this.placeholder.y;
+      dashItem.width = this.placeholder.width;
+      dashItem.height = this.placeholder.height;
     }
     this.placeholder.x = 0;
     this.placeholder.y = 0;

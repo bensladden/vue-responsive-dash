@@ -65,25 +65,6 @@ export class Dashboard {
   setId(id: string | number) {
     this.id = id;
   }
-  // addDashItem(d: DashItem) {
-  //   this.dashItems.push(d);
-  //   this.updateDashItems();
-  // }
-  // removeDashItem(d: DashItem) {
-  //   let index = this.dashItems.findIndex(item => {
-  //     return item.getId() === d.getId();
-  //   });
-  //   if (index >= 0) {
-  //     this.dashItems.splice(index, 1);
-  //   }
-  // }
-  // updateDashItems() {
-  //   this.dashItems.forEach(item => {
-  //     item.setColWidth(this.colWidth);
-  //     item.setRowHeight(this.rowHeight);
-  //     item.setMargin(this.margin);
-  //   });
-  // }
   setBreakpoints(breakpoints: Breakpoint[]) {
     this.breakpoints = breakpoints;
     this.sortBreakpoints();

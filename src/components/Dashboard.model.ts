@@ -148,10 +148,10 @@ export class Dashboard {
     });
   }
   addLayoutInstance(l: Layout) {
-    this.layouts.push(l);
+    this._layouts.push(l);
   }
   updateLayouts() {
-    this.layouts.forEach(layout => {
+    this._layouts.forEach(layout => {
       layout.width = this.width;
     });
   }
@@ -160,7 +160,7 @@ export class Dashboard {
       return l.breakpoint === layout.breakpoint;
     });
     if (index >= 0) {
-      this.layouts.splice(index, 1);
+      this._layouts.splice(index, 1);
     }
   }
 }

@@ -1,11 +1,5 @@
 # vue-responsive-dash
 
 Nightly notes TODO:
-
-Next Task: dragging and resizing events to dashboard.
-Need to link to placeholder => placeholder now needs to check if the position is ok or not via collision logic
-When finished set position to placeholder=> Done
-
-After this need to create compacting methods.
-
-Look at variables and determine if a getter is more appropiate
+Placeholder needs to be changed from item to dash item so the moving methods can work. just give the dash item an id. But also need to look into how this effects the collision detection 
+consider removing the items from teh layout all together and let vue handle this.

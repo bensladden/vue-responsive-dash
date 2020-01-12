@@ -18,6 +18,7 @@ export class DashItem {
   private _resizeable: boolean;
   private _resizeEdges: string;
   private _resizeHandleSize: number;
+  private _moved: boolean = false;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
@@ -244,6 +245,12 @@ export class DashItem {
   }
   set resizeHandleSize(rhs: number) {
     this._resizeHandleSize = rhs;
+  }
+  get moved() {
+    return this._moved;
+  }
+  set moved(m: boolean) {
+    this._moved = m;
   }
   //Drag Event Management
   _onDragStart(event: DragEvent) {

@@ -11,7 +11,7 @@
           v-bind.sync="item"
           :key="item.id"
         >
-          <div class="content">{{ item.id }}</div>
+          <div class="content">{{ JSON.stringify(item) }}</div>
         </Dash-Item>
       </layout>
     </dashboard>

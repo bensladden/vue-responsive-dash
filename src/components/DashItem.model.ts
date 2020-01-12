@@ -1,14 +1,4 @@
 import { SimpleEventDispatcher } from "ste-simple-events";
-import {
-  getLeftFromX,
-  getXFromLeft,
-  getTopFromY,
-  getYFromTop,
-  getWidthInPx,
-  getWidthFromPx,
-  getHeightInPx,
-  getHeightFromPx
-} from "./commonFunctions";
 import { Margin, Item } from "../inferfaces";
 
 export class DashItem {
@@ -28,6 +18,7 @@ export class DashItem {
   private _resizeable: boolean;
   private _resizeEdges: string;
   private _resizeHandleSize: number;
+  private _moved: boolean = false;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
@@ -93,25 +84,33 @@ export class DashItem {
     } else {
       this._x = 0;
     }
-    this._left = getLeftFromX(this._x, this._colWidth, this._margin);
+    this._left = DashItem.getLeftFromX(this._x, this._colWidth, this._margin);
     if (typeof y !== "undefined") {
       this._y = y;
     } else {
       this._y = 0;
     }
-    this._top = getTopFromY(this._y, this._rowHeight, this._margin);
+    this._top = DashItem.getTopFromY(this._y, this._rowHeight, this._margin);
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
       this._width = 0;
     }
-    this._widthPx = getWidthInPx(this._width, this._colWidth, this._margin);
+    this._widthPx = DashItem.getWidthInPx(
+      this._width,
+      this._colWidth,
+      this._margin
+    );
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
       this._height = 0;
     }
-    this._heightPx = getHeightInPx(this._height, this._rowHeight, this._margin);
+    this._heightPx = DashItem.getHeightInPx(
+      this._height,
+      this._rowHeight,
+      this._margin
+    );
     if (typeof draggable !== "undefined") {
       this._draggable = draggable;
     } else {
@@ -210,10 +209,18 @@ export class DashItem {
     this._heightPx = h;
   }
   updatePositionAndSize() {
-    this.left = getLeftFromX(this.x, this.colWidth, this.margin);
-    this.top = getTopFromY(this.y, this.rowHeight, this.margin);
-    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin);
-    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin);
+    this.left = DashItem.getLeftFromX(this.x, this.colWidth, this.margin);
+    this.top = DashItem.getTopFromY(this.y, this.rowHeight, this.margin);
+    this.widthPx = DashItem.getWidthInPx(
+      this.width,
+      this.colWidth,
+      this.margin
+    );
+    this.heightPx = DashItem.getHeightInPx(
+      this.height,
+      this.rowHeight,
+      this.margin
+    );
   }
   get draggable() {
     return this.draggable;
@@ -238,6 +245,12 @@ export class DashItem {
   }
   set resizeHandleSize(rhs: number) {
     this._resizeHandleSize = rhs;
+  }
+  get moved() {
+    return this._moved;
+  }
+  set moved(m: boolean) {
+    this._moved = m;
   }
   //Drag Event Management
   _onDragStart(event: DragEvent) {
@@ -425,5 +438,30 @@ export class DashItem {
   }
   get onResizeEnd() {
     return this._onResizeEndEvent.asEvent();
+  }
+  //Static Methods
+  static getLeftFromX(x: number, colWidth: number, margin: Margin) {
+    return Math.round(colWidth * x + (x + 1) * margin.x);
+  }
+  static getXFromLeft(l: number, colWidth: number, margin: Margin) {
+    return Math.round((l - margin.x) / (colWidth + margin.x));
+  }
+  static getTopFromY(y: number, rowHeight: number, margin: Margin) {
+    return Math.round(rowHeight * y + (y + 1) * margin.y);
+  }
+  static getYFromTop(t: number, rowHeight: number, margin: Margin) {
+    return Math.round((t - margin.y) / (rowHeight + margin.y));
+  }
+  static getWidthInPx(w: number, colWidth: number, margin: Margin) {
+    return Math.round(colWidth * w + Math.max(0, w - 1) * margin.x);
+  }
+  static getWidthFromPx(widthPx: number, colWidth: number, margin: Margin) {
+    return Math.round((widthPx + margin.x) / (colWidth + margin.x));
+  }
+  static getHeightInPx(h: number, rowHeight: number, margin: Margin) {
+    return Math.round(rowHeight * h + Math.max(0, h - 1) * margin.y);
+  }
+  static getHeightFromPx(heightPx: number, rowHeight: number, margin: Margin) {
+    return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
   }
 }

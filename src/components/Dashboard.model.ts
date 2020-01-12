@@ -2,13 +2,13 @@ import { Margin, Breakpoint } from "../inferfaces";
 import { Layout } from "./Layout.model";
 
 export class Dashboard {
-  protected id: string | number;
-  protected breakpoints: Breakpoint[];
-  protected currentBreakpoint: string;
-  protected layouts: Layout[];
-  protected margin: Margin;
-  protected autoHeight: boolean;
-  protected width: number;
+  private readonly _id: string | number;
+  private _breakpoints: Breakpoint[];
+  private _currentBreakpoint: string;
+  private _layouts: Layout[];
+  private _margin: Margin;
+  private _autoHeight: boolean;
+  private _width: number;
 
   constructor({
     id,
@@ -23,32 +23,32 @@ export class Dashboard {
     autoHeight?: boolean;
     width?: number;
   }) {
-    this.id = id;
-    this.layouts = [];
+    this._id = id;
+    this._layouts = [];
     //Setup Margins
     if (typeof margin !== "undefined") {
-      this.margin = margin;
+      this._margin = margin;
     } else {
-      this.margin = { x: 10, y: 10 };
+      this._margin = { x: 10, y: 10 };
     }
 
     if (typeof autoHeight !== "undefined") {
-      this.autoHeight = autoHeight;
+      this._autoHeight = autoHeight;
     } else {
-      this.autoHeight = true;
+      this._autoHeight = true;
     }
 
     if (typeof width !== "undefined") {
-      this.width = width;
+      this._width = width;
     } else {
-      this.width = 400;
+      this._width = 400;
     }
 
     //Setup Breakpoints
     if (typeof breakpoints !== "undefined") {
-      this.breakpoints = breakpoints;
+      this._breakpoints = breakpoints;
     } else {
-      this.breakpoints = [
+      this._breakpoints = [
         { name: "xl", numberOfCols: 12 },
         { name: "lg", numberOfCols: 10, setpoint: 1200 },
         { name: "md", numberOfCols: 8, setpoint: 996 },
@@ -60,15 +60,53 @@ export class Dashboard {
     //Sort Breakpoints to make finding the current breakpoint easy
     this.sortBreakpoints();
     //Update current breakpoint using true method
-    this.currentBreakpoint = this.updateCurrentBreakpoint();
+    this._currentBreakpoint = this.updateCurrentBreakpoint();
   }
-  setId(id: string | number) {
-    this.id = id;
+  get id() {
+    return this._id;
+  }
+  get breakpoints() {
+    return this._breakpoints;
+  }
+  set breakpoints(b: Breakpoint[]) {
+    this._breakpoints = b;
   }
   setBreakpoints(breakpoints: Breakpoint[]) {
     this.breakpoints = breakpoints;
     this.sortBreakpoints();
     //this.updateResponsiveVariables();
+  }
+  get currentBreakpoint() {
+    return this._currentBreakpoint;
+  }
+  set currentBreakpoint(cb: string) {
+    this._currentBreakpoint = cb;
+  }
+  get layouts() {
+    return this._layouts;
+  }
+  set layouts(l: Layout[]) {
+    this._layouts = l;
+  }
+  get margin() {
+    return this._margin;
+  }
+  set margin(m: Margin) {
+    this._margin = m;
+  }
+  get autoHeight() {
+    return this._autoHeight;
+  }
+  set autoHeight(ah: boolean) {
+    this._autoHeight = ah;
+  }
+  get width() {
+    return this._width;
+  }
+  set width(w: number) {
+    this._width = w;
+    this.updateCurrentBreakpoint();
+    this.updateLayouts();
   }
   updateCurrentBreakpoint() {
     //TODO check if we are right on the edge of a breakpoint (i.e. dont allow a change if a scroll bar is added)
@@ -95,11 +133,6 @@ export class Dashboard {
     this.margin = m;
     //this.updateResponsiveVariables();
   }
-  setWidth(w: number) {
-    this.width = w;
-    this.updateCurrentBreakpoint();
-    this.updateLayouts();
-  }
   sortBreakpoints() {
     this.breakpoints.sort((a, b) => {
       if (
@@ -115,19 +148,19 @@ export class Dashboard {
     });
   }
   addLayoutInstance(l: Layout) {
-    this.layouts.push(l);
+    this._layouts.push(l);
   }
   updateLayouts() {
-    this.layouts.forEach(layout => {
-      layout.setWidth(this.width);
+    this._layouts.forEach(layout => {
+      layout.width = this.width;
     });
   }
   removeLayoutInstance(l: Layout) {
     let index = this.layouts.findIndex(layout => {
-      return l.getBreakpoint() === layout.getBreakpoint();
+      return l.breakpoint === layout.breakpoint;
     });
     if (index >= 0) {
-      this.layouts.splice(index, 1);
+      this._layouts.splice(index, 1);
     }
   }
 }

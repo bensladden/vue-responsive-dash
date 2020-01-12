@@ -21,26 +21,10 @@ import DashItem from "./DashItem";
 const watchProp = (key, deep) => ({
   handler(newValue) {
     //If the prop did not cause the update there is no updating
-    if (this.item[key] === newValue) {
+    if (this.l[key] === newValue) {
       return;
     }
-    switch (key) {
-      case "breakpoint":
-        this.l.setBreakpoint(newValue);
-        break;
-      case "width":
-        this.l.setWidth(newValue);
-        break;
-      case "numberOfCols":
-        this.l.setNumberOfCols(newValue);
-        break;
-      case "margin":
-        this.l.setMargin(newValue);
-        break;
-      case "items":
-        this.l.setItems(newValue);
-        break;
-    }
+    this.l[key] = newValue;
   },
   deep
 });

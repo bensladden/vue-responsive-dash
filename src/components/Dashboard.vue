@@ -31,7 +31,7 @@ export default {
   computed: {},
   methods: {
     onResize(e) {
-      this.d.setWidth(e.detail.width);
+      this.d.width = e.detail.width;
     }
   },
   created() {

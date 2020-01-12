@@ -1,26 +1,26 @@
-import { Item, Margin, Subscription } from "@/inferfaces";
-import {
-  getLeftFromX,
-  getXFromLeft,
-  getTopFromY,
-  getYFromTop,
-  getWidthInPx,
-  getWidthFromPx,
-  getHeightInPx,
-  getHeightFromPx
-} from "./commonFunctions";
+import { Item, Margin, Subscription, Breakpoint } from "@/inferfaces";
+// import {
+//   getLeftFromX,
+//   getXFromLeft,
+//   getTopFromY,
+//   getYFromTop,
+//   getWidthInPx,
+//   getWidthFromPx,
+//   getHeightInPx,
+//   getHeightFromPx
+// } from "./commonFunctions";
 import { DashItem } from "./DashItem.model";
 
 export class Layout {
-  protected breakpoint: string;
-  protected items: Item[];
-  protected margin: Margin;
-  protected width: number;
-  protected height: number;
-  protected numberOfCols: number;
-  protected autoHeight: boolean;
-  protected rowHeight: number;
-  protected colWidth: number;
+  private _breakpoint: string;
+  private _items: Item[];
+  private _margin: Margin;
+  private _width: number;
+  private _height: number;
+  private _numberOfCols: number;
+  private _autoHeight: boolean;
+  private _rowHeight: number;
+  private _colWidth: number;
   protected itemBeingDragged: boolean = false;
   protected itemBeingResized: boolean = false;
   protected placeholder: Item = {
@@ -57,57 +57,101 @@ export class Layout {
     height?: number;
     rowHeight?: number;
   }) {
-    this.breakpoint = breakpoint;
-    this.items = items;
-    this.numberOfCols = numberOfCols;
+    this._breakpoint = breakpoint;
+    this._items = items;
+    this._numberOfCols = numberOfCols;
 
     if (typeof margin !== "undefined") {
-      this.margin = margin;
+      this._margin = margin;
     } else {
-      this.margin = { x: 10, y: 10 };
+      this._margin = { x: 10, y: 10 };
     }
 
     if (typeof autoHeight !== "undefined") {
-      this.autoHeight = autoHeight;
+      this._autoHeight = autoHeight;
     } else {
-      this.autoHeight = true;
+      this._autoHeight = true;
     }
 
     if (typeof width !== "undefined") {
-      this.width = width;
+      this._width = width;
     } else {
-      this.width = 400;
+      this._width = 400;
     }
 
     if (typeof height !== "undefined") {
-      this.height = height;
+      this._height = height;
     } else {
-      this.height = 400;
+      this._height = 400;
     }
     if (typeof rowHeight !== "undefined") {
-      this.rowHeight = rowHeight;
+      this._rowHeight = rowHeight;
     } else {
-      this.rowHeight = 200;
+      this._rowHeight = 200;
     }
 
-    this.colWidth = this.calculateColWidth();
+    this._colWidth = this.calculateColWidth();
     if (this.autoHeight) {
       this.calculateHeight();
     }
   }
-  getBreakpoint() {
-    return this.breakpoint;
+  get breakpoint() {
+    return this._breakpoint;
   }
-  setWidth(w: number) {
-    this.width = w;
+  set breakpoint(b: string) {
+    this._breakpoint = b;
+  }
+  get margin() {
+    return this._margin;
+  }
+  set margin(m: Margin) {
+    this._margin = m;
+  }
+  get width() {
+    return this._width;
+  }
+  set width(w: number) {
+    this._width = w;
     this.updateResponsiveVariables();
   }
-  setNumberOfCols(n: number) {
-    this.numberOfCols = n;
+  get height() {
+    return this._height;
+  }
+  set height(h: number) {
+    this._height = h;
+  }
+  get numberOfCols() {
+    return this._numberOfCols;
+  }
+  set numberOfCols(n: number) {
+    this._numberOfCols = n;
     this.updateResponsiveVariables();
   }
-
+  get autoHeight() {
+    return this._autoHeight;
+  }
+  set autoHeight(ah: boolean) {
+    this._autoHeight = ah;
+  }
+  get rowHeight() {
+    return this._rowHeight;
+  }
+  set rowHeight(rh: number) {
+    this._rowHeight = rh;
+  }
+  get colWidth() {
+    return this._colWidth;
+  }
+  set colWidth(cW: number) {
+    this._colWidth = cW;
+  }
   //Item Methods
+  get items() {
+    return this._items;
+  }
+  set items(i: Item[]) {
+    this._items = i;
+  }
   getItemById(id: String | Number) {
     let index = this.items.findIndex(item => {
       return item.id === id;
@@ -315,8 +359,16 @@ export class Layout {
   }
   itemDragging(item: Item) {
     this.itemBeingDragged = true;
-    this.placeholder.x = getXFromLeft(item.left!, this.colWidth, this.margin);
-    this.placeholder.y = getYFromTop(item.top!, this.rowHeight, this.margin);
+    this.placeholder.x = DashItem.getXFromLeft(
+      item.left!,
+      this.colWidth,
+      this.margin
+    );
+    this.placeholder.y = DashItem.getYFromTop(
+      item.top!,
+      this.rowHeight,
+      this.margin
+    );
     this.placeholder.width = item.width;
     this.placeholder.height = item.height;
   }
@@ -334,14 +386,22 @@ export class Layout {
   }
   itemResizing(item: Item) {
     this.itemBeingResized = true;
-    this.placeholder.x = getXFromLeft(item.left!, this.colWidth, this.margin);
-    this.placeholder.y = getYFromTop(item.top!, this.rowHeight, this.margin);
-    this.placeholder.width = getWidthFromPx(
+    this.placeholder.x = DashItem.getXFromLeft(
+      item.left!,
+      this.colWidth,
+      this.margin
+    );
+    this.placeholder.y = DashItem.getYFromTop(
+      item.top!,
+      this.rowHeight,
+      this.margin
+    );
+    this.placeholder.width = DashItem.getWidthFromPx(
       item.widthPx!,
       this.colWidth,
       this.margin
     );
-    this.placeholder.height = getHeightFromPx(
+    this.placeholder.height = DashItem.getHeightFromPx(
       item.heightPx!,
       this.rowHeight,
       this.margin

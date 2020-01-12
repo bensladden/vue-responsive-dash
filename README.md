@@ -1,7 +1,6 @@
 # vue-responsive-dash
 
 Nightly notes TODO:
-Move common functions back into dashitem.=>TODO
 
 Next Task: dragging and resizing events to dashboard.
 Need to link to placeholder => placeholder now needs to check if the position is ok or not via collision logic

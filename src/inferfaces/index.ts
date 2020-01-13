@@ -9,8 +9,8 @@ export interface Item {
   height: number;
   heightPx?: number;
   draggable?: boolean;
-  static?: boolean;
   resizeable?: boolean;
+  moved?: boolean;
 }
 
 export interface Breakpoint {

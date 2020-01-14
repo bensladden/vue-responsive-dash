@@ -70,9 +70,6 @@ export class Layout {
     }
 
     this._colWidth = this.calculateColWidth();
-    if (this.autoHeight) {
-      this.calculateHeight();
-    }
   }
   get breakpoint() {
     return this._breakpoint;
@@ -94,6 +91,9 @@ export class Layout {
     this.updateResponsiveVariables();
   }
   get height() {
+    if (this.autoHeight) {
+      return this.calculateHeight();
+    }
     return this._height;
   }
   set height(h: number) {
@@ -159,7 +159,7 @@ export class Layout {
         maxY = bottomY;
       }
     }
-    this.height = maxY * (this.rowHeight + this.margin.y) + this.margin.y;
+    return maxY * (this.rowHeight + this.margin.y) + this.margin.y;
   }
   updateDashItems() {
     this._dashItems.forEach(item => {
@@ -170,10 +170,6 @@ export class Layout {
   }
   updateResponsiveVariables() {
     this.calculateColWidth();
-    //Update Height
-    if (this.autoHeight) {
-      this.calculateHeight();
-    }
     //Update dash items
     this.updateDashItems();
   }
@@ -292,36 +288,30 @@ export class Layout {
     return items;
   }
   itemDragging(item: Item) {
-    console.log("dragging");
-    this.itemBeingDragged = true;
-    this.placeholder!.x = DashItem.getXFromLeft(
-      item.left!,
-      this.colWidth,
-      this.margin
-    );
-    this.placeholder!.y = DashItem.getYFromTop(
-      item.top!,
-      this.rowHeight,
-      this.margin
-    );
-    this.placeholder!.width = item.width;
-    this.placeholder!.height = item.height;
-    let items = JSON.parse(JSON.stringify(this.items)) as Item[];
-    //Remove the dragging item as the placeholder takes its place
-    items = items.filter(i => {
+    if (!this.itemBeingDragged) {
+      this.placeholder!.x = item.x;
+      this.placeholder!.y = item.y;
+      this.placeholder!.width = item.width;
+      this.placeholder!.height = item.height;
+      this.itemBeingDragged = true;
+    }
+    //Take a copy of items
+    let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
+    //Remove the item being dragged as the placeholder takes its place. Otherwise the item will snap while being dragged.
+    let items = itemsCopy.filter(i => {
       return i.id !== item.id;
     });
-    console.log("Items before move", JSON.stringify(items));
+    let placeholderIndex = items.findIndex(i => {
+      return i.id === this.placeholder!.id;
+    });
     items = this.moveElement(
       items,
-      this.placeholder!.toItem(),
+      items[placeholderIndex],
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
-    console.log("items after move", JSON.stringify(items));
     items = this.compact(items);
-    console.log("items after comact", JSON.stringify(items));
     this.syncItems(items);
   }
   itemDraggingComplete(item: Item) {
@@ -401,8 +391,8 @@ export class Layout {
     }
     return null;
   }
-  getAllCollisions(d: Item) {
-    return this._dashItems.filter(item => this.checkForCollision(d, item));
+  getAllCollisions(items: Item[], d: Item) {
+    return items.filter(item => this.checkForCollision(item, d));
   }
   correctBounds() {
     this._dashItems.forEach(item => {
@@ -424,14 +414,16 @@ export class Layout {
     const compareWith = [] as Item[];
     const out = Array(items.length) as Item[];
 
-    for (let i = 0, len = sorted.length; i < len; i++) {
+    for (let i = 0; i < sorted.length; i++) {
       let l = sorted[i];
       l = this.compactItem(compareWith, l);
       // Add to comparison array. We only collide with items before this one.
-      // Statics are already in this array.
       compareWith.push(l);
       // Add to output array to make sure they still come out in the right order.
-      out[items.indexOf(l)] = l;
+      let index = items.findIndex(item => {
+        return item.id === l.id;
+      });
+      out[index] = l;
       // Clear moved flag, if it exists.
       l.moved = false;
     }
@@ -467,18 +459,18 @@ export class Layout {
     y: number,
     isUserAction?: boolean
   ) {
-    const oldX = d.x;
-    const oldY = d.y;
-
     const movingUp: boolean = d.y > y;
-
+    let index = items.findIndex(item => {
+      return item.id === d.id;
+    });
     d.x = x;
     d.y = y;
     d.moved = true;
-
-    items = this.sortItems(items, movingUp);
-
-    const collisions = this.getAllCollisions(d);
+    items[index].x = x;
+    items[index].y = y;
+    items[index].moved = true;
+    let sorted = this.sortItems(items, movingUp);
+    const collisions = this.getAllCollisions(sorted, d);
     for (let collision of collisions) {
       if (collision.moved) {
         continue;
@@ -487,7 +479,12 @@ export class Layout {
       if (d.y > collision.y && d.y - collision.y > collision.height / 4) {
         continue;
       }
-      this.moveElementAwayFromCollision(items, d, collision, isUserAction);
+      items = this.moveElementAwayFromCollision(
+        items,
+        d,
+        collision,
+        isUserAction
+      );
     }
     return items;
   }
@@ -514,10 +511,8 @@ export class Layout {
   }
   syncItems(items: Item[]) {
     items.forEach(i => {
-      if (i.moved) {
-        let dashItem = this.getDashItemById(i.id);
-        dashItem!.fromItem(i);
-      }
+      let dashItem = this.getDashItemById(i.id);
+      dashItem!.fromItem(i);
     });
   }
 }

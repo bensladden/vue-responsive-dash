@@ -223,7 +223,7 @@ export class DashItem {
     );
   }
   get draggable() {
-    return this.draggable;
+    return this._draggable;
   }
   set draggable(d: boolean) {
     this._draggable = d;
@@ -252,14 +252,7 @@ export class DashItem {
   set moved(m: boolean) {
     this._moved = m;
   }
-  //Drag Event Management
-  _onDragStart(event: DragEvent) {
-    if (event && event.dataTransfer) {
-      this.onDragStartEvent = event;
-      event.dataTransfer.setData("text/plain", this.id.toString());
-    }
-    this.onDragStartLeft = this.left;
-    this.onDragStartTop = this.top;
+  toItem() {
     let item = {
       id: this.id,
       x: this.x,
@@ -269,9 +262,28 @@ export class DashItem {
       width: this.width,
       widthPx: this.widthPx,
       height: this.height,
-      heightPx: this.heightPx
+      heightPx: this.heightPx,
+      draggable: this.draggable,
+      resizeable: this.resizeable
     } as Item;
-    this._onDragStartEvent.dispatch(item);
+    return item;
+  }
+  fromItem(item: Item) {
+    this._x = item.x;
+    this._y = item.y;
+    this._width = item.width;
+    this._height = item.height;
+    this.updatePositionAndSize();
+  }
+  //Drag Event Management
+  _onDragStart(event: DragEvent) {
+    if (event && event.dataTransfer) {
+      this.onDragStartEvent = event;
+      event.dataTransfer.setData("text/plain", this.id.toString());
+    }
+    this.onDragStartLeft = this.left;
+    this.onDragStartTop = this.top;
+    this._onDragStartEvent.dispatch(this.toItem());
   }
   _onDrag(event: DragEvent) {
     if (
@@ -285,18 +297,7 @@ export class DashItem {
         +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
       this.left = left;
       this.top = top;
-      let item = {
-        id: this.id,
-        x: this.x,
-        y: this.y,
-        top: this.top,
-        left: this.left,
-        width: this.width,
-        widthPx: this.widthPx,
-        height: this.height,
-        heightPx: this.heightPx
-      } as Item;
-      this._onDragEvent.dispatch(item);
+      this._onDragEvent.dispatch(this.toItem());
     }
   }
   _onDragEnd(event: DragEvent) {
@@ -308,18 +309,7 @@ export class DashItem {
     if (event.dataTransfer) {
       event.dataTransfer.clearData();
     }
-    let item = {
-      id: this.id,
-      x: this.x,
-      y: this.y,
-      top: this.top,
-      left: this.left,
-      width: this.width,
-      widthPx: this.widthPx,
-      height: this.height,
-      heightPx: this.heightPx
-    } as Item;
-    this._onDragEndEvent.dispatch(item);
+    this._onDragEndEvent.dispatch(this.toItem());
   }
   get onDragStart() {
     return this._onDragStartEvent.asEvent();
@@ -340,18 +330,7 @@ export class DashItem {
     this.onResizeStartTop = this.top;
     this.onResizeStartingWidth = this.widthPx;
     this.onResizeStartingHeight = this.heightPx;
-    let item = {
-      id: this.id,
-      x: this.x,
-      y: this.y,
-      top: this.top,
-      left: this.left,
-      width: this.width,
-      widthPx: this.widthPx,
-      height: this.height,
-      heightPx: this.heightPx
-    } as Item;
-    this._onResizeStartEvent.dispatch(item);
+    this._onResizeStartEvent.dispatch(this.toItem());
   }
   _onResize(event: DragEvent, location: string) {
     //Should never fire at present
@@ -396,18 +375,7 @@ export class DashItem {
         event.screenY;
       this.heightPx = height;
     }
-    let item = {
-      id: this.id,
-      x: this.x,
-      y: this.y,
-      top: this.top,
-      left: this.left,
-      width: this.width,
-      widthPx: this.widthPx,
-      height: this.height,
-      heightPx: this.heightPx
-    } as Item;
-    this._onResizeEvent.dispatch(item);
+    this._onResizeEvent.dispatch(this.toItem());
   }
   _onResizeEnd(event: DragEvent, location: string) {
     event.preventDefault();
@@ -417,18 +385,7 @@ export class DashItem {
     this.onResizeStartTop = 0;
     this.onResizeStartingHeight = 0;
     this.onResizeStartingWidth = 0;
-    let item = {
-      id: this.id,
-      x: this.x,
-      y: this.y,
-      top: this.top,
-      left: this.left,
-      width: this.width,
-      widthPx: this.widthPx,
-      height: this.height,
-      heightPx: this.heightPx
-    } as Item;
-    this._onResizeEndEvent.dispatch(item);
+    this._onResizeEndEvent.dispatch(this.toItem());
   }
   get onResizeStart() {
     return this._onResizeStartEvent.asEvent();

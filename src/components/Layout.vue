@@ -2,13 +2,21 @@
   <div v-show="currentBreakpoint === breakpoint">
     <div v-if="l" :style="{ height: height }">
       <slot></slot>
-      <DashItem v-bind="placeholder" v-if="dragging || resizing">
+      <DashItem
+        :id="placeholderId"
+        :draggable="false"
+        :resizeable="false"
+        v-show="dragging || resizing"
+      >
         <div class="placeholder"></div>
       </DashItem>
     </div>
     <div>
-      Layout Breakpoint: {{ breakpoint }} Current ColWidth:
-      {{ colWidth }} Layout Number of Cols {{ numberOfCols }}
+      Layout Breakpoint: {{ breakpoint }} <br />
+      Current ColWidth: {{ colWidth }} <br />
+      Layout Number of Cols: {{ numberOfCols }} <br />
+      placeholder: {{ JSON.stringify(placeholder) }} <br />
+      Items: {{ JSON.stringify(itemsFromLayout) }}
     </div>
   </div>
 </template>
@@ -41,7 +49,8 @@ export default {
   },
   data() {
     return {
-      l: null
+      l: null,
+      placeholderId: "-1Placeholder"
     };
   },
   provide() {
@@ -67,7 +76,13 @@ export default {
       return this.l.itemBeingResized;
     },
     placeholder() {
-      return this.l.placeholder;
+      if (this.l.placeholder) {
+        return this.l.placeholder.toItem();
+      }
+      return "";
+    },
+    itemsFromLayout() {
+      return this.l.items;
     },
     colWidth() {
       return this.l.colWidth;

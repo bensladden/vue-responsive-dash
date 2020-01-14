@@ -306,20 +306,26 @@ export class Layout {
     );
     this.placeholder!.width = item.width;
     this.placeholder!.height = item.height;
-    let items = this.items;
+    let items = JSON.parse(JSON.stringify(this.items)) as Item[];
     //Remove the dragging item as the placeholder takes its place
     items = items.filter(i => {
       return i.id !== item.id;
     });
-    this.moveElement(
+    console.log("Items before move", JSON.stringify(items));
+    items = this.moveElement(
       items,
       this.placeholder!.toItem(),
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
+    console.log("items after move", JSON.stringify(items));
+    items = this.compact(items);
+    console.log("items after comact", JSON.stringify(items));
+    this.syncItems(items);
   }
   itemDraggingComplete(item: Item) {
+    console.log("dragging complete");
     this.itemBeingDragged = false;
     let dashItem = this.getDashItemById(item.id);
     if (dashItem) {
@@ -387,8 +393,8 @@ export class Layout {
     }
     return true;
   }
-  getFirstCollision(d: Item) {
-    for (let i of this._dashItems) {
+  getFirstCollision(items: Item[], d: Item) {
+    for (let i of items) {
       if (this.checkForCollision(d, i)) {
         return i;
       }
@@ -414,33 +420,45 @@ export class Layout {
   }
   //Layout and Item Moving Methods
   compact(items: Item[]) {
-    items = this.sortItems(items);
-    items.forEach(d => {
-      d = this.compactItem(d);
-    });
-    return items;
+    const sorted = this.sortItems(items);
+    const compareWith = [] as Item[];
+    const out = Array(items.length) as Item[];
+
+    for (let i = 0, len = sorted.length; i < len; i++) {
+      let l = sorted[i];
+      l = this.compactItem(compareWith, l);
+      // Add to comparison array. We only collide with items before this one.
+      // Statics are already in this array.
+      compareWith.push(l);
+      // Add to output array to make sure they still come out in the right order.
+      out[items.indexOf(l)] = l;
+      // Clear moved flag, if it exists.
+      l.moved = false;
+    }
+    return out;
   }
-  compactItem(d: Item) {
-    while (d.y > 0 && !this.getFirstCollision(d)) {
+  compactItem(items: Item[], d: Item) {
+    while (d.y > 0 && !this.getFirstCollision(items, d)) {
       d.y--;
     }
     let collides;
-    while ((collides = this.getFirstCollision(d))) {
+    while ((collides = this.getFirstCollision(items, d))) {
       d.y = collides.y + collides.height;
     }
     return d;
   }
   sortItems(items: Item[], reverse?: Boolean) {
-    items.sort((a, b) => {
+    let i = JSON.parse(JSON.stringify(items)) as Item[];
+    i.sort((a, b) => {
       if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
         return 1;
       }
       return -1;
     });
     if (reverse) {
-      items.reverse();
+      i.reverse();
     }
-    return items;
+    return i;
   }
   moveElement(
     items: Item[],
@@ -471,6 +489,7 @@ export class Layout {
       }
       this.moveElementAwayFromCollision(items, d, collision, isUserAction);
     }
+    return items;
   }
   moveElementAwayFromCollision(
     items: Item[],
@@ -487,7 +506,7 @@ export class Layout {
         height: itemToMove.height
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
-      if (!this.getFirstCollision(fakeItem)) {
+      if (!this.getFirstCollision(items, fakeItem)) {
         return this.moveElement(items, itemToMove, itemToMove.x, fakeItem.y);
       }
     }

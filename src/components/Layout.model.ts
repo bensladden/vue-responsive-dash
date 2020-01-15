@@ -304,8 +304,7 @@ export class Layout {
     let placeholderIndex = items.findIndex(i => {
       return i.id === this.placeholder!.id;
     });
-    items = this.correctBounds(items);
-    console.log("items after compact", items);
+    //items = this.correctBounds(items);
     items = this.moveElement(
       items,
       items[placeholderIndex],
@@ -414,23 +413,23 @@ export class Layout {
     return items.filter(item => this.checkForCollision(item, d));
   }
   //Layout and Item Moving Methods
+  correctItemBounds(item: Item) {
+    if (item.x + item.width > this.numberOfCols) {
+      item.x = this.numberOfCols - item.width;
+    }
+    if (item.x < 0) {
+      item.x = 0;
+    }
+    if (item.width > this.numberOfCols) {
+      item.x = 0;
+      item.width = this.numberOfCols;
+    }
+    return item;
+  }
   correctBounds(items: Item[]) {
     for (let i = 0; i < items.length; i++) {
-      if (items[i].x + items[i].width > this.numberOfCols) {
-        items[i].x = this.numberOfCols - items[i].width;
-        console.log("too far right");
-      }
-      if (items[i].x < 0) {
-        items[i].x = 0;
-        console.log("too far left");
-      }
-      if (items[i].width > this.numberOfCols) {
-        items[i].x = 0;
-        items[i].width = this.numberOfCols;
-        console.log("too wide");
-      }
+      items[i] = this.correctItemBounds(items[i]);
     }
-    console.log("items after compact", items);
     return items;
   }
   compact(items: Item[]) {
@@ -484,16 +483,11 @@ export class Layout {
     isUserAction?: boolean
   ) {
     const movingUp: boolean = d.y > y;
-    let index = items.findIndex(item => {
-      return item.id === d.id;
-    });
     d.x = x;
     d.y = y;
     d.moved = true;
-    items[index].x = x;
-    items[index].y = y;
-    items[index].moved = true;
-    let sorted = this.sortItems(items, movingUp);
+    d = this.correctItemBounds(d);
+    const sorted = this.sortItems(items, movingUp);
     const collisions = this.getAllCollisions(sorted, d);
     for (let collision of collisions) {
       if (collision.moved) {
@@ -503,10 +497,13 @@ export class Layout {
       if (d.y > collision.y && d.y - collision.y > collision.height / 4) {
         continue;
       }
+      let collisionIndex = items.findIndex(item => {
+        return item.id === collision.id;
+      });
       items = this.moveElementAwayFromCollision(
         items,
         d,
-        collision,
+        items[collisionIndex],
         isUserAction
       );
     }

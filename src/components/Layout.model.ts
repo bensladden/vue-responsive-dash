@@ -3,6 +3,7 @@ import { DashItem } from "./DashItem.model";
 
 export class Layout {
   private _breakpoint: string;
+  private _breakpointWidth: number | undefined;
   private _margin: Margin;
   private _width: number;
   private _height: number;
@@ -22,8 +23,9 @@ export class Layout {
 
   constructor({
     breakpoint,
-    margin,
     numberOfCols,
+    breakpointWidth,
+    margin,
     autoHeight,
     width,
     height,
@@ -31,6 +33,7 @@ export class Layout {
   }: {
     breakpoint: string;
     numberOfCols: number;
+    breakpointWidth?: number;
     margin?: Margin;
     autoHeight?: boolean;
     width?: number;
@@ -39,6 +42,12 @@ export class Layout {
   }) {
     this._breakpoint = breakpoint;
     this._numberOfCols = numberOfCols;
+
+    if (typeof breakpointWidth !== "undefined") {
+      this._breakpointWidth = breakpointWidth;
+    } else {
+      this._breakpointWidth = undefined;
+    }
 
     if (typeof margin !== "undefined") {
       this._margin = margin;
@@ -76,6 +85,12 @@ export class Layout {
   }
   set breakpoint(b: string) {
     this._breakpoint = b;
+  }
+  get breakpointWidth() {
+    return this._breakpointWidth;
+  }
+  set breakpointWidth(bw: number | undefined) {
+    this._breakpointWidth = bw;
   }
   get margin() {
     return this._margin;
@@ -315,7 +330,6 @@ export class Layout {
     this.syncItems(items);
   }
   itemDraggingComplete(item: Item) {
-    console.log("dragging complete");
     this.itemBeingDragged = false;
     let dashItem = this.getDashItemById(item.id);
     if (dashItem) {
@@ -349,6 +363,24 @@ export class Layout {
       this.rowHeight,
       this.margin
     );
+    //Take a copy of items
+    let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
+    //Remove the item being resized as the placeholder takes its place. Otherwise the item will snap while being resized.
+    let items = itemsCopy.filter(i => {
+      return i.id !== item.id;
+    });
+    let placeholderIndex = items.findIndex(i => {
+      return i.id === this.placeholder!.id;
+    });
+    items = this.moveElement(
+      items,
+      items[placeholderIndex],
+      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
+      true
+    );
+    items = this.compact(items);
+    this.syncItems(items);
   }
   itemResizingComplete(item: Item) {
     this.itemBeingResized = false;
@@ -364,7 +396,7 @@ export class Layout {
     this.placeholder!.width = 0;
     this.placeholder!.height = 0;
   }
-  //Layout Utils
+  //Collision Utils
   checkForCollision(d1: Item, d2: Item) {
     if (d1.id === d2.id) {
       return false;
@@ -394,6 +426,7 @@ export class Layout {
   getAllCollisions(items: Item[], d: Item) {
     return items.filter(item => this.checkForCollision(item, d));
   }
+  //Layout and Item Moving Methods
   correctBounds() {
     this._dashItems.forEach(item => {
       if (item.x + item.width > this.numberOfCols) {
@@ -408,7 +441,6 @@ export class Layout {
       }
     });
   }
-  //Layout and Item Moving Methods
   compact(items: Item[]) {
     const sorted = this.sortItems(items);
     const compareWith = [] as Item[];

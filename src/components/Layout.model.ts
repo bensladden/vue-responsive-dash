@@ -10,7 +10,6 @@ export class Layout {
   private _numberOfCols: number;
   private _autoHeight: boolean;
   private _rowHeight: number;
-  private _colWidth: number;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
   private _dashItems: DashItem[] = [];
@@ -77,8 +76,6 @@ export class Layout {
     } else {
       this._rowHeight = 200;
     }
-
-    this._colWidth = this.calculateColWidth();
   }
   get breakpoint() {
     return this._breakpoint;
@@ -103,7 +100,7 @@ export class Layout {
   }
   set width(w: number) {
     this._width = w;
-    this.updateResponsiveVariables();
+    this.updateDashItems();
   }
   get height() {
     if (this.autoHeight) {
@@ -119,7 +116,7 @@ export class Layout {
   }
   set numberOfCols(n: number) {
     this._numberOfCols = n;
-    this.updateResponsiveVariables();
+    this.updateDashItems();
   }
   get autoHeight() {
     return this._autoHeight;
@@ -134,10 +131,9 @@ export class Layout {
     this._rowHeight = rh;
   }
   get colWidth() {
-    return this._colWidth;
-  }
-  set colWidth(cW: number) {
-    this._colWidth = cW;
+    return (
+      (this.width - (this.margin.x + this.numberOfCols + 1)) / this.numberOfCols
+    );
   }
   //Item Methods
   get itemBeingDragged() {
@@ -159,12 +155,6 @@ export class Layout {
     this.placeholder = p;
   }
   //Reactive Methods
-  calculateColWidth() {
-    this.colWidth =
-      (this.width - (this.margin.x + this.numberOfCols + 1)) /
-      this.numberOfCols;
-    return this.colWidth;
-  }
   calculateHeight() {
     let maxY = 0;
     let bottomY = 0;
@@ -182,11 +172,6 @@ export class Layout {
       item.rowHeight = this.rowHeight;
       item.margin = this.margin;
     });
-  }
-  updateResponsiveVariables() {
-    this.calculateColWidth();
-    //Update dash items
-    this.updateDashItems();
   }
   //DashItem Methods
   addDashItem(d: DashItem) {
@@ -319,6 +304,8 @@ export class Layout {
     let placeholderIndex = items.findIndex(i => {
       return i.id === this.placeholder!.id;
     });
+    items = this.correctBounds(items);
+    console.log("items after compact", items);
     items = this.moveElement(
       items,
       items[placeholderIndex],
@@ -427,19 +414,24 @@ export class Layout {
     return items.filter(item => this.checkForCollision(item, d));
   }
   //Layout and Item Moving Methods
-  correctBounds() {
-    this._dashItems.forEach(item => {
-      if (item.x + item.width > this.numberOfCols) {
-        item.x = this.numberOfCols - item.width;
+  correctBounds(items: Item[]) {
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].x + items[i].width > this.numberOfCols) {
+        items[i].x = this.numberOfCols - items[i].width;
+        console.log("too far right");
       }
-      if (item.x < 0) {
-        item.x = 0;
+      if (items[i].x < 0) {
+        items[i].x = 0;
+        console.log("too far left");
       }
-      if (item.width > this.numberOfCols) {
-        item.x = 0;
-        item.width = this.numberOfCols;
+      if (items[i].width > this.numberOfCols) {
+        items[i].x = 0;
+        items[i].width = this.numberOfCols;
+        console.log("too wide");
       }
-    });
+    }
+    console.log("items after compact", items);
+    return items;
   }
   compact(items: Item[]) {
     const sorted = this.sortItems(items);

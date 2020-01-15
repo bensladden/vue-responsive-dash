@@ -305,7 +305,7 @@ export class Layout {
       return i.id === this.placeholder!.id;
     });
     //items = this.correctBounds(items);
-    items = this.moveElement(
+    items = this.moveItem(
       items,
       items[placeholderIndex],
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
@@ -358,7 +358,7 @@ export class Layout {
     let placeholderIndex = items.findIndex(i => {
       return i.id === this.placeholder!.id;
     });
-    items = this.moveElement(
+    items = this.moveItem(
       items,
       items[placeholderIndex],
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
@@ -475,7 +475,7 @@ export class Layout {
     }
     return i;
   }
-  moveElement(
+  moveItem(
     items: Item[],
     d: Item,
     x: number,
@@ -500,7 +500,7 @@ export class Layout {
       let collisionIndex = items.findIndex(item => {
         return item.id === collision.id;
       });
-      items = this.moveElementAwayFromCollision(
+      items = this.moveItemFromCollision(
         items,
         d,
         items[collisionIndex],
@@ -509,7 +509,7 @@ export class Layout {
     }
     return items;
   }
-  moveElementAwayFromCollision(
+  moveItemFromCollision(
     items: Item[],
     colllidesWith: Item,
     itemToMove: Item,
@@ -525,10 +525,10 @@ export class Layout {
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
       if (!this.getFirstCollision(items, fakeItem)) {
-        return this.moveElement(items, itemToMove, itemToMove.x, fakeItem.y);
+        return this.moveItem(items, itemToMove, itemToMove.x, fakeItem.y);
       }
     }
-    return this.moveElement(items, itemToMove, itemToMove.x, itemToMove.y + 1);
+    return this.moveItem(items, itemToMove, itemToMove.x, itemToMove.y + 1);
   }
   syncItems(items: Item[]) {
     items.forEach(i => {

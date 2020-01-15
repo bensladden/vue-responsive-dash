@@ -166,13 +166,6 @@ export class Layout {
     }
     return maxY * (this.rowHeight + this.margin.y) + this.margin.y;
   }
-  updateDashItems() {
-    this._dashItems.forEach(item => {
-      item.colWidth = this.colWidth;
-      item.rowHeight = this.rowHeight;
-      item.margin = this.margin;
-    });
-  }
   //DashItem Methods
   addDashItem(d: DashItem) {
     this._dashItems.push(d);
@@ -280,6 +273,14 @@ export class Layout {
     }
     return null;
   }
+  updateDashItems() {
+    this._dashItems.forEach(item => {
+      item.colWidth = this.colWidth;
+      item.rowHeight = this.rowHeight;
+      item.margin = this.margin;
+    });
+  }
+  //Item Methods
   get items() {
     let items: Item[] = [];
     this._dashItems.forEach(dashItem => {

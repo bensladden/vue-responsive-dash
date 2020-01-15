@@ -49,6 +49,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "lg",
+          breakpointWidth: 1200,
           numberOfCols: 10,
           items: [
             {
@@ -63,6 +64,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "md",
+          breakpointWidth: 996,
           numberOfCols: 8,
           items: [
             {
@@ -77,6 +79,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "sm",
+          breakpointWidth: 768,
           numberOfCols: 4,
           items: [
             {
@@ -91,6 +94,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "xs",
+          breakpointWidth: 480,
           numberOfCols: 2,
           items: [
             {
@@ -105,6 +109,7 @@ export default Vue.extend({
         },
         {
           breakpoint: "xxs",
+          breakpointWidth: 0,
           numberOfCols: 1,
           items: [
             {

@@ -132,7 +132,7 @@ export class Layout {
   }
   get colWidth() {
     return (
-      (this.width - (this.margin.x + this.numberOfCols + 1)) / this.numberOfCols
+      (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols
     );
   }
   //Item Methods

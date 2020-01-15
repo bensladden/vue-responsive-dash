@@ -9,8 +9,8 @@ export class Layout {
   private _height: number;
   private _numberOfCols: number;
   private _autoHeight: boolean;
+  private _keepSquare: boolean;
   private _rowHeight: number;
-  private _colWidth: number;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
   private _dashItems: DashItem[] = [];
@@ -27,6 +27,7 @@ export class Layout {
     breakpointWidth,
     margin,
     autoHeight,
+    keepSquare,
     width,
     height,
     rowHeight
@@ -36,6 +37,7 @@ export class Layout {
     breakpointWidth?: number;
     margin?: Margin;
     autoHeight?: boolean;
+    keepSquare?: boolean;
     width?: number;
     height?: number;
     rowHeight?: number;
@@ -60,6 +62,11 @@ export class Layout {
     } else {
       this._autoHeight = true;
     }
+    if (typeof keepSquare !== "undefined") {
+      this._keepSquare = keepSquare;
+    } else {
+      this._keepSquare = true;
+    }
 
     if (typeof width !== "undefined") {
       this._width = width;
@@ -77,8 +84,6 @@ export class Layout {
     } else {
       this._rowHeight = 200;
     }
-
-    this._colWidth = this.calculateColWidth();
   }
   get breakpoint() {
     return this._breakpoint;
@@ -103,7 +108,7 @@ export class Layout {
   }
   set width(w: number) {
     this._width = w;
-    this.updateResponsiveVariables();
+    this.updateDashItems();
   }
   get height() {
     if (this.autoHeight) {
@@ -119,7 +124,7 @@ export class Layout {
   }
   set numberOfCols(n: number) {
     this._numberOfCols = n;
-    this.updateResponsiveVariables();
+    this.updateDashItems();
   }
   get autoHeight() {
     return this._autoHeight;
@@ -127,17 +132,25 @@ export class Layout {
   set autoHeight(ah: boolean) {
     this._autoHeight = ah;
   }
+  get keepSquare() {
+    return this._keepSquare;
+  }
+  set keepSquare(k: boolean) {
+    this._keepSquare = k;
+  }
   get rowHeight() {
+    if (this.keepSquare) {
+      return this.colWidth;
+    }
     return this._rowHeight;
   }
   set rowHeight(rh: number) {
     this._rowHeight = rh;
   }
   get colWidth() {
-    return this._colWidth;
-  }
-  set colWidth(cW: number) {
-    this._colWidth = cW;
+    return (
+      (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols
+    );
   }
   //Item Methods
   get itemBeingDragged() {
@@ -159,12 +172,6 @@ export class Layout {
     this.placeholder = p;
   }
   //Reactive Methods
-  calculateColWidth() {
-    this.colWidth =
-      (this.width - (this.margin.x + this.numberOfCols + 1)) /
-      this.numberOfCols;
-    return this.colWidth;
-  }
   calculateHeight() {
     let maxY = 0;
     let bottomY = 0;
@@ -175,18 +182,6 @@ export class Layout {
       }
     }
     return maxY * (this.rowHeight + this.margin.y) + this.margin.y;
-  }
-  updateDashItems() {
-    this._dashItems.forEach(item => {
-      item.colWidth = this.colWidth;
-      item.rowHeight = this.rowHeight;
-      item.margin = this.margin;
-    });
-  }
-  updateResponsiveVariables() {
-    this.calculateColWidth();
-    //Update dash items
-    this.updateDashItems();
   }
   //DashItem Methods
   addDashItem(d: DashItem) {
@@ -295,6 +290,14 @@ export class Layout {
     }
     return null;
   }
+  updateDashItems() {
+    this._dashItems.forEach(item => {
+      item.colWidth = this.colWidth;
+      item.rowHeight = this.rowHeight;
+      item.margin = this.margin;
+    });
+  }
+  //Item Methods
   get items() {
     let items: Item[] = [];
     this._dashItems.forEach(dashItem => {
@@ -319,7 +322,8 @@ export class Layout {
     let placeholderIndex = items.findIndex(i => {
       return i.id === this.placeholder!.id;
     });
-    items = this.moveElement(
+    //items = this.correctBounds(items);
+    items = this.moveItem(
       items,
       items[placeholderIndex],
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
@@ -372,7 +376,7 @@ export class Layout {
     let placeholderIndex = items.findIndex(i => {
       return i.id === this.placeholder!.id;
     });
-    items = this.moveElement(
+    items = this.moveItem(
       items,
       items[placeholderIndex],
       DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
@@ -427,19 +431,24 @@ export class Layout {
     return items.filter(item => this.checkForCollision(item, d));
   }
   //Layout and Item Moving Methods
-  correctBounds() {
-    this._dashItems.forEach(item => {
-      if (item.x + item.width > this.numberOfCols) {
-        item.x = this.numberOfCols - item.width;
-      }
-      if (item.x < 0) {
-        item.x = 0;
-      }
-      if (item.width > this.numberOfCols) {
-        item.x = 0;
-        item.width = this.numberOfCols;
-      }
-    });
+  correctItemBounds(item: Item) {
+    if (item.x + item.width > this.numberOfCols) {
+      item.x = this.numberOfCols - item.width;
+    }
+    if (item.x < 0) {
+      item.x = 0;
+    }
+    if (item.width > this.numberOfCols) {
+      item.x = 0;
+      item.width = this.numberOfCols;
+    }
+    return item;
+  }
+  correctBounds(items: Item[]) {
+    for (let i = 0; i < items.length; i++) {
+      items[i] = this.correctItemBounds(items[i]);
+    }
+    return items;
   }
   compact(items: Item[]) {
     const sorted = this.sortItems(items);
@@ -484,7 +493,7 @@ export class Layout {
     }
     return i;
   }
-  moveElement(
+  moveItem(
     items: Item[],
     d: Item,
     x: number,
@@ -492,16 +501,11 @@ export class Layout {
     isUserAction?: boolean
   ) {
     const movingUp: boolean = d.y > y;
-    let index = items.findIndex(item => {
-      return item.id === d.id;
-    });
     d.x = x;
     d.y = y;
     d.moved = true;
-    items[index].x = x;
-    items[index].y = y;
-    items[index].moved = true;
-    let sorted = this.sortItems(items, movingUp);
+    d = this.correctItemBounds(d);
+    const sorted = this.sortItems(items, movingUp);
     const collisions = this.getAllCollisions(sorted, d);
     for (let collision of collisions) {
       if (collision.moved) {
@@ -511,16 +515,19 @@ export class Layout {
       if (d.y > collision.y && d.y - collision.y > collision.height / 4) {
         continue;
       }
-      items = this.moveElementAwayFromCollision(
+      let collisionIndex = items.findIndex(item => {
+        return item.id === collision.id;
+      });
+      items = this.moveItemFromCollision(
         items,
         d,
-        collision,
+        items[collisionIndex],
         isUserAction
       );
     }
     return items;
   }
-  moveElementAwayFromCollision(
+  moveItemFromCollision(
     items: Item[],
     colllidesWith: Item,
     itemToMove: Item,
@@ -536,10 +543,10 @@ export class Layout {
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
       if (!this.getFirstCollision(items, fakeItem)) {
-        return this.moveElement(items, itemToMove, itemToMove.x, fakeItem.y);
+        return this.moveItem(items, itemToMove, itemToMove.x, fakeItem.y);
       }
     }
-    return this.moveElement(items, itemToMove, itemToMove.x, itemToMove.y + 1);
+    return this.moveItem(items, itemToMove, itemToMove.x, itemToMove.y + 1);
   }
   syncItems(items: Item[]) {
     items.forEach(i => {

@@ -315,7 +315,6 @@ export class Layout {
     this.syncItems(items);
   }
   itemDraggingComplete(item: Item) {
-    console.log("dragging complete");
     this.itemBeingDragged = false;
     let dashItem = this.getDashItemById(item.id);
     if (dashItem) {
@@ -349,6 +348,24 @@ export class Layout {
       this.rowHeight,
       this.margin
     );
+    //Take a copy of items
+    let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
+    //Remove the item being resized as the placeholder takes its place. Otherwise the item will snap while being resized.
+    let items = itemsCopy.filter(i => {
+      return i.id !== item.id;
+    });
+    let placeholderIndex = items.findIndex(i => {
+      return i.id === this.placeholder!.id;
+    });
+    items = this.moveElement(
+      items,
+      items[placeholderIndex],
+      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
+      true
+    );
+    items = this.compact(items);
+    this.syncItems(items);
   }
   itemResizingComplete(item: Item) {
     this.itemBeingResized = false;

@@ -9,6 +9,7 @@ export class Layout {
   private _height: number;
   private _numberOfCols: number;
   private _autoHeight: boolean;
+  private _keepSquare: boolean;
   private _rowHeight: number;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
@@ -26,6 +27,7 @@ export class Layout {
     breakpointWidth,
     margin,
     autoHeight,
+    keepSquare,
     width,
     height,
     rowHeight
@@ -35,6 +37,7 @@ export class Layout {
     breakpointWidth?: number;
     margin?: Margin;
     autoHeight?: boolean;
+    keepSquare?: boolean;
     width?: number;
     height?: number;
     rowHeight?: number;
@@ -58,6 +61,11 @@ export class Layout {
       this._autoHeight = autoHeight;
     } else {
       this._autoHeight = true;
+    }
+    if (typeof keepSquare !== "undefined") {
+      this._keepSquare = keepSquare;
+    } else {
+      this._keepSquare = true;
     }
 
     if (typeof width !== "undefined") {
@@ -124,7 +132,16 @@ export class Layout {
   set autoHeight(ah: boolean) {
     this._autoHeight = ah;
   }
+  get keepSquare() {
+    return this._keepSquare;
+  }
+  set keepSquare(k: boolean) {
+    this._keepSquare = k;
+  }
   get rowHeight() {
+    if (this.keepSquare) {
+      return this.colWidth;
+    }
     return this._rowHeight;
   }
   set rowHeight(rh: number) {

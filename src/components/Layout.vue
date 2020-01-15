@@ -41,6 +41,7 @@ export default {
   name: "Dashboard",
   props: {
     breakpoint: String,
+    breakpointWidth: Number,
     items: Array,
     numberOfCols: Number
   },

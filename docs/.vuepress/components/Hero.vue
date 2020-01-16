@@ -5,7 +5,9 @@
       <Badge :text="$__VERSION__" type="tip" vertical="middle" />
     </h1>
     <p style="text-align: center;">A Responsive Dash for the Vue Framework</p>
-    <div class="box"></div>
+
+      <Example />
+
     <div class="box">
       <router-link class="button" to="/guide/">Get started</router-link>
     </div>

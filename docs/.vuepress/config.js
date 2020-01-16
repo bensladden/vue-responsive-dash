@@ -47,5 +47,14 @@ module.exports = {
 			}
 		]
 	},
-	plugins: ['@vuepress/last-updated']
+	plugins: ['@vuepress/last-updated',
+		'vuepress-plugin-typescript',
+		{
+		  tsLoaderOptions: {
+			// All options of ts-loader
+		  },
+		},
+	  ]
+
+		
 }

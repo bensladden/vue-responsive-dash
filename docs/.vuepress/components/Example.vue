@@ -1,7 +1,8 @@
 <template>
-    <dashboard :id="'dashExample'" :layouts="layouts">
+<div v-if="Dashboard && Layout && DashItem">
+    <dashboard :id="'dashExample'" :layouts="dlayouts">
       <layout
-        v-for="layout in layouts"
+        v-for="layout in dlayouts"
         v-bind="layout"
         :key="layout.breakpoint"
       >
@@ -17,20 +18,15 @@
 </template>
 
 <script>
-import Dashboard from "../../../src/components/Dashboard.vue";
-import Layout from "../../../src/components/Layout.vue";
-import DashItem from "../../../src/components/DashItem.vue";
 
 export default {
   name: "Example",
-  components: {
-    Dashboard,
-    Layout,
-    DashItem
-  },
   data() {
     return {
-      layouts: [
+      Dashboard:null,
+      Layouts:null,
+      DashItem:null,
+      dlayouts: [
         {
           breakpoint: "xl",
           numberOfCols: 12,
@@ -141,7 +137,15 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    import("../../../src/components").then(mod => {
+      this.DashItem = mod.DashItem;
+      this.Layout = mod.Layout;
+      this.DashItem = mod.DashItem;
+    });
   }
+
 };
 </script>
 

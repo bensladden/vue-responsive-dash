@@ -1,6 +1,6 @@
 <template>
   <div v-show="currentBreakpoint === breakpoint">
-    <div v-if="l" :style="{ height: height }">
+    <div v-if="l" :style="{ position: 'relative', height: height }">
       <slot></slot>
       <DashItem
         :id="placeholderId"
@@ -11,7 +11,7 @@
         <div class="placeholder"></div>
       </DashItem>
     </div>
-    <div>
+    <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />
       Current ColWidth: {{ colWidth }} <br />
       Layout Number of Cols: {{ numberOfCols }} <br />
@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      debug: false,
       l: null,
       placeholderId: "-1Placeholder"
     };

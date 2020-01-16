@@ -8,7 +8,6 @@
 
 <script>
 import { Dashboard } from "./Dashboard.model";
-import { Layout } from "../inferfaces";
 
 export default {
   name: "Dashboard",

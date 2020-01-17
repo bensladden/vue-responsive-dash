@@ -1,6 +1,6 @@
-import resize from "vue-element-resize-detector";
+//import resize from "vue-element-resize-detector";
 export default ({ Vue }) => {
 	Vue.prototype.$__VERSION__ = process.env.VERSION
 
-	Vue.use(resize)
+	//Vue.use(resize)
 }

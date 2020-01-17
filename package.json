@@ -1,6 +1,19 @@
 {
 	"name": "vue-responsive-dash",
-	"version": "0.2.1",
+	"version": "0.2.2",
+	"keywords": [
+		"vuejs",
+		"vue",
+		"responsive",
+		"drag",
+		"draggable",
+		"resize",
+		"resizable",
+		"dashboard",
+		"grid",
+		"grid-layout",
+		"components"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/bensladden/vue-responsive-dash.git"

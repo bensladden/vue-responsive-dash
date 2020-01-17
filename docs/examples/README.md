@@ -4,7 +4,7 @@ sidebar: auto
 
 # Examples
 
-## 1
+## Green
 
 
 [![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark)

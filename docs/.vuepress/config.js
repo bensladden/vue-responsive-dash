@@ -26,8 +26,8 @@ module.exports = {
 				items: [
 					{ text: 'Getting Started', link: '/guide/#getting-started' },
 					{ text: 'Setup', link: '/guide/#setup' },
-					{ text: 'How to Use with Vue', link: '/guide/#how-to-use-in-vue' },
-					{ text: 'Support', link: '/guide/#show-your-support' },
+					{ text: 'How to Use with Vue', link: '/guide/#how-to-use-with-vue' },
+					{ text: 'Support', link: '/guide/#support' },
 					{ text: 'Contributing', link: '/guide/#contributing' },
 					{ text: 'Bug Report', link: '/guide/#bug-report' }
 				]
@@ -42,7 +42,7 @@ module.exports = {
 			}, {
 				text: 'Examples',
 				items: [
-					{ text: '1', link: '/examples/#1' }
+					{ text: 'Green', link: '/examples/#green' }
 				]
 			}
 		]

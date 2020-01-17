@@ -29,7 +29,7 @@ $ npm install vue-responsive-dash
 ```vue
 <template>
   <div id="app">
-    <dashboard :id="'dashExample'" :layouts="dlayouts">
+    <dashboard :id="'dashExample'">
       <layout v-for="layout in dlayouts" v-bind="layout" :debug="true" :key="layout.breakpoint">
         <dash-item v-for="item in layout.items" v-bind.sync="item" :key="item.id">
           <div class="content"></div>
@@ -123,30 +123,6 @@ export default {
   width: 100%;
   border: 2px solid #42b983;
   border-radius: 5px;
-}
-.invisible {
-  display: none;
-}
-.item {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  position: absolute;
-  display: inline-block;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-  -webkit-transition-property: left, top, right;
-  transition-property: left, top, right;
-}
-.item.dragging {
-  -webkit-transition: none;
-  transition: none;
-  z-index: 3;
-}
-.placeholder {
-  height: 100%;
-  width: 100%;
-  background-color: red;
-  opacity: 0.2;
 }
 </style>
 

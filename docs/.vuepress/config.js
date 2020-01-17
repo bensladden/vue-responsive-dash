@@ -27,7 +27,6 @@ module.exports = {
 					{ text: 'Getting Started', link: '/guide/#getting-started' },
 					{ text: 'Setup', link: '/guide/#setup' },
 					{ text: 'How to Use with Vue', link: '/guide/#how-to-use-in-vue' },
-					{ text: 'How to use with Nuxt', link: '/guide/#how-to-use-in-nuxt' },
 					{ text: 'Support', link: '/guide/#show-your-support' },
 					{ text: 'Contributing', link: '/guide/#contributing' },
 					{ text: 'Bug Report', link: '/guide/#bug-report' }
@@ -36,6 +35,7 @@ module.exports = {
 				text: 'API',
 				items: [
 					{ text: 'Dashboard', link: '/api/#dashboard' },
+					{ text: 'Layout', link: '/api/#layout' },
 					{ text: 'Dash Item', link: '/api/#dash-item' }
 
 				]

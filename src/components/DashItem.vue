@@ -182,7 +182,6 @@
       </div>
     </div>
     <slot></slot>
-    <!-- <button @click="dragging = !dragging">{{ dragging }}</button> -->
   </div>
 </template>
 

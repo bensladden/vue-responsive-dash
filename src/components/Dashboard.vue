@@ -12,8 +12,7 @@ import { resize } from "vue-element-resize-detector";
 export default {
   name: "Dashboard",
   props: {
-    id: { type: [Number, String], required: true },
-    layouts: Array
+    id: { type: [Number, String], required: true }
   },
   components: {},
   directives: {
@@ -21,8 +20,7 @@ export default {
   },
   data() {
     return {
-      d: null,
-      dragging: false
+      d: null
     };
   },
   provide() {

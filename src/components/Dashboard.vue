@@ -42,11 +42,4 @@ export default {
 };
 </script>
 
-<style>
-.placeholder {
-  height: 100%;
-  width: 100%;
-  background-color: red;
-  opacity: 0.2;
-}
-</style>
+<style></style>

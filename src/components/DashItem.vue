@@ -353,11 +353,10 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style>
 .invisible {
   display: none;
 }
-
 .item {
   box-sizing: border-box;
   position: absolute;

@@ -1,7 +1,7 @@
 # vue-responsive-dash
 
+A Responsive Dashboard made with vue and typescript.
 <p align="center">
-
 <img alt="netlify" src="https://img.shields.io/netlify/0d5865ba-90df-4e35-826f-296d6fc6b106">
 <img alt="deps" src ="https://img.shields.io/david/bensladden/vue-responsive-dash">
 <img alt="code-size" src ="https://img.shields.io/github/languages/code-size/bensladden/vue-responsive-dash">
@@ -11,6 +11,9 @@
 <img alt="lic" src="https://img.shields.io/github/license/bensladden/vue-responsive-dash">
 <img alt="npm" src="https://img.shields.io/npm/v/vue-responsive-dash">
 </p>
+
+
+Example: [![Edit StickMan](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark)
 
 ## ⚙️ Installation
 ```sh

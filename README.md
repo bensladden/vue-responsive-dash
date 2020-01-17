@@ -1,15 +1,16 @@
 # vue-responsive-dash
 
 A Responsive Dashboard made with vue and typescript.
+
 <p align="center">
-<img alt="netlify" src="https://img.shields.io/netlify/0d5865ba-90df-4e35-826f-296d6fc6b106">
-<img alt="deps" src ="https://img.shields.io/david/bensladden/vue-responsive-dash">
-<img alt="code-size" src ="https://img.shields.io/github/languages/code-size/bensladden/vue-responsive-dash">
-<img alt="repo-size" src="https://img.shields.io/github/repo-size/bensladden/vue-responsive-dash">
-<img alt="open-issues" src="https://img.shields.io/github/issues-raw/bensladden/vue-responsive-dash">
-<img alt="pull-req" src="https://img.shields.io/github/issues-pr/bensladden/vue-responsive-dash">
-<img alt="lic" src="https://img.shields.io/github/license/bensladden/vue-responsive-dash">
-<img alt="npm" src="https://img.shields.io/npm/v/vue-responsive-dash">
+    <img alt="netlify" src="https://img.shields.io/netlify/0d5865ba-90df-4e35-826f-296d6fc6b106">
+    <img alt="deps" src ="https://img.shields.io/david/bensladden/vue-responsive-dash">
+    <img alt="code-size" src ="https://img.shields.io/github/languages/code-size/bensladden/vue-responsive-dash">
+    <img alt="repo-size" src="https://img.shields.io/github/repo-size/bensladden/vue-responsive-dash">
+    <img alt="open-issues" src="https://img.shields.io/github/issues-raw/bensladden/vue-responsive-dash">
+    <img alt="pull-req" src="https://img.shields.io/github/issues-pr/bensladden/vue-responsive-dash">
+    <img alt="lic" src="https://img.shields.io/github/license/bensladden/vue-responsive-dash">
+    <img alt="npm" src="https://img.shields.io/npm/v/vue-responsive-dash">
 </p>
 
 

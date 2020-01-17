@@ -15,6 +15,7 @@
         </Dash-Item>
       </layout>
     </dashboard>
+</div>
 </template>
 
 <script>
@@ -140,7 +141,7 @@ export default {
   },
   mounted() {
     import("../../../src/components").then(mod => {
-      this.DashItem = mod.DashItem;
+      this.Dashboard = mod.Dashboard;
       this.Layout = mod.Layout;
       this.DashItem = mod.DashItem;
     });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :id="id" :ref="id" v-if="d" v-resize @resize="onResize">
+    <div :id="id" :ref="id" v-if="d" v-rlocal @resize="onResize">
       <slot></slot>
     </div>
   </div>
@@ -8,7 +8,7 @@
 
 <script>
 import { Dashboard } from "./Dashboard.model";
-
+import { resize } from "vue-element-resize-detector";
 export default {
   name: "Dashboard",
   props: {
@@ -16,6 +16,9 @@ export default {
     layouts: Array
   },
   components: {},
+  directives: {
+    rlocal: resize
+  },
   data() {
     return {
       d: null,

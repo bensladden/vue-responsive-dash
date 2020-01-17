@@ -48,6 +48,6 @@
 	},
 	"dependencies": {
 		"ste-simple-events": "^1.6.4",
-		"vue-element-resize-detector": "^1.0.2"
+		"vue-element-resize-detector": "^1.0.5"
 	}
 }

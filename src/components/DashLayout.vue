@@ -41,10 +41,10 @@ export default {
   name: "DashLayout",
   inheritAttrs: false,
   props: {
-    breakpoint: String,
+    breakpoint: { type: String, required: true },
     breakpointWidth: Number,
     items: Array,
-    numberOfCols: Number
+    numberOfCols: { type: Number, default: 12 }
   },
   components: {
     DashItem

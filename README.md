@@ -1,7 +1,7 @@
 # vue-responsive-dash
 
-A Responsive Dashboard (grid) made with vue and typescript. 
-Heavily inspired by React-Grid-Layout & Vue-Grid-Layout
+A Responsive, Draggable & Resizable Dashboard (grid) made with vue and typescript. 
+Inspired by React-Grid-Layout & Vue-Grid-Layout
 
 <p align="center">
     <img alt="netlify" src="https://img.shields.io/netlify/0d5865ba-90df-4e35-826f-296d6fc6b106">

@@ -4,7 +4,7 @@
       Vue-Responsive-Dash
       <Badge :text="$__VERSION__" type="tip" vertical="middle" />
     </h1>
-    <p style="text-align: center;">A Responsive Dash for the Vue Framework</p>
+    <p style="text-align: center;">A Responsive, Draggable & Resizable Dashboard (grid) made with vue and typescript</p>
     <ClientOnly>
       <Example />
     </ClientOnly>

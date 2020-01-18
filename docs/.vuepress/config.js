@@ -35,7 +35,7 @@ module.exports = {
 				text: 'API',
 				items: [
 					{ text: 'Dashboard', link: '/api/#dashboard' },
-					{ text: 'Layout', link: '/api/#layout' },
+					{ text: 'Layout', link: '/api/#dash-layout' },
 					{ text: 'Dash Item', link: '/api/#dash-item' }
 
 				]

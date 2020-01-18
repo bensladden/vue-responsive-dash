@@ -24,9 +24,9 @@ module.exports = {
 			{
 				text: 'Guide',
 				items: [
-					{ text: 'Getting Started', link: '/guide/#getting-started' },
-					{ text: 'Setup', link: '/guide/#setup' },
-					{ text: 'How to Use with Vue', link: '/guide/#how-to-use-with-vue' },
+					{ text: 'Getting Started', link: '/guide/#getting-started',  target:'_blank'},
+					{ text: 'Setup', link: '/guide/#setup',  target:'_blank' },
+					{ text: 'How to Use with Vue', link: '/guide/#how-to-use-with-vue', target:'_blank' },
 					{ text: 'Support', link: '/guide/#support' },
 					{ text: 'Contributing', link: '/guide/#contributing' },
 					{ text: 'Bug Report', link: '/guide/#bug-report' }
@@ -53,7 +53,7 @@ module.exports = {
 		  tsLoaderOptions: {
 			// All options of ts-loader
 		  },
-		},
+		}
 	  ]
 
 		

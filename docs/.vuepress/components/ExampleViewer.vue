@@ -9,7 +9,9 @@
         <slot name="result" />
       </div>
       <div v-else>
-        <slot />
+        <ClientOnly>
+          <slot />
+        </ClientOnly>
       </div>
     </div>
   </div>

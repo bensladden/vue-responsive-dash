@@ -215,7 +215,7 @@ const watchEmitProp = (key, deep) => ({
 });
 
 export default {
-  name: "item",
+  name: "DashItem",
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
@@ -228,7 +228,7 @@ export default {
     resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
-  inject: ["$layout"],
+  inject: { $layout: { default: null } },
   provide() {
     return {
       $item: () => this.item
@@ -238,7 +238,8 @@ export default {
     return {
       item: null,
       dragging: false,
-      resizing: false
+      resizing: false,
+      unWatch: null
     };
   },
   computed: {
@@ -251,7 +252,10 @@ export default {
       };
     },
     layout() {
-      return this.$layout();
+      if (this.$layout) {
+        return this.$layout();
+      }
+      return null;
     },
     left() {
       return this.item.left;
@@ -340,9 +344,26 @@ export default {
   },
   mounted() {
     this.item = new DashItem(this.$props);
-    this.layout.addDashItem(this.item);
-    this.createPropWatchers();
-    this.createDashItemWatchers();
+
+    //Check if layout exists and if not then start a watcher
+    if (this.layout) {
+      this.layout.addDashItem(this.item);
+      this.createPropWatchers();
+      this.createDashItemWatchers();
+    } else {
+      this.unWatch = this.$watch(
+        "layout",
+        function(newValue) {
+          if (newValue) {
+            this.layout.addDashItem(this.item);
+            this.createPropWatchers();
+            this.createDashItemWatchers();
+            this.unWatch();
+          }
+        },
+        { immediate: true }
+      );
+    }
   },
   beforeDestroy() {
     if (this.layout) {

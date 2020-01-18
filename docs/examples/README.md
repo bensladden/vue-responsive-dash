@@ -16,7 +16,7 @@ sidebar: auto
 <template>
   <div id="app">
     <dashboard :id="'dashExample'">
-      <layout v-for="layout in dlayouts" v-bind="layout" :debug="true" :key="layout.breakpoint">
+      <dash-layout v-for="layout in dlayouts" v-bind="layout" :debug="true" :key="layout.breakpoint">
         <dash-item v-for="item in layout.items" v-bind.sync="item" :key="item.id">
           <div class="content"></div>
 
@@ -48,19 +48,19 @@ sidebar: auto
             </svg>
           </template>
         </dash-item>
-      </layout>
+      </dash-layout>
     </dashboard>
   </div>
 </template>
 
 <script>
-import { Dashboard, Layout, DashItem } from "vue-responsive-dash";
+import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
 
 export default {
   name: "App",
   components: {
     Dashboard,
-    Layout,
+    DashLayout,
     DashItem
   },
   data() {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <dashboard :id="'dashTest'" :layouts="layouts">
-      <layout
+    <dashboard :id="'dashTest'">
+      <Dash-Layout
         v-for="layout in layouts"
         v-bind="layout"
         :key="layout.breakpoint"
@@ -13,7 +13,7 @@
         >
           <div class="content">{{ JSON.stringify(item, null, 2) }}</div>
         </Dash-Item>
-      </layout>
+      </Dash-Layout>
     </dashboard>
   </div>
 </template>
@@ -21,13 +21,13 @@
 <script lang="ts">
 import Vue from "vue";
 import DashItem from "./components/DashItem.vue";
-import Layout from "./components/Layout.vue";
+import DashLayout from "./components/DashLayout.vue";
 import Dashboard from "./components/Dashboard.vue";
 export default Vue.extend({
   name: "app",
   components: {
     DashItem,
-    Layout,
+    DashLayout,
     Dashboard
   },
   data() {

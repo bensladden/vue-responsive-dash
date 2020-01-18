@@ -38,7 +38,8 @@ const watchProp = (key, deep) => ({
 });
 
 export default {
-  name: "Dashboard",
+  name: "DashLayout",
+  inheritAttrs: false,
   props: {
     breakpoint: String,
     breakpointWidth: Number,
@@ -52,7 +53,8 @@ export default {
     return {
       debug: false,
       l: null,
-      placeholderId: "-1Placeholder"
+      placeholderId: "-1Placeholder",
+      unWatch: null
     };
   },
   provide() {
@@ -60,10 +62,13 @@ export default {
       $layout: () => this.l
     };
   },
-  inject: ["$dashboard"],
+  inject: { $dashboard: { default: null } },
   computed: {
     dashboard() {
-      return this.$dashboard();
+      if (this.$dashboard) {
+        return this.$dashboard();
+      }
+      return null;
     },
     currentBreakpoint() {
       if (this.dashboard) {
@@ -104,12 +109,28 @@ export default {
       });
     }
   },
-  created() {
+  mounted() {
     this.l = new Layout(this.$props);
-    this.dashboard.addLayoutInstance(this.l);
+    //Check if dashboard exists and if not then start a watcher
+    if (this.dashboard) {
+      this.dashboard.addLayoutInstance(this.l);
+    } else {
+      this.unWatch = this.$watch(
+        "dashboard",
+        function(newValue) {
+          if (newValue) {
+            this.dashboard.addLayoutInstance(this.l);
+            this.unWatch();
+          }
+        },
+        { immediate: true }
+      );
+    }
   },
   beforeDestroy() {
-    this.dashboard.removeLayoutInstance(this.l);
+    if (this.dashboard) {
+      this.dashboard.removeLayoutInstance(this.l);
+    }
   }
 };
 </script>

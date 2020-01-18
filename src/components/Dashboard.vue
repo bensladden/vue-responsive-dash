@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div :id="id" :ref="id" v-if="d" v-rlocal @resize="onResize">
-      <slot></slot>
-    </div>
+  <div :id="id" :ref="id" v-if="d" v-rlocal @resize="onResize">
+    <slot></slot>
   </div>
 </template>
 
@@ -11,6 +9,7 @@ import { Dashboard } from "./Dashboard.model";
 import { resize } from "vue-element-resize-detector";
 export default {
   name: "Dashboard",
+  inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true }
   },

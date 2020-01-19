@@ -8104,11 +8104,9 @@ function () {
 
       this.onDragStartEvent = undefined;
       this.onDragStartLeft = 0;
-      this.onDragStartTop = 0;
-
-      if (event.dataTransfer) {
-        event.dataTransfer.clearData();
-      }
+      this.onDragStartTop = 0; // if (event.dataTransfer) {
+      //   event.dataTransfer.clearData();
+      // }
 
       this._onDragEndEventDispatcher.dispatch(this.toItem());
     }

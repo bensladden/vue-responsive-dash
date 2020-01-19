@@ -305,9 +305,9 @@ export class DashItem {
     this.onDragStartEvent = undefined;
     this.onDragStartLeft = 0;
     this.onDragStartTop = 0;
-    if (event.dataTransfer) {
-      event.dataTransfer.clearData();
-    }
+    // if (event.dataTransfer) {
+    //   event.dataTransfer.clearData();
+    // }
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   get onDragStart() {

@@ -25,19 +25,19 @@ export class Dashboard {
     if (typeof margin !== "undefined") {
       this._margin = margin;
     } else {
-      this._margin = { x: 10, y: 10 };
+      this._margin = Dashboard.defaults.margin;
     }
 
     if (typeof autoHeight !== "undefined") {
       this._autoHeight = autoHeight;
     } else {
-      this._autoHeight = true;
+      this._autoHeight = Dashboard.defaults.autoHeight;
     }
 
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 400;
+      this._width = Dashboard.defaults.width;
     }
   }
   get id() {
@@ -144,5 +144,12 @@ export class Dashboard {
     if (index >= 0) {
       this._layouts.splice(index, 1);
     }
+  }
+  static get defaults() {
+    return {
+      margin: { x: 10, y: 10 } as Margin,
+      autoHeight: true as boolean,
+      width: 400 as number
+    };
   }
 }

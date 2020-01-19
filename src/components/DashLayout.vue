@@ -42,9 +42,9 @@ export default {
   inheritAttrs: false,
   props: {
     breakpoint: { type: String, required: true },
-    breakpointWidth: Number,
+    breakpointWidth: { type: Number, default: Layout.defaults.breakpointWidth },
     items: Array,
-    numberOfCols: { type: Number, default: 12 }
+    numberOfCols: { type: Number, default: Layout.defaults.numberOfCols }
   },
   components: {
     DashItem

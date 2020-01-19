@@ -42,9 +42,8 @@ export default {
   inheritAttrs: false,
   props: {
     breakpoint: { type: String, required: true },
-    breakpointWidth: Number,
-    items: Array,
-    numberOfCols: { type: Number, default: 12 }
+    breakpointWidth: { type: Number, default: Layout.defaults.breakpointWidth },
+    numberOfCols: { type: Number, default: Layout.defaults.numberOfCols }
   },
   components: {
     DashItem
@@ -114,12 +113,14 @@ export default {
     //Check if dashboard exists and if not then start a watcher
     if (this.dashboard) {
       this.dashboard.addLayoutInstance(this.l);
+      this.createPropWatchers();
     } else {
       this.unWatch = this.$watch(
         "dashboard",
         function(newValue) {
           if (newValue) {
             this.dashboard.addLayoutInstance(this.l);
+            this.createPropWatchers();
             this.unWatch();
           }
         },

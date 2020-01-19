@@ -48,41 +48,41 @@ export class Layout {
     if (typeof breakpointWidth !== "undefined") {
       this._breakpointWidth = breakpointWidth;
     } else {
-      this._breakpointWidth = undefined;
+      this._breakpointWidth = Layout.defaults.breakpointWidth;
     }
 
     if (typeof margin !== "undefined") {
       this._margin = margin;
     } else {
-      this._margin = { x: 10, y: 10 };
+      this._margin = Layout.defaults.margin;
     }
 
     if (typeof autoHeight !== "undefined") {
       this._autoHeight = autoHeight;
     } else {
-      this._autoHeight = true;
+      this._autoHeight = Layout.defaults.autoHeight;
     }
     if (typeof keepSquare !== "undefined") {
       this._keepSquare = keepSquare;
     } else {
-      this._keepSquare = true;
+      this._keepSquare = Layout.defaults.keepSquare;
     }
 
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 400;
+      this._width = Layout.defaults.width;
     }
 
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
-      this._height = 400;
+      this._height = Layout.defaults.height;
     }
     if (typeof rowHeight !== "undefined") {
       this._rowHeight = rowHeight;
     } else {
-      this._rowHeight = 200;
+      this._rowHeight = Layout.defaults.rowHeight;
     }
   }
   get breakpoint() {
@@ -553,5 +553,17 @@ export class Layout {
       let dashItem = this.getDashItemById(i.id);
       dashItem!.fromItem(i);
     });
+  }
+  static get defaults() {
+    return {
+      numberOfCols: 12 as number,
+      breakpointWidth: undefined as number | undefined,
+      margin: { x: 10, y: 10 } as Margin,
+      autoHeight: true as boolean,
+      keepSquare: true as boolean,
+      width: 400 as number,
+      height: 400 as number,
+      rowHeight: 200 as number
+    };
   }
 }

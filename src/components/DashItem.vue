@@ -219,12 +219,12 @@ export default {
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
-    x: { type: Number, default: 0 },
-    y: { type: Number, default: 0 },
-    width: { type: Number, default: 1 },
-    height: { type: Number, default: 1 },
-    draggable: { type: Boolean, default: true },
-    resizeable: { type: Boolean, default: true },
+    x: { type: Number, default: DashItem.defaults.x },
+    y: { type: Number, default: DashItem.defaults.y },
+    width: { type: Number, default: DashItem.defaults.width },
+    height: { type: Number, default: DashItem.defaults.height },
+    draggable: { type: Boolean, default: DashItem.defaults.draggable },
+    resizeable: { type: Boolean, default: DashItem.defaults.resizeable },
     resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 }
   },

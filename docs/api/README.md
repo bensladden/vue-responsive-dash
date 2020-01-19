@@ -16,7 +16,7 @@ From this the layouts can then change to best suit the screen size.
 
 ## Dash Layout
 
-Each Dash Layout contains an name, numberOfCols, array of items and optionally a breakpointWidth.
+Each Dash Layout contains an name, numberOfCols and optionally a breakpointWidth.
 Note that only one layout should have the breakpontWidth `undefined`. This layout is the biggest. The smallest should have a brekpointWidth of `0`.  
 
 ### Props
@@ -25,7 +25,6 @@ Note that only one layout should have the breakpontWidth `undefined`. This layou
 | name | `string` | yes | | Layout name (typically describing the breakpoint Size (i.e. xl, lg etc)) |
 | numberOfCols | `number` | no | `12` | Number of columns allowed |
 | breakpointWidth | `number` | no | | Width used to determine which layout is most appropiate for the screen size |
-| items | `Array<items>` | no | | Array of items to display |
 
 ## Dash Item
 

@@ -23,18 +23,17 @@ export class DashItem {
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
   private onDragStartTop = 0 as number;
-  private _onDragStartEvent = new SimpleEventDispatcher<Item>();
-  private _onDragEvent = new SimpleEventDispatcher<Item>();
-  private _onDragEndEvent = new SimpleEventDispatcher<Item>();
+  private _onDragStartEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onDragEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onDragEndEventDispatcher = new SimpleEventDispatcher<Item>();
   private onResizeStartEvent = undefined as DragEvent | undefined;
   private onResizeStartLeft = 0 as number;
   private onResizeStartTop = 0 as number;
   private onResizeStartingWidth = 0 as number;
   private onResizeStartingHeight = 0 as number;
-  private _onResizeStartEvent = new SimpleEventDispatcher<Item>();
-  private _onResizeEvent = new SimpleEventDispatcher<Item>();
-  private _onResizeEndEvent = new SimpleEventDispatcher<Item>();
-
+  private _onResizeStartEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onResizeEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onResizeEndEventDispatcher = new SimpleEventDispatcher<Item>();
   constructor({
     id,
     x,
@@ -82,19 +81,19 @@ export class DashItem {
     if (typeof x !== "undefined") {
       this._x = x;
     } else {
-      this._x = 0;
+      this._x = DashItem.defaults.x;
     }
     this._left = DashItem.getLeftFromX(this._x, this._colWidth, this._margin);
     if (typeof y !== "undefined") {
       this._y = y;
     } else {
-      this._y = 0;
+      this._y = DashItem.defaults.y;
     }
     this._top = DashItem.getTopFromY(this._y, this._rowHeight, this._margin);
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 0;
+      this._width = DashItem.defaults.width;
     }
     this._widthPx = DashItem.getWidthInPx(
       this._width,
@@ -104,7 +103,7 @@ export class DashItem {
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
-      this._height = 0;
+      this._height = DashItem.defaults.height;
     }
     this._heightPx = DashItem.getHeightInPx(
       this._height,
@@ -114,12 +113,12 @@ export class DashItem {
     if (typeof draggable !== "undefined") {
       this._draggable = draggable;
     } else {
-      this._draggable = true;
+      this._draggable = DashItem.defaults.draggable!;
     }
     if (typeof resizeable !== "undefined") {
       this._resizeable = resizeable;
     } else {
-      this._resizeable = true;
+      this._resizeable = DashItem.defaults.resizeable!;
     }
     if (typeof resizeEdges !== "undefined") {
       this._resizeEdges = resizeEdges;
@@ -283,7 +282,7 @@ export class DashItem {
     }
     this.onDragStartLeft = this.left;
     this.onDragStartTop = this.top;
-    this._onDragStartEvent.dispatch(this.toItem());
+    this._onDragStartEventDispatcher.dispatch(this.toItem());
   }
   _onDrag(event: DragEvent) {
     if (
@@ -297,7 +296,7 @@ export class DashItem {
         +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
       this.left = left;
       this.top = top;
-      this._onDragEvent.dispatch(this.toItem());
+      this._onDragEventDispatcher.dispatch(this.toItem());
     }
   }
   _onDragEnd(event: DragEvent) {
@@ -309,16 +308,16 @@ export class DashItem {
     if (event.dataTransfer) {
       event.dataTransfer.clearData();
     }
-    this._onDragEndEvent.dispatch(this.toItem());
+    this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   get onDragStart() {
-    return this._onDragStartEvent.asEvent();
+    return this._onDragStartEventDispatcher.asEvent();
   }
   get onDrag() {
-    return this._onDragEvent.asEvent();
+    return this._onDragEventDispatcher.asEvent();
   }
   get onDragEnd() {
-    return this._onDragEndEvent.asEvent();
+    return this._onDragEndEventDispatcher.asEvent();
   }
   //ResizeEventManagement
   _onResizeStart(event: DragEvent, _: string) {
@@ -330,7 +329,7 @@ export class DashItem {
     this.onResizeStartTop = this.top;
     this.onResizeStartingWidth = this.widthPx;
     this.onResizeStartingHeight = this.heightPx;
-    this._onResizeStartEvent.dispatch(this.toItem());
+    this._onResizeStartEventDispatcher.dispatch(this.toItem());
   }
   _onResize(event: DragEvent, location: string) {
     //Should never fire at present
@@ -375,7 +374,7 @@ export class DashItem {
         event.screenY;
       this.heightPx = height;
     }
-    this._onResizeEvent.dispatch(this.toItem());
+    this._onResizeEventDispatcher.dispatch(this.toItem());
   }
   _onResizeEnd(event: DragEvent, location: string) {
     event.preventDefault();
@@ -385,16 +384,16 @@ export class DashItem {
     this.onResizeStartTop = 0;
     this.onResizeStartingHeight = 0;
     this.onResizeStartingWidth = 0;
-    this._onResizeEndEvent.dispatch(this.toItem());
+    this._onResizeEndEventDispatcher.dispatch(this.toItem());
   }
   get onResizeStart() {
-    return this._onResizeStartEvent.asEvent();
+    return this._onResizeStartEventDispatcher.asEvent();
   }
   get onResize() {
-    return this._onResizeEvent.asEvent();
+    return this._onResizeEventDispatcher.asEvent();
   }
   get onResizeEnd() {
-    return this._onResizeEndEvent.asEvent();
+    return this._onResizeEndEventDispatcher.asEvent();
   }
   //Static Methods
   static getLeftFromX(x: number, colWidth: number, margin: Margin) {
@@ -420,5 +419,17 @@ export class DashItem {
   }
   static getHeightFromPx(heightPx: number, rowHeight: number, margin: Margin) {
     return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
+  }
+  static get defaults() {
+    let defaults: Item = {
+      id: "",
+      x: 0,
+      y: 0,
+      width: 1,
+      height: 1,
+      draggable: true,
+      resizeable: true
+    };
+    return defaults;
   }
 }

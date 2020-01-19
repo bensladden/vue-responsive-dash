@@ -7938,7 +7938,7 @@ function () {
         rowHeight = _ref.rowHeight,
         margin = _ref.margin,
         draggable = _ref.draggable,
-        resizeable = _ref.resizeable,
+        resizable = _ref.resizable,
         resizeEdges = _ref.resizeEdges,
         resizeHandleSize = _ref.resizeHandleSize;
 
@@ -8020,10 +8020,10 @@ function () {
       this._draggable = DashItem.defaults.draggable;
     }
 
-    if (typeof resizeable !== "undefined") {
-      this._resizeable = resizeable;
+    if (typeof resizable !== "undefined") {
+      this._resizable = resizable;
     } else {
-      this._resizeable = DashItem.defaults.resizeable;
+      this._resizable = DashItem.defaults.resizable;
     }
 
     if (typeof resizeEdges !== "undefined") {
@@ -8061,7 +8061,7 @@ function () {
         height: this.height,
         heightPx: this.heightPx,
         draggable: this.draggable,
-        resizeable: this.resizeable
+        resizable: this.resizable
       };
       return item;
     }
@@ -8292,12 +8292,12 @@ function () {
       this._draggable = d;
     }
   }, {
-    key: "resizeable",
+    key: "resizable",
     get: function get() {
-      return this._resizeable;
+      return this._resizable;
     },
     set: function set(r) {
-      this._resizeable = r;
+      this._resizable = r;
     }
   }, {
     key: "resizeEdges",
@@ -8404,7 +8404,7 @@ function () {
         width: 1,
         height: 1,
         draggable: true,
-        resizeable: true
+        resizable: true
       };
       return defaults;
     }
@@ -8669,9 +8669,9 @@ var watchEmitProp = function watchEmitProp(key, deep) {
       type: Boolean,
       default: DashItem_model_DashItem.defaults.draggable
     },
-    resizeable: {
+    resizable: {
       type: Boolean,
-      default: DashItem_model_DashItem.defaults.resizeable
+      default: DashItem_model_DashItem.defaults.resizable
     },
     resizeEdges: {
       type: String,
@@ -9034,7 +9034,7 @@ var component = normalizeComponent(
 
 /* harmony default export */ var components_DashItem = (component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=3ecad03e&
-var DashLayoutvue_type_template_id_3ecad03e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizeable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
+var DashLayoutvue_type_template_id_3ecad03e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
 var DashLayoutvue_type_template_id_3ecad03e_staticRenderFns = []
 
 

@@ -5,7 +5,7 @@
       <DashItem
         :id="placeholderId"
         :draggable="false"
-        :resizeable="false"
+        :resizable="false"
         v-show="dragging || resizing"
       >
         <div class="placeholder"></div>
@@ -43,7 +43,11 @@ export default {
   props: {
     breakpoint: { type: String, required: true },
     breakpointWidth: { type: Number, default: Layout.defaults.breakpointWidth },
-    numberOfCols: { type: Number, default: Layout.defaults.numberOfCols }
+    numberOfCols: { type: Number, default: Layout.defaults.numberOfCols },
+    useCssTransforms: {
+      type: Boolean,
+      default: Layout.defaults.useCssTransforms
+    }
   },
   components: {
     DashItem

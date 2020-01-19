@@ -1,4 +1,4 @@
-import { Margin, Breakpoint } from "../inferfaces";
+import { Margin, Breakpoint } from "../interfaces";
 import { Layout } from "./Layout.model";
 
 export class Dashboard {

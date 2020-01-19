@@ -43,7 +43,6 @@ export default {
   props: {
     breakpoint: { type: String, required: true },
     breakpointWidth: { type: Number, default: Layout.defaults.breakpointWidth },
-    items: Array,
     numberOfCols: { type: Number, default: Layout.defaults.numberOfCols }
   },
   components: {
@@ -114,12 +113,14 @@ export default {
     //Check if dashboard exists and if not then start a watcher
     if (this.dashboard) {
       this.dashboard.addLayoutInstance(this.l);
+      this.createPropWatchers();
     } else {
       this.unWatch = this.$watch(
         "dashboard",
         function(newValue) {
           if (newValue) {
             this.dashboard.addLayoutInstance(this.l);
+            this.createPropWatchers();
             this.unWatch();
           }
         },

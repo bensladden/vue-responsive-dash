@@ -19,14 +19,13 @@ const watchProp = (key, deep) => ({
   },
   deep
 });
-
 export default {
   name: "Dashboard",
   inheritAttrs: false,
   props: {
     id: { type: [Number, String], required: true },
     autoHeight: { type: Boolean, default: Dashboard.defaults.autoHeight },
-    margin: { type: Object, default: Dashboard.defaults.margin }
+    margin: { type: Object, default: () => Dashboard.defaults.margin }
   },
   components: {},
   directives: {

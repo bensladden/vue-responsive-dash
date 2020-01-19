@@ -1,5 +1,5 @@
 import { SimpleEventDispatcher } from "ste-simple-events";
-import { Margin, Item } from "../inferfaces";
+import { Margin, Item } from "../interfaces";
 
 export class DashItem {
   private readonly _id: number | string;
@@ -15,7 +15,7 @@ export class DashItem {
   private _widthPx: number;
   private _heightPx: number;
   private _draggable: boolean;
-  private _resizeable: boolean;
+  private _resizable: boolean;
   private _resizeEdges: string;
   private _resizeHandleSize: number;
   private _moved: boolean = false;
@@ -44,7 +44,7 @@ export class DashItem {
     rowHeight,
     margin,
     draggable,
-    resizeable,
+    resizable,
     resizeEdges,
     resizeHandleSize
   }: {
@@ -57,7 +57,7 @@ export class DashItem {
     rowHeight?: number;
     margin?: Margin;
     draggable?: boolean;
-    resizeable?: boolean;
+    resizable?: boolean;
     resizeEdges?: string;
     resizeHandleSize?: number;
   }) {
@@ -115,10 +115,10 @@ export class DashItem {
     } else {
       this._draggable = DashItem.defaults.draggable!;
     }
-    if (typeof resizeable !== "undefined") {
-      this._resizeable = resizeable;
+    if (typeof resizable !== "undefined") {
+      this._resizable = resizable;
     } else {
-      this._resizeable = DashItem.defaults.resizeable!;
+      this._resizable = DashItem.defaults.resizable!;
     }
     if (typeof resizeEdges !== "undefined") {
       this._resizeEdges = resizeEdges;
@@ -227,11 +227,11 @@ export class DashItem {
   set draggable(d: boolean) {
     this._draggable = d;
   }
-  get resizeable() {
-    return this._resizeable;
+  get resizable() {
+    return this._resizable;
   }
-  set resizeable(r: boolean) {
-    this._resizeable = r;
+  set resizable(r: boolean) {
+    this._resizable = r;
   }
   get resizeEdges() {
     return this._resizeEdges;
@@ -263,7 +263,7 @@ export class DashItem {
       height: this.height,
       heightPx: this.heightPx,
       draggable: this.draggable,
-      resizeable: this.resizeable
+      resizable: this.resizable
     } as Item;
     return item;
   }
@@ -428,8 +428,38 @@ export class DashItem {
       width: 1,
       height: 1,
       draggable: true,
-      resizeable: true
+      resizable: true
     };
     return defaults;
+  }
+  static cssTransform(
+    top: number,
+    left: number,
+    widthPx: number,
+    heightPx: number
+  ) {
+    const translate = "translate3d(" + left + "px," + top + "px, 0)";
+    return {
+      transform: translate,
+      WebkitTransform: translate,
+      MozTransform: translate,
+      msTransform: translate,
+      OTransform: translate,
+      width: widthPx + "px",
+      height: heightPx + "px"
+    };
+  }
+  static cssTopLeft(
+    top: number,
+    left: number,
+    widthPx: number,
+    heightPx: number
+  ) {
+    return {
+      top: top + "px",
+      left: left + "px",
+      width: widthPx + "px",
+      height: heightPx + "px"
+    };
   }
 }

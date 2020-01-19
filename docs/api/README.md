@@ -17,14 +17,15 @@ From this the layouts can then change to best suit the screen size.
 ## Dash Layout
 
 Each Dash Layout contains an name, numberOfCols and optionally a breakpointWidth.
-Note that only one layout should have the breakpontWidth `undefined`. This layout is the biggest. The smallest should have a brekpointWidth of `0`.  
+Note that only one layout should have the breakpointWidth `undefined`. This layout is the biggest. The smallest should have a breakpointWidth of `0`.  
 
 ### Props
 | Name | Type               | Required | Default | Description |
 | ---- | ------------------ | -------- | ------- | ----------- |
 | name | `string` | yes | | Layout name (typically describing the breakpoint Size (i.e. xl, lg etc)) |
 | numberOfCols | `number` | no | `12` | Number of columns allowed |
-| breakpointWidth | `number` | no | | Width used to determine which layout is most appropiate for the screen size |
+| breakpointWidth | `number` | no | | Width used to determine which layout is most appropriate for the screen size |
+| useCssTransforms | `boolean` | no | `false` | Use translate3d instead of direct top left css properties |
 
 ## Dash Item
 
@@ -42,8 +43,8 @@ There are also slots around the item for custom drag icons (again see examples)
 | width |  `Number` |  false |  `1` | Width (in col units) | 
 | height |  `Number` |  false |  `1` | Height (in row units) | 
 | draggable |  `Boolean` |  false |  `true` | If the item can be dragged | 
-| resizeable |  `Boolean` |  false |  `true` | If the item can be resized | 
-| resizeEdges |  `String` |  false |  `"bottom right"` | The edges it can be resized (experimental for all options appart from bottom right) | 
+| resizable |  `Boolean` |  false |  `true` | If the item can be resized | 
+| resizeEdges |  `String` |  false |  `"bottom right"` | The edges it can be resized (experimental for all options apart from bottom right) | 
 | resizeHandleSize | `Number` |  false |  `8` | The area where resize can be selected on the item |
 
 ### Resizing Slots

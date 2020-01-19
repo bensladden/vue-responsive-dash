@@ -9,7 +9,7 @@ export interface Item {
   height: number;
   heightPx?: number;
   draggable?: boolean;
-  resizeable?: boolean;
+  resizable?: boolean;
   moved?: boolean;
 }
 

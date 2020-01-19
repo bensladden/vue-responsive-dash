@@ -1,4 +1,4 @@
-import { Item, Margin, Subscription } from "@/inferfaces";
+import { Item, Margin, Subscription } from "@/interfaces";
 import { DashItem } from "./DashItem.model";
 
 export class Layout {
@@ -11,6 +11,7 @@ export class Layout {
   private _autoHeight: boolean;
   private _keepSquare: boolean;
   private _rowHeight: number;
+  private _useCssTransforms: boolean;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
   private _dashItems: DashItem[] = [];
@@ -28,6 +29,7 @@ export class Layout {
     margin,
     autoHeight,
     keepSquare,
+    useCssTransforms,
     width,
     height,
     rowHeight
@@ -38,6 +40,7 @@ export class Layout {
     margin?: Margin;
     autoHeight?: boolean;
     keepSquare?: boolean;
+    useCssTransforms?: boolean;
     width?: number;
     height?: number;
     rowHeight?: number;
@@ -66,6 +69,12 @@ export class Layout {
       this._keepSquare = keepSquare;
     } else {
       this._keepSquare = Layout.defaults.keepSquare;
+    }
+
+    if (typeof useCssTransforms !== "undefined") {
+      this._useCssTransforms = useCssTransforms;
+    } else {
+      this._useCssTransforms = Layout.defaults.useCssTransforms;
     }
 
     if (typeof width !== "undefined") {
@@ -561,6 +570,7 @@ export class Layout {
       margin: { x: 10, y: 10 } as Margin,
       autoHeight: true as boolean,
       keepSquare: true as boolean,
+      useCssTransforms: false as boolean,
       width: 400 as number,
       height: 400 as number,
       rowHeight: 200 as number

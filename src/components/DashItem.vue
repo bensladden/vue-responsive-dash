@@ -5,12 +5,7 @@
     v-if="item"
     class="item"
     :class="classObj"
-    :style="{
-      width: widthPx + 'px',
-      height: heightPx + 'px',
-      left: left + 'px',
-      top: top + 'px'
-    }"
+    :style="cssStyle"
   >
     <div
       draggable
@@ -224,7 +219,7 @@ export default {
     width: { type: Number, default: DashItem.defaults.width },
     height: { type: Number, default: DashItem.defaults.height },
     draggable: { type: Boolean, default: DashItem.defaults.draggable },
-    resizeable: { type: Boolean, default: DashItem.defaults.resizeable },
+    resizable: { type: Boolean, default: DashItem.defaults.resizable },
     resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 }
   },
@@ -248,7 +243,8 @@ export default {
     },
     classObj() {
       return {
-        dragging: this.resizingOrDragging
+        dragging: this.resizingOrDragging,
+        cssTransforms: this.useCssTransforms
       };
     },
     layout() {
@@ -256,6 +252,12 @@ export default {
         return this.$layout();
       }
       return null;
+    },
+    useCssTransforms() {
+      if (this.layout) {
+        return this.layout.useCssTransforms;
+      }
+      return false;
     },
     left() {
       return this.item.left;
@@ -268,6 +270,23 @@ export default {
     },
     heightPx() {
       return this.item.heightPx;
+    },
+    cssStyle() {
+      if (this.useCssTransforms) {
+        return DashItem.cssTransform(
+          this.top,
+          this.left,
+          this.widthPx,
+          this.heightPx
+        );
+      } else {
+        return DashItem.cssTopLeft(
+          this.top,
+          this.left,
+          this.widthPx,
+          this.heightPx
+        );
+      }
     },
     resizeTop() {
       return this.resizeEdges.includes("top");
@@ -387,5 +406,10 @@ export default {
 .item.dragging {
   transition: none;
   z-index: 3;
+}
+.item.cssTransforms {
+  transition-property: transform;
+  left: 0;
+  right: auto;
 }
 </style>

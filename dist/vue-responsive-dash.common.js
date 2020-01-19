@@ -3468,7 +3468,7 @@ function applyToTag (styleElement, obj) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".invisible{display:none}.item{-webkit-box-sizing:border-box;box-sizing:border-box;position:absolute;display:inline-block;-webkit-transition:all .2s ease;transition:all .2s ease;-webkit-transition-property:left,top,right;transition-property:left,top,right}.item.dragging{-webkit-transition:none;transition:none;z-index:3}", ""]);
+exports.push([module.i, ".invisible{display:none}.item{-webkit-box-sizing:border-box;box-sizing:border-box;position:absolute;display:inline-block;-webkit-transition:all .2s ease;transition:all .2s ease;-webkit-transition-property:left,top,right;transition-property:left,top,right}.item.dragging{-webkit-transition:none;transition:none;z-index:3}.item.cssTransforms{-webkit-transition-property:-webkit-transform;transition-property:-webkit-transform;transition-property:transform;transition-property:transform,-webkit-transform;left:0;right:auto}", ""]);
 // Exports
 module.exports = exports;
 
@@ -7758,13 +7758,8 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=73f8498c&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:({
-    width: _vm.widthPx + 'px',
-    height: _vm.heightPx + 'px',
-    left: _vm.left + 'px',
-    top: _vm.top + 'px'
-  }),attrs:{"id":_vm.id}},[(_vm.draggable)?_c('div',{ref:_vm.id + '-overlay',style:({
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=47904b9d&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":_vm.id}},[(_vm.draggable)?_c('div',{ref:_vm.id + '-overlay',style:({
       top: 0 + 'px',
       left: 0 + 'px',
       bottom: 0 + 'px',
@@ -7830,7 +7825,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=73f8498c&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=47904b9d&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -8395,6 +8390,30 @@ function () {
       return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
     }
   }, {
+    key: "cssTransform",
+    value: function cssTransform(top, left, widthPx, heightPx) {
+      var translate = "translate3d(" + left + "px," + top + "px, 0)";
+      return {
+        transform: translate,
+        WebkitTransform: translate,
+        MozTransform: translate,
+        msTransform: translate,
+        OTransform: translate,
+        width: widthPx + "px",
+        height: heightPx + "px"
+      };
+    }
+  }, {
+    key: "cssTopLeft",
+    value: function cssTopLeft(top, left, widthPx, heightPx) {
+      return {
+        top: top + "px",
+        left: left + "px",
+        width: widthPx + "px",
+        height: heightPx + "px"
+      };
+    }
+  }, {
     key: "defaults",
     get: function get() {
       var defaults = {
@@ -8421,11 +8440,6 @@ function () {
 
 
 
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8710,7 +8724,8 @@ var watchEmitProp = function watchEmitProp(key, deep) {
     },
     classObj: function classObj() {
       return {
-        dragging: this.resizingOrDragging
+        dragging: this.resizingOrDragging,
+        cssTransforms: this.useCssTransforms
       };
     },
     layout: function layout() {
@@ -8719,6 +8734,13 @@ var watchEmitProp = function watchEmitProp(key, deep) {
       }
 
       return null;
+    },
+    useCssTransforms: function useCssTransforms() {
+      if (this.layout) {
+        return this.layout.useCssTransforms;
+      }
+
+      return false;
     },
     left: function left() {
       return this.item.left;
@@ -8731,6 +8753,13 @@ var watchEmitProp = function watchEmitProp(key, deep) {
     },
     heightPx: function heightPx() {
       return this.item.heightPx;
+    },
+    cssStyle: function cssStyle() {
+      if (this.useCssTransforms) {
+        return DashItem_model_DashItem.cssTransform(this.top, this.left, this.widthPx, this.heightPx);
+      } else {
+        return DashItem_model_DashItem.cssTopLeft(this.top, this.left, this.widthPx, this.heightPx);
+      }
     },
     resizeTop: function resizeTop() {
       return this.resizeEdges.includes("top");
@@ -9033,12 +9062,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var components_DashItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=3ecad03e&
-var DashLayoutvue_type_template_id_3ecad03e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
-var DashLayoutvue_type_template_id_3ecad03e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=042b8d7d&
+var DashLayoutvue_type_template_id_042b8d7d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
+var DashLayoutvue_type_template_id_042b8d7d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=3ecad03e&
+// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=042b8d7d&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -9097,6 +9126,7 @@ function () {
         margin = _ref.margin,
         autoHeight = _ref.autoHeight,
         keepSquare = _ref.keepSquare,
+        useCssTransforms = _ref.useCssTransforms,
         width = _ref.width,
         height = _ref.height,
         rowHeight = _ref.rowHeight;
@@ -9137,6 +9167,12 @@ function () {
       this._keepSquare = keepSquare;
     } else {
       this._keepSquare = Layout.defaults.keepSquare;
+    }
+
+    if (typeof useCssTransforms !== "undefined") {
+      this._useCssTransforms = useCssTransforms;
+    } else {
+      this._useCssTransforms = Layout.defaults.useCssTransforms;
     }
 
     if (typeof width !== "undefined") {
@@ -9821,6 +9857,7 @@ function () {
         },
         autoHeight: true,
         keepSquare: true,
+        useCssTransforms: false,
         width: 400,
         height: 400,
         rowHeight: 200
@@ -9890,6 +9927,10 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
     numberOfCols: {
       type: Number,
       default: Layout_model_Layout.defaults.numberOfCols
+    },
+    useCssTransforms: {
+      type: Boolean,
+      default: Layout_model_Layout.defaults.useCssTransforms
     }
   },
   components: {
@@ -10009,8 +10050,8 @@ var DashLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("f19a");
 
 var DashLayout_component = normalizeComponent(
   components_DashLayoutvue_type_script_lang_js_,
-  DashLayoutvue_type_template_id_3ecad03e_render,
-  DashLayoutvue_type_template_id_3ecad03e_staticRenderFns,
+  DashLayoutvue_type_template_id_042b8d7d_render,
+  DashLayoutvue_type_template_id_042b8d7d_staticRenderFns,
   false,
   null,
   null,

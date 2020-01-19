@@ -7758,7 +7758,7 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=85d9e742&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=73f8498c&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:({
     width: _vm.widthPx + 'px',
     height: _vm.heightPx + 'px',
@@ -7830,7 +7830,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=85d9e742&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=73f8498c&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -7948,17 +7948,17 @@ function () {
     this.onDragStartEvent = undefined;
     this.onDragStartLeft = 0;
     this.onDragStartTop = 0;
-    this._onDragStartEvent = new dist["SimpleEventDispatcher"]();
-    this._onDragEvent = new dist["SimpleEventDispatcher"]();
-    this._onDragEndEvent = new dist["SimpleEventDispatcher"]();
+    this._onDragStartEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onDragEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onDragEndEventDispatcher = new dist["SimpleEventDispatcher"]();
     this.onResizeStartEvent = undefined;
     this.onResizeStartLeft = 0;
     this.onResizeStartTop = 0;
     this.onResizeStartingWidth = 0;
     this.onResizeStartingHeight = 0;
-    this._onResizeStartEvent = new dist["SimpleEventDispatcher"]();
-    this._onResizeEvent = new dist["SimpleEventDispatcher"]();
-    this._onResizeEndEvent = new dist["SimpleEventDispatcher"]();
+    this._onResizeStartEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onResizeEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onResizeEndEventDispatcher = new dist["SimpleEventDispatcher"]();
     this._id = id;
 
     if (typeof colWidth !== "undefined") {
@@ -7985,7 +7985,7 @@ function () {
     if (typeof x !== "undefined") {
       this._x = x;
     } else {
-      this._x = 0;
+      this._x = DashItem.defaults.x;
     }
 
     this._left = DashItem.getLeftFromX(this._x, this._colWidth, this._margin);
@@ -7993,7 +7993,7 @@ function () {
     if (typeof y !== "undefined") {
       this._y = y;
     } else {
-      this._y = 0;
+      this._y = DashItem.defaults.y;
     }
 
     this._top = DashItem.getTopFromY(this._y, this._rowHeight, this._margin);
@@ -8001,7 +8001,7 @@ function () {
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 0;
+      this._width = DashItem.defaults.width;
     }
 
     this._widthPx = DashItem.getWidthInPx(this._width, this._colWidth, this._margin);
@@ -8009,7 +8009,7 @@ function () {
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
-      this._height = 0;
+      this._height = DashItem.defaults.height;
     }
 
     this._heightPx = DashItem.getHeightInPx(this._height, this._rowHeight, this._margin);
@@ -8017,13 +8017,13 @@ function () {
     if (typeof draggable !== "undefined") {
       this._draggable = draggable;
     } else {
-      this._draggable = true;
+      this._draggable = DashItem.defaults.draggable;
     }
 
     if (typeof resizeable !== "undefined") {
       this._resizeable = resizeable;
     } else {
-      this._resizeable = true;
+      this._resizeable = DashItem.defaults.resizeable;
     }
 
     if (typeof resizeEdges !== "undefined") {
@@ -8086,7 +8086,7 @@ function () {
       this.onDragStartLeft = this.left;
       this.onDragStartTop = this.top;
 
-      this._onDragStartEvent.dispatch(this.toItem());
+      this._onDragStartEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onDrag",
@@ -8097,7 +8097,7 @@ function () {
         this.left = left;
         this.top = top;
 
-        this._onDragEvent.dispatch(this.toItem());
+        this._onDragEventDispatcher.dispatch(this.toItem());
       }
     }
   }, {
@@ -8115,7 +8115,7 @@ function () {
         event.dataTransfer.clearData();
       }
 
-      this._onDragEndEvent.dispatch(this.toItem());
+      this._onDragEndEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResizeStart",
@@ -8131,7 +8131,7 @@ function () {
       this.onResizeStartingWidth = this.widthPx;
       this.onResizeStartingHeight = this.heightPx;
 
-      this._onResizeStartEvent.dispatch(this.toItem());
+      this._onResizeStartEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResize",
@@ -8166,7 +8166,7 @@ function () {
         this.heightPx = _height;
       }
 
-      this._onResizeEvent.dispatch(this.toItem());
+      this._onResizeEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResizeEnd",
@@ -8181,7 +8181,7 @@ function () {
       this.onResizeStartingHeight = 0;
       this.onResizeStartingWidth = 0;
 
-      this._onResizeEndEvent.dispatch(this.toItem());
+      this._onResizeEndEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "id",
@@ -8326,32 +8326,32 @@ function () {
   }, {
     key: "onDragStart",
     get: function get() {
-      return this._onDragStartEvent.asEvent();
+      return this._onDragStartEventDispatcher.asEvent();
     }
   }, {
     key: "onDrag",
     get: function get() {
-      return this._onDragEvent.asEvent();
+      return this._onDragEventDispatcher.asEvent();
     }
   }, {
     key: "onDragEnd",
     get: function get() {
-      return this._onDragEndEvent.asEvent();
+      return this._onDragEndEventDispatcher.asEvent();
     }
   }, {
     key: "onResizeStart",
     get: function get() {
-      return this._onResizeStartEvent.asEvent();
+      return this._onResizeStartEventDispatcher.asEvent();
     }
   }, {
     key: "onResize",
     get: function get() {
-      return this._onResizeEvent.asEvent();
+      return this._onResizeEventDispatcher.asEvent();
     }
   }, {
     key: "onResizeEnd",
     get: function get() {
-      return this._onResizeEndEvent.asEvent();
+      return this._onResizeEndEventDispatcher.asEvent();
     } //Static Methods
 
   }], [{
@@ -8393,6 +8393,20 @@ function () {
     key: "getHeightFromPx",
     value: function getHeightFromPx(heightPx, rowHeight, margin) {
       return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
+    }
+  }, {
+    key: "defaults",
+    get: function get() {
+      var defaults = {
+        id: "",
+        x: 0,
+        y: 0,
+        width: 1,
+        height: 1,
+        draggable: true,
+        resizeable: true
+      };
+      return defaults;
     }
   }]);
 
@@ -8637,27 +8651,27 @@ var watchEmitProp = function watchEmitProp(key, deep) {
     },
     x: {
       type: Number,
-      default: 0
+      default: DashItem_model_DashItem.defaults.x
     },
     y: {
       type: Number,
-      default: 0
+      default: DashItem_model_DashItem.defaults.y
     },
     width: {
       type: Number,
-      default: 1
+      default: DashItem_model_DashItem.defaults.width
     },
     height: {
       type: Number,
-      default: 1
+      default: DashItem_model_DashItem.defaults.height
     },
     draggable: {
       type: Boolean,
-      default: true
+      default: DashItem_model_DashItem.defaults.draggable
     },
     resizeable: {
       type: Boolean,
-      default: true
+      default: DashItem_model_DashItem.defaults.resizeable
     },
     resizeEdges: {
       type: String,
@@ -9019,12 +9033,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var components_DashItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=5fb210c9&
-var DashLayoutvue_type_template_id_5fb210c9_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizeable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
-var DashLayoutvue_type_template_id_5fb210c9_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=3ecad03e&
+var DashLayoutvue_type_template_id_3ecad03e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.currentBreakpoint === _vm.breakpoint),expression:"currentBreakpoint === breakpoint"}]},[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizeable":false}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" ")]):_vm._e()])}
+var DashLayoutvue_type_template_id_3ecad03e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=5fb210c9&
+// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=3ecad03e&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -9104,46 +9118,43 @@ function () {
     if (typeof breakpointWidth !== "undefined") {
       this._breakpointWidth = breakpointWidth;
     } else {
-      this._breakpointWidth = undefined;
+      this._breakpointWidth = Layout.defaults.breakpointWidth;
     }
 
     if (typeof margin !== "undefined") {
       this._margin = margin;
     } else {
-      this._margin = {
-        x: 10,
-        y: 10
-      };
+      this._margin = Layout.defaults.margin;
     }
 
     if (typeof autoHeight !== "undefined") {
       this._autoHeight = autoHeight;
     } else {
-      this._autoHeight = true;
+      this._autoHeight = Layout.defaults.autoHeight;
     }
 
     if (typeof keepSquare !== "undefined") {
       this._keepSquare = keepSquare;
     } else {
-      this._keepSquare = true;
+      this._keepSquare = Layout.defaults.keepSquare;
     }
 
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 400;
+      this._width = Layout.defaults.width;
     }
 
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
-      this._height = 400;
+      this._height = Layout.defaults.height;
     }
 
     if (typeof rowHeight !== "undefined") {
       this._rowHeight = rowHeight;
     } else {
-      this._rowHeight = 200;
+      this._rowHeight = Layout.defaults.rowHeight;
     }
   }
 
@@ -9798,6 +9809,23 @@ function () {
 
       return items;
     }
+  }], [{
+    key: "defaults",
+    get: function get() {
+      return {
+        numberOfCols: 12,
+        breakpointWidth: undefined,
+        margin: {
+          x: 10,
+          y: 10
+        },
+        autoHeight: true,
+        keepSquare: true,
+        width: 400,
+        height: 400,
+        rowHeight: 200
+      };
+    }
   }]);
 
   return Layout;
@@ -9855,11 +9883,13 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
       type: String,
       required: true
     },
-    breakpointWidth: Number,
-    items: Array,
+    breakpointWidth: {
+      type: Number,
+      default: Layout_model_Layout.defaults.breakpointWidth
+    },
     numberOfCols: {
       type: Number,
-      default: 12
+      default: Layout_model_Layout.defaults.numberOfCols
     }
   },
   components: {
@@ -9944,10 +9974,12 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
 
     if (this.dashboard) {
       this.dashboard.addLayoutInstance(this.l);
+      this.createPropWatchers();
     } else {
       this.unWatch = this.$watch("dashboard", function (newValue) {
         if (newValue) {
           this.dashboard.addLayoutInstance(this.l);
+          this.createPropWatchers();
           this.unWatch();
         }
       }, {
@@ -9977,8 +10009,8 @@ var DashLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("f19a");
 
 var DashLayout_component = normalizeComponent(
   components_DashLayoutvue_type_script_lang_js_,
-  DashLayoutvue_type_template_id_5fb210c9_render,
-  DashLayoutvue_type_template_id_5fb210c9_staticRenderFns,
+  DashLayoutvue_type_template_id_3ecad03e_render,
+  DashLayoutvue_type_template_id_3ecad03e_staticRenderFns,
   false,
   null,
   null,
@@ -9987,12 +10019,12 @@ var DashLayout_component = normalizeComponent(
 )
 
 /* harmony default export */ var DashLayout = (DashLayout_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Dashboard.vue?vue&type=template&id=6d11a0f2&
-var Dashboardvue_type_template_id_6d11a0f2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.d)?_c('div',{directives:[{name:"rlocal",rawName:"v-rlocal"}],ref:_vm.id,attrs:{"id":_vm.id},on:{"resize":_vm.onResize}},[_vm._t("default")],2):_vm._e()}
-var Dashboardvue_type_template_id_6d11a0f2_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7dcaa12c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Dashboard.vue?vue&type=template&id=708e9ca6&
+var Dashboardvue_type_template_id_708e9ca6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.d)?_c('div',{directives:[{name:"rlocal",rawName:"v-rlocal"}],ref:_vm.id,attrs:{"id":_vm.id},on:{"resize":_vm.onResize}},[_vm._t("default")],2):_vm._e()}
+var Dashboardvue_type_template_id_708e9ca6_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Dashboard.vue?vue&type=template&id=6d11a0f2&
+// CONCATENATED MODULE: ./src/components/Dashboard.vue?vue&type=template&id=708e9ca6&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
@@ -10055,22 +10087,19 @@ function () {
     if (typeof margin !== "undefined") {
       this._margin = margin;
     } else {
-      this._margin = {
-        x: 10,
-        y: 10
-      };
+      this._margin = Dashboard.defaults.margin;
     }
 
     if (typeof autoHeight !== "undefined") {
       this._autoHeight = autoHeight;
     } else {
-      this._autoHeight = true;
+      this._autoHeight = Dashboard.defaults.autoHeight;
     }
 
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
-      this._width = 400;
+      this._width = Dashboard.defaults.width;
     }
   }
 
@@ -10229,6 +10258,18 @@ function () {
       this.updateCurrentBreakpoint();
       this.updateLayouts();
     }
+  }], [{
+    key: "defaults",
+    get: function get() {
+      return {
+        margin: {
+          x: 10,
+          y: 10
+        },
+        autoHeight: true,
+        width: 400
+      };
+    }
   }]);
 
   return Dashboard;
@@ -10238,6 +10279,9 @@ var vue_element_resize_detector_common = __webpack_require__("06aa");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Dashboard.vue?vue&type=script&lang=js&
 
+
+
+
 //
 //
 //
@@ -10245,6 +10289,21 @@ var vue_element_resize_detector_common = __webpack_require__("06aa");
 //
 //
 
+ //Monitor the Props and update the item with the changed value
+
+var Dashboardvue_type_script_lang_js_watchProp = function watchProp(key, deep) {
+  return {
+    handler: function handler(newValue) {
+      //If the prop did not cause the update there is no updating
+      if (this.d[key] === newValue) {
+        return;
+      }
+
+      this.d[key] = newValue;
+    },
+    deep: deep
+  };
+};
 
 /* harmony default export */ var Dashboardvue_type_script_lang_js_ = ({
   name: "Dashboard",
@@ -10253,6 +10312,16 @@ var vue_element_resize_detector_common = __webpack_require__("06aa");
     id: {
       type: [Number, String],
       required: true
+    },
+    autoHeight: {
+      type: Boolean,
+      default: Dashboard_model_Dashboard.defaults.autoHeight
+    },
+    margin: {
+      type: Object,
+      default: function _default() {
+        return Dashboard_model_Dashboard.defaults.margin;
+      }
     }
   },
   components: {},
@@ -10277,10 +10346,19 @@ var vue_element_resize_detector_common = __webpack_require__("06aa");
   methods: {
     onResize: function onResize(e) {
       this.d.width = e.detail.width;
+    },
+    createPropWatchers: function createPropWatchers() {
+      var _this2 = this;
+
+      //Setup prop watches to sync with the Dash Item
+      Object.keys(this.$props).forEach(function (key) {
+        _this2.$watch(key, Dashboardvue_type_script_lang_js_watchProp(key, true));
+      });
     }
   },
   created: function created() {
     this.d = new Dashboard_model_Dashboard(this.id);
+    this.createPropWatchers();
   }
 });
 // CONCATENATED MODULE: ./src/components/Dashboard.vue?vue&type=script&lang=js&
@@ -10295,8 +10373,8 @@ var vue_element_resize_detector_common = __webpack_require__("06aa");
 
 var Dashboard_component = normalizeComponent(
   components_Dashboardvue_type_script_lang_js_,
-  Dashboardvue_type_template_id_6d11a0f2_render,
-  Dashboardvue_type_template_id_6d11a0f2_staticRenderFns,
+  Dashboardvue_type_template_id_708e9ca6_render,
+  Dashboardvue_type_template_id_708e9ca6_staticRenderFns,
   false,
   null,
   null,

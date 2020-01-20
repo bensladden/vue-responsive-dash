@@ -20,9 +20,9 @@
         cursor: 'move'
       }"
       v-if="draggable"
-      @dragstart.stop="onDragStart($event)"
-      @drag.stop="onDrag($event)"
-      @dragend.stop="onDragEnd($event)"
+      v-displace="{ customMove }"
+      @onMouseDown="onDragStart2"
+      @onMouseUp="onDragEnd2"
     >
       <div
         draggable
@@ -182,6 +182,7 @@
 
 <script>
 import { DashItem } from "./DashItem.model";
+import { displace } from "vue-displace";
 
 //Monitor the Props and update the item with the changed value
 const watchProp = (key, deep) => ({
@@ -212,6 +213,9 @@ const watchEmitProp = (key, deep) => ({
 export default {
   name: "DashItem",
   inheritAttrs: false,
+  directives: {
+    displace
+  },
   props: {
     id: { type: [Number, String], required: true },
     x: { type: Number, default: DashItem.defaults.x },
@@ -314,6 +318,17 @@ export default {
     }
   },
   methods: {
+    customMove(el, left, top) {
+      this.item._onDrag2(left, top);
+    },
+    onDragStart2(e) {
+      this.dragging = true;
+      this.item._onDragStart2(e.detail.event);
+    },
+    onDragEnd2(e) {
+      this.item._onDragEnd2(e.detail.event);
+      this.dragging = false;
+    },
     async onDragStart(event) {
       this.dragging = true;
       this.item._onDragStart(event);

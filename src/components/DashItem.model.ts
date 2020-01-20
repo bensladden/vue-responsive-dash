@@ -284,6 +284,11 @@ export class DashItem {
     this.onDragStartTop = this.top;
     this._onDragStartEventDispatcher.dispatch(this.toItem());
   }
+  _onDragStart2() {
+    this.onDragStartLeft = this.left;
+    this.onDragStartTop = this.top;
+    this._onDragStartEventDispatcher.dispatch(this.toItem());
+  }
   _onDrag(event: DragEvent) {
     if (
       typeof this.onDragStartEvent !== "undefined" &&
@@ -299,6 +304,11 @@ export class DashItem {
       this._onDragEventDispatcher.dispatch(this.toItem());
     }
   }
+  _onDrag2(left: number, top: number) {
+    this.left = left + this.onDragStartLeft;
+    this.top = top + this.onDragStartTop;
+    this._onDragEventDispatcher.dispatch(this.toItem());
+  }
   _onDragEnd(event: DragEvent) {
     event.preventDefault();
     this._onDrag(event);
@@ -308,6 +318,11 @@ export class DashItem {
     // if (event.dataTransfer) {
     //   event.dataTransfer.clearData();
     // }
+    this._onDragEndEventDispatcher.dispatch(this.toItem());
+  }
+  _onDragEnd2(event: DragEvent) {
+    this.onDragStartLeft = 0;
+    this.onDragStartTop = 0;
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   get onDragStart() {

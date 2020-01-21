@@ -20,9 +20,9 @@
         cursor: 'move'
       }"
       v-if="draggable"
-      v-displace="{ customMove }"
-      @onMouseDown="onDragStart2"
-      @onMouseUp="onDragEnd2"
+      v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
+      @onMouseDown="onMoveStart"
+      @onMouseUp="onMoveEnd"
     >
       <div
         draggable
@@ -36,9 +36,9 @@
           position: 'absolute'
         }"
         v-if="resizeTop && !dragging"
-        @dragstart.stop="onResizeStart($event, 'top')"
-        @drag.stop="onResize($event, 'top')"
-        @dragend.stop="onResizeEnd($event, 'top')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'top')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeTop"></slot>
       </div>
@@ -55,9 +55,9 @@
           position: 'absolute'
         }"
         v-if="resizeBottom && !dragging"
-        @dragstart.stop="onResizeStart($event, 'bottom')"
-        @drag.stop="onResize($event, 'bottom')"
-        @dragend.stop="onResizeEnd($event, 'bottom')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'bottom')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeBottom"></slot>
       </div>
@@ -74,9 +74,9 @@
           position: 'absolute'
         }"
         v-if="resizeLeft && !dragging"
-        @dragstart.stop="onResizeStart($event, 'left')"
-        @drag.stop="onResize($event, 'left')"
-        @dragend.stop="onResizeEnd($event, 'left')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'left')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeLeft"></slot>
       </div>
@@ -93,9 +93,9 @@
           position: 'absolute'
         }"
         v-if="resizeRight && !dragging"
-        @dragstart.stop="onResizeStart($event, 'right')"
-        @drag.stop="onResize($event, 'right')"
-        @dragend.stop="onResizeEnd($event, 'right')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'right')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeRight"></slot>
       </div>
@@ -112,9 +112,9 @@
           position: 'absolute'
         }"
         v-if="resizeTopLeft && !dragging"
-        @dragstart.stop="onResizeStart($event, 'top left')"
-        @drag.stop="onResize($event, 'top left')"
-        @dragend.stop="onResizeEnd($event, 'top left')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'top left')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeTopLeft"></slot>
       </div>
@@ -131,9 +131,9 @@
           position: 'absolute'
         }"
         v-if="resizeTopRight && !dragging"
-        @dragstart.stop="onResizeStart($event, 'top right')"
-        @drag.stop="onResize($event, 'top right')"
-        @dragend.stop="onResizeEnd($event, 'top right')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'top right')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeTopRight"></slot>
       </div>
@@ -150,9 +150,9 @@
           position: 'absolute'
         }"
         v-if="resizeBottomLeft && !dragging"
-        @dragstart.stop="onResizeStart($event, 'bottom left')"
-        @drag.stop="onResize($event, 'bottom left')"
-        @dragend.stop="onResizeEnd($event, 'bottom left')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'bottom left')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeBottomLeft"></slot>
       </div>
@@ -169,9 +169,9 @@
           position: 'absolute'
         }"
         v-if="resizeBottomRight && !dragging"
-        @dragstart.stop="onResizeStart($event, 'bottom right')"
-        @drag.stop="onResize($event, 'bottom right')"
-        @dragend.stop="onResizeEnd($event, 'bottom right')"
+        v-displace="{ customMove: onResize }"
+        @onMouseDown="onResizeStart($event, 'bottom right')"
+        @onMouseUp="onResizeEnd($event)"
       >
         <slot name="resizeBottomRight"></slot>
       </div>
@@ -318,50 +318,37 @@ export default {
     }
   },
   methods: {
-    customMove(el, left, top) {
-      this.item._onDrag2(left, top);
+    ignoreMove() {
+      return this.resizing;
     },
-    onDragStart2(e) {
+    onMoveStart(e) {
       this.dragging = true;
-      this.item._onDragStart2(e.detail.event);
+      this.item._onMoveStart(e.detail.event);
+      this.$emit("moveStart", this.item);
     },
-    onDragEnd2(e) {
-      this.item._onDragEnd2(e.detail.event);
+    onMove(el, left, top) {
+      this.item._onMove(left, top);
+      this.$emit("moving", this.item);
+    },
+    onMoveEnd(e) {
+      this.item._onMoveEnd(e.detail.event);
       this.dragging = false;
+      this.$emit("moveEnd", this.item);
     },
-    async onDragStart(event) {
-      this.dragging = true;
-      this.item._onDragStart(event);
-      this.$emit("dragStart", this.item);
-      event.target.style.opacity = 0.0;
-    },
-    onDrag(event) {
-      this.item._onDrag(event);
-      this.$emit("drag", this.item);
-    },
-    async onDragEnd(event) {
-      this.item._onDragEnd(event);
-      this.$emit("dragEnd", this.item);
-      event.target.style.opacity = 1;
-      await this.$nextTick();
-      this.dragging = false;
-    },
-    onResizeStart(event, location) {
+    onResizeStart(e, location) {
       this.resizing = true;
-      this.item._onResizeStart(event, location);
+      this.item._onResizeStart2(e.detail.event, location);
       this.$emit("resizeStart", this.item);
-      event.target.style.opacity = 0.0;
     },
-    onResize(event, location) {
-      this.item._onResize(event, location);
-      this.$emit("resize", this.item);
+    onResize(el, left, top) {
+      this.item._onResize2(left, top);
+      this.$emit("resizing", this.item);
     },
-    async onResizeEnd(event, location) {
-      this.item._onResizeEnd(event, location);
+    onResizeEnd(e) {
+      let location = "bottom";
+      this.item._onResizeEnd2(e.detail.event);
       this.$emit("resizeEnd", this.item);
-      event.target.style.opacity = 1.0;
-      await this.$nextTick();
-      this.resize = false;
+      this.resizing = false;
     },
     createPropWatchers() {
       //Setup prop watches to sync with the Dash Item

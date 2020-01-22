@@ -447,6 +447,9 @@ export class Layout {
     if (item.x < 0) {
       item.x = 0;
     }
+    if (item.y < 0) {
+      item.y = 0;
+    }
     if (item.width > this.numberOfCols) {
       item.x = 0;
       item.width = this.numberOfCols;

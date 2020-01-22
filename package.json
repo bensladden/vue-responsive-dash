@@ -61,7 +61,7 @@
 	},
 	"dependencies": {
 		"ste-simple-events": "^1.6.5",
-		"vue-displace": "^0.2.2",
+		"vue-displace": "^0.2.3",
 		"vue-element-resize-detector": "^1.0.5"
 	}
 }

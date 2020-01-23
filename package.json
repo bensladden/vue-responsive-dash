@@ -60,7 +60,7 @@
 		"vuepress-plugin-typescript": "^0.1.1"
 	},
 	"dependencies": {
-		"ste-simple-events": "^1.6.5",
+		"ste-simple-events": "^1.6.7",
 		"vue-displace": "^0.2.6",
 		"vue-element-resize-detector": "^1.0.5"
 	}

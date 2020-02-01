@@ -17,7 +17,8 @@
         bottom: 0 + 'px',
         right: 0 + 'px',
         position: 'absolute',
-        cursor: 'move'
+        cursor: 'move',
+        zIndex: 1
       }"
       v-if="draggable"
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"

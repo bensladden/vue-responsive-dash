@@ -328,8 +328,10 @@ export default {
       this.$emit("moveStart", this.item);
     },
     onMove(el, left, top) {
-      this.item._onMove(left, top);
-      this.$emit("moving", this.item);
+      if (this.dragging) {
+        this.item._onMove(left, top);
+        this.$emit("moving", this.item);
+      }
     },
     onMoveEnd(e) {
       this.item._onMoveEnd(e.detail.event);

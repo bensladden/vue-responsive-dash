@@ -5,6 +5,7 @@
         v-for="layout in layouts"
         v-bind="layout"
         :key="layout.breakpoint"
+        :compact="compact"
       >
         <Dash-Item
           v-for="item in layout.items"
@@ -15,6 +16,7 @@
         </Dash-Item>
       </Dash-Layout>
     </dashboard>
+    <button @click="compact = !compact">toggle compact</button> {{ compact }}
   </div>
 </template>
 
@@ -32,6 +34,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      compact: true,
       layouts: [
         {
           breakpoint: "xl",

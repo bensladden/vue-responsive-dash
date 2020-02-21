@@ -11,6 +11,7 @@ export class Layout {
   private _autoHeight: boolean;
   private _keepSquare: boolean;
   private _rowHeight: number;
+  private _compact: boolean;
   private _useCssTransforms: boolean;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
@@ -32,7 +33,8 @@ export class Layout {
     useCssTransforms,
     width,
     height,
-    rowHeight
+    rowHeight,
+    compact
   }: {
     breakpoint: string;
     numberOfCols: number;
@@ -44,6 +46,7 @@ export class Layout {
     width?: number;
     height?: number;
     rowHeight?: number;
+    compact?: boolean;
   }) {
     this._breakpoint = breakpoint;
     this._numberOfCols = numberOfCols;
@@ -92,6 +95,11 @@ export class Layout {
       this._rowHeight = rowHeight;
     } else {
       this._rowHeight = Layout.defaults.rowHeight;
+    }
+    if (typeof compact !== "undefined") {
+      this._compact = compact;
+    } else {
+      this._compact = Layout.defaults.compact;
     }
   }
   get breakpoint() {
@@ -179,6 +187,12 @@ export class Layout {
   }
   set placeholder(p) {
     this.placeholder = p;
+  }
+  get compact() {
+    return this._compact;
+  }
+  set compact(c: boolean) {
+    this._compact = c;
   }
   //Reactive Methods
   calculateHeight() {
@@ -339,7 +353,7 @@ export class Layout {
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
-    items = this.compact(items);
+    items = this.compactLayout(items);
     this.syncItems(items);
   }
   itemDraggingComplete(item: Item) {
@@ -392,7 +406,7 @@ export class Layout {
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
-    items = this.compact(items);
+    items = this.compactLayout(items);
     this.syncItems(items);
   }
   itemResizingComplete(item: Item) {
@@ -462,7 +476,7 @@ export class Layout {
     }
     return items;
   }
-  compact(items: Item[]) {
+  compactLayout(items: Item[]) {
     const sorted = this.sortItems(items);
     const compareWith = [] as Item[];
     const out = Array(items.length) as Item[];
@@ -483,8 +497,10 @@ export class Layout {
     return out;
   }
   compactItem(items: Item[], d: Item) {
-    while (d.y > 0 && !this.getFirstCollision(items, d)) {
-      d.y--;
+    if (this.compact) {
+      while (d.y > 0 && !this.getFirstCollision(items, d)) {
+        d.y--;
+      }
     }
     let collides;
     while ((collides = this.getFirstCollision(items, d))) {
@@ -576,7 +592,8 @@ export class Layout {
       useCssTransforms: false as boolean,
       width: 400 as number,
       height: 400 as number,
-      rowHeight: 200 as number
+      rowHeight: 200 as number,
+      compact: true as boolean
     };
   }
 }

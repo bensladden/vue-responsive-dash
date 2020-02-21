@@ -26,6 +26,7 @@ Note that only one layout should have the breakpointWidth `undefined`. This layo
 | numberOfCols | `number` | no | `12` | Number of columns allowed |
 | breakpointWidth | `number` | no | | Width used to determine which layout is most appropriate for the screen size |
 | useCssTransforms | `boolean` | no | `false` | Use translate3d instead of direct top left css properties |
+| compact | `boolean` | no | `true` | Automatically move items up if there is space available |
 
 ## Dash Item
 

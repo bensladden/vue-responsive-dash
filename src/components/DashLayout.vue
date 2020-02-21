@@ -47,7 +47,8 @@ export default {
     useCssTransforms: {
       type: Boolean,
       default: Layout.defaults.useCssTransforms
-    }
+    },
+    compact: { type: Boolean, default: Layout.defaults.compact }
   },
   components: {
     DashItem

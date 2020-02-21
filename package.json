@@ -1,6 +1,6 @@
 {
 	"name": "vue-responsive-dash",
-	"version": "0.3.13",
+	"version": "0.3.15",
 	"keywords": [
 		"vuejs",
 		"vue",
@@ -61,7 +61,7 @@
 	},
 	"dependencies": {
 		"ste-simple-events": "^1.6.8",
-		"vue-displace": "^0.2.6",
+		"vue-displace": "^0.2.7",
 		"vue-element-resize-detector": "^1.0.5"
 	}
 }

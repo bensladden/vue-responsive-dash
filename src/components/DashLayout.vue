@@ -1,7 +1,6 @@
 <template>
   <div v-show="currentBreakpoint === breakpoint">
     <div v-if="l" :style="{ position: 'relative', height: height }">
-      <slot></slot>
       <DashItem
         :id="placeholderId"
         :draggable="false"
@@ -10,6 +9,7 @@
       >
         <div class="placeholder"></div>
       </DashItem>
+      <slot></slot>
     </div>
     <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />

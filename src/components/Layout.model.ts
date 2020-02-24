@@ -251,6 +251,10 @@ export class Layout {
       id: d.id,
       unsubscribe: unResizeEnd
     });
+
+    //Check that the added item has not caused a collision and if so move the others.
+    let items = this.compactLayout(this.items);
+    this.syncItems(items);
   }
   removeDashItem(d: DashItem) {
     let index = this._dashItems.findIndex(item => {

@@ -17,6 +17,7 @@
       </Dash-Layout>
     </dashboard>
     <button @click="compact = !compact">toggle compact</button> {{ compact }}
+    <button @click="addItem">Add Item</button>
   </div>
 </template>
 
@@ -146,6 +147,19 @@ export default Vue.extend({
         }
       ]
     };
+  },
+  methods: {
+    addItem() {
+      for (let layout of this.layouts) {
+        layout.items.push({
+          id: (layout.items.length + 1).toString(),
+          x: 1,
+          y: 0,
+          width: 2,
+          height: 1
+        });
+      }
+    }
   }
 });
 </script>

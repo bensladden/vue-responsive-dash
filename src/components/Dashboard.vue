@@ -27,7 +27,6 @@ export default {
     autoHeight: { type: Boolean, default: Dashboard.defaults.autoHeight },
     margin: { type: Object, default: () => Dashboard.defaults.margin }
   },
-  components: {},
   directives: {
     rlocal: resize
   },
@@ -41,7 +40,21 @@ export default {
       $dashboard: () => this.d
     };
   },
-  computed: {},
+  computed: {
+    currentBreakpoint() {
+      if (this.d) {
+        return this.d.currentBreakpoint;
+      }
+      return null;
+    }
+  },
+  watch: {
+    currentBreakpoint(newValue) {
+      if (newValue) {
+        this.$emit("currentBreakpointUpdated", newValue);
+      }
+    }
+  },
   methods: {
     onResize(e) {
       this.d.width = e.detail.width;

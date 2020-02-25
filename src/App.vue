@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <dashboard :id="'dashTest'">
+    <dashboard
+      :id="'dashTest'"
+      @currentBreakpointUpdated="updateCurrentBreakpoint"
+    >
       <Dash-Layout
         v-for="layout in layouts"
         v-bind="layout"
@@ -17,7 +20,8 @@
       </Dash-Layout>
     </dashboard>
     <button @click="compact = !compact">toggle compact</button> {{ compact }}
-    <button @click="addItem">Add Item</button>
+    <button @click="addItem">Add Item</button> Current Breakpoint:
+    {{ currentBreakpoint }}
   </div>
 </template>
 
@@ -145,7 +149,9 @@ export default Vue.extend({
             { id: "2", x: 0, y: 1, width: 1, height: 1 }
           ]
         }
-      ]
+      ],
+      currentBreakpoint: "",
+      origLayout: []
     };
   },
   methods: {
@@ -159,6 +165,10 @@ export default Vue.extend({
           height: 1
         });
       }
+    },
+    updateCurrentBreakpoint(val: string) {
+      console.log(val);
+      this.currentBreakpoint = val;
     }
   }
 });

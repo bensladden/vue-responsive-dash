@@ -14,6 +14,11 @@ From this the layouts can then change to best suit the screen size.
 | ---- | ------------------ | -------- | ------- | ----------- |
 | id | `String | Number` | yes | | UUID for the dashboard |
 
+### Events
+| Name | Description |
+| ---- | ----------- |
+| currentBreakpointUpdated | returns the active layout name (typically the breakpoint size see below in dash layout props) |
+
 ## Dash Layout
 
 Each Dash Layout contains an name, numberOfCols and optionally a breakpointWidth.
@@ -48,6 +53,16 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizeEdges |  `String` |  false |  `"bottom right"` | The edges it can be resized (experimental for all options apart from bottom right) | 
 | resizeHandleSize | `Number` |  false |  `8` | The area where resize can be selected on the item |
 
+### Events
+| Name | Description |
+| ---- | ----------- |
+| moveStart | Fires initially when an item is being moved (dragged) by human interaction  |
+| moving | Fires while an item is being moved (dragged) |
+| moveEnd | Fires when the move is complete |
+| resizeStart | Fires initially when an item size is changing (via human interaction) |
+| resizing | Fires while the item is being resized |
+| resizeEnd | Fires once resizing is complete |
+
 ### Resizing Slots
 
 | Names |
@@ -58,3 +73,4 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizeBottomLeft |
 | resizeTopLeft |
 | resizeTopRight |
+

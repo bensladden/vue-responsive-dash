@@ -17,7 +17,7 @@ From this the layouts can then change to best suit the screen size.
 ### Events
 | Name | Description |
 | ---- | ----------- |
-| currentBreakpointUpdated | returns the active layout name (typically the breakpoint size see below in dash layout props) |
+| currentBreakpointUpdated | returns the active layout breakpoint |
 
 ## Dash Layout
 
@@ -27,7 +27,7 @@ Note that only one layout should have the breakpointWidth `undefined`. This layo
 ### Props
 | Name | Type               | Required | Default | Description |
 | ---- | ------------------ | -------- | ------- | ----------- |
-| name | `string` | yes | | Layout name (typically describing the breakpoint Size (i.e. xl, lg etc)) |
+| breakpoint | `string` | yes | | typically describing the breakpoint Size (i.e. xl, lg etc) |
 | numberOfCols | `number` | no | `12` | Number of columns allowed |
 | breakpointWidth | `number` | no | | Width used to determine which layout is most appropriate for the screen size |
 | useCssTransforms | `boolean` | no | `false` | Use translate3d instead of direct top left css properties |

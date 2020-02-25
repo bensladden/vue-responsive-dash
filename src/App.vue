@@ -167,9 +167,14 @@ export default Vue.extend({
       }
     },
     updateCurrentBreakpoint(val: string) {
-      console.log(val);
       this.currentBreakpoint = val;
     }
+    // onMoveStart(item) {
+    //   this.origLayout = this.layouts.find(el => {
+    //     el.name === this.currentBreakpoint;
+    //   });
+    //   this.origItemId = item.id;
+    // }
   }
 });
 </script>

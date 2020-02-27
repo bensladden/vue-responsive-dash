@@ -18,7 +18,7 @@
         right: 0 + 'px',
         position: 'absolute',
         cursor: 'move',
-        zIndex: 1
+        zIndex: draggableZIndex
       }"
       v-if="draggable"
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
@@ -34,7 +34,8 @@
           left: 0,
           right: 0,
           cursor: 'ns-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeTop && !dragging"
         v-displace="{ customMove: onResize }"
@@ -53,7 +54,8 @@
           right: 0 + 'px',
           bottom: 0 + 'px',
           cursor: 'ns-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeBottom && !dragging"
         v-displace="{ customMove: onResize }"
@@ -72,7 +74,8 @@
           bottom: 0 + 'px',
           left: 0 + 'px',
           cursor: 'ew-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -91,7 +94,8 @@
           bottom: 0 + 'px',
           right: 0 + 'px',
           cursor: 'ew-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -110,7 +114,8 @@
           top: resizeHandleSize / -2 + 'px',
           left: resizeHandleSize / -2 + 'px',
           cursor: 'nw-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeTopLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -129,7 +134,8 @@
           top: resizeHandleSize / -2 + 'px',
           right: resizeHandleSize / -2 + 'px',
           cursor: 'ne-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeTopRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -148,7 +154,8 @@
           bottom: resizeHandleSize / -2 + 'px',
           left: resizeHandleSize / -2 + 'px',
           cursor: 'ne-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeBottomLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -167,7 +174,8 @@
           bottom: resizeHandleSize / -2 + 'px',
           right: resizeHandleSize / -2 + 'px',
           cursor: 'nw-resize',
-          position: 'absolute'
+          position: 'absolute',
+          zIndex: resizableZIndex
         }"
         v-if="resizeBottomRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -226,7 +234,9 @@ export default {
     draggable: { type: Boolean, default: DashItem.defaults.draggable },
     resizable: { type: Boolean, default: DashItem.defaults.resizable },
     resizeEdges: { type: String, default: "bottom right" },
-    resizeHandleSize: { type: Number, default: 8 }
+    resizeHandleSize: { type: Number, default: 8 },
+    draggableZIndex: { type: Number, default: 1 },
+    resizableZIndex: { type: Number, default: 1 }
   },
   inject: { $layout: { default: null } },
   provide() {

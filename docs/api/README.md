@@ -52,6 +52,8 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizable |  `Boolean` |  false |  `true` | If the item can be resized | 
 | resizeEdges |  `String` |  false |  `"bottom right"` | The edges it can be resized (experimental for all options apart from bottom right) | 
 | resizeHandleSize | `Number` |  false |  `8` | The area where resize can be selected on the item |
+| draggableZIndex | `Number` | false | `1` | The zIndex applied to the draggable area to make sure it is above the items in the slot |
+| resizableZIndex | `Number` | false | `1` | The zIndex applied to each resizeable area to make sure it is above the items in the main slot |
 
 ### Events
 | Name | Description |

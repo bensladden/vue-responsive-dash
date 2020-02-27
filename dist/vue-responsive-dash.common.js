@@ -9102,7 +9102,7 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"09f5793c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=bf56ad84&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"09f5793c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=3eacbec4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":_vm.id}},[(_vm.draggable)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onMove, ignoreFn: _vm.ignoreMove }),expression:"{ customMove: onMove, ignoreFn: ignoreMove }"}],ref:_vm.id + '-overlay',style:({
       top: 0 + 'px',
       left: 0 + 'px',
@@ -9110,67 +9110,75 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       right: 0 + 'px',
       position: 'absolute',
       cursor: 'move',
-      zIndex: 1
+      zIndex: _vm.draggableZIndex
     }),attrs:{"draggable":"","id":_vm.id + '-overlay'},on:{"onMouseDown":_vm.onMoveStart,"onMouseUp":_vm.onMoveEnd}},[(_vm.resizeTop && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeTop',style:({
         height: _vm.resizeHandleSize + 'px',
         left: 0,
         right: 0,
         cursor: 'ns-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeTop'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'top')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeTop")],2):_vm._e(),(_vm.resizeBottom && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeBottom',style:({
         height: _vm.resizeHandleSize + 'px',
         left: 0 + 'px',
         right: 0 + 'px',
         bottom: 0 + 'px',
         cursor: 'ns-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeBottom'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'bottom')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeBottom")],2):_vm._e(),(_vm.resizeLeft && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeLeft',style:({
         width: _vm.resizeHandleSize + 'px',
         top: 0 + 'px',
         bottom: 0 + 'px',
         left: 0 + 'px',
         cursor: 'ew-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeLeft'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'left')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeLeft")],2):_vm._e(),(_vm.resizeRight && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeRight',style:({
         width: _vm.resizeHandleSize + 'px',
         top: 0 + 'px',
         bottom: 0 + 'px',
         right: 0 + 'px',
         cursor: 'ew-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeRight'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'right')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeRight")],2):_vm._e(),(_vm.resizeTopLeft && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeTopLeft',style:({
         width: _vm.resizeHandleSize * 2 + 'px',
         height: _vm.resizeHandleSize * 2 + 'px',
         top: _vm.resizeHandleSize / -2 + 'px',
         left: _vm.resizeHandleSize / -2 + 'px',
         cursor: 'nw-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeTopLeft'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'top left')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeTopLeft")],2):_vm._e(),(_vm.resizeTopRight && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeTopRight',style:({
         width: _vm.resizeHandleSize * 2 + 'px',
         height: _vm.resizeHandleSize * 2 + 'px',
         top: _vm.resizeHandleSize / -2 + 'px',
         right: _vm.resizeHandleSize / -2 + 'px',
         cursor: 'ne-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeTopRight'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'top right')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeTopRight")],2):_vm._e(),(_vm.resizeBottomLeft && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeBottomLeft',style:({
         width: _vm.resizeHandleSize * 2 + 'px',
         height: _vm.resizeHandleSize * 2 + 'px',
         bottom: _vm.resizeHandleSize / -2 + 'px',
         left: _vm.resizeHandleSize / -2 + 'px',
         cursor: 'ne-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeBottomLeft'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'bottom left')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeBottomLeft")],2):_vm._e(),(_vm.resizeBottomRight && !_vm.dragging)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onResize }),expression:"{ customMove: onResize }"}],ref:_vm.id + '-resizeBottomRight',style:({
         width: _vm.resizeHandleSize * 2 + 'px',
         height: _vm.resizeHandleSize * 2 + 'px',
         bottom: _vm.resizeHandleSize / -2 + 'px',
         right: _vm.resizeHandleSize / -2 + 'px',
         cursor: 'nw-resize',
-        position: 'absolute'
+        position: 'absolute',
+        zIndex: _vm.resizableZIndex
       }),attrs:{"draggable":"","id":_vm.id + '-resizeBottomRight'},on:{"onMouseDown":function($event){return _vm.onResizeStart($event, 'bottom right')},"onMouseUp":function($event){return _vm.onResizeEnd($event)}}},[_vm._t("resizeBottomRight")],2):_vm._e()]):_vm._e(),_vm._t("default")],2):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=bf56ad84&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=3eacbec4&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -10056,6 +10064,14 @@ var vue_displace_common = __webpack_require__("8cf4");
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
  //Monitor the Props and update the item with the changed value
 
@@ -10132,6 +10148,14 @@ var watchEmitProp = function watchEmitProp(key, deep) {
     resizeHandleSize: {
       type: Number,
       default: 8
+    },
+    draggableZIndex: {
+      type: Number,
+      default: 1
+    },
+    resizableZIndex: {
+      type: Number,
+      default: 1
     }
   },
   inject: {

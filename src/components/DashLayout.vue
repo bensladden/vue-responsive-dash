@@ -1,22 +1,25 @@
 <template>
-  <div v-show="currentBreakpoint === breakpoint">
+  <div v-if="currentBreakpoint === breakpoint">
     <div v-if="l" :style="{ position: 'relative', height: height }">
+      <slot></slot>
       <DashItem
         :id="placeholderId"
         :draggable="false"
         :resizable="false"
         v-show="dragging || resizing"
+        :y.sync="placeholderY"
+        :height.sync="placeholderHeight"
       >
         <div class="placeholder"></div>
       </DashItem>
-      <slot></slot>
     </div>
     <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />
       Current ColWidth: {{ colWidth }} <br />
       Layout Number of Cols: {{ numberOfCols }} <br />
       placeholder: {{ JSON.stringify(placeholder) }} <br />
-      Items: {{ JSON.stringify(itemsFromLayout) }}
+      Items: {{ JSON.stringify(itemsFromLayout) }} <br />
+      Height: {{ height }}
     </div>
   </div>
 </template>
@@ -48,16 +51,18 @@ export default {
       type: Boolean,
       default: Layout.defaults.useCssTransforms
     },
-    compact: { type: Boolean, default: Layout.defaults.compact }
+    compact: { type: Boolean, default: Layout.defaults.compact },
+    debug: { type: Boolean, default: false }
   },
   components: {
     DashItem
   },
   data() {
     return {
-      debug: false,
       l: null,
       placeholderId: "-1Placeholder",
+      placeholderY: 0,
+      placeholderHeight: 0,
       unWatch: null
     };
   },
@@ -87,16 +92,22 @@ export default {
       return this.l.itemBeingResized;
     },
     placeholder() {
-      if (this.l.placeholder) {
+      if (this.l?.placeholder) {
         return this.l.placeholder.toItem();
       }
       return "";
     },
     itemsFromLayout() {
-      return this.l.items;
+      if (this.l) {
+        return this.l.items;
+      }
+      return [];
     },
     colWidth() {
-      return this.l.colWidth;
+      if (this.l) {
+        return this.l.colWidth;
+      }
+      return "";
     },
     height() {
       if (this.l) {

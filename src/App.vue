@@ -25,12 +25,12 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import DashItem from "./components/DashItem.vue";
 import DashLayout from "./components/DashLayout.vue";
 import Dashboard from "./components/Dashboard.vue";
-export default Vue.extend({
+export default {
   name: "app",
   components: {
     DashItem,
@@ -151,7 +151,8 @@ export default Vue.extend({
         }
       ],
       currentBreakpoint: "",
-      origLayout: []
+      origLayout: [],
+      testHelper: false
     };
   },
   methods: {
@@ -166,17 +167,11 @@ export default Vue.extend({
         });
       }
     },
-    updateCurrentBreakpoint(val: string) {
+    updateCurrentBreakpoint(val) {
       this.currentBreakpoint = val;
     }
-    // onMoveStart(item) {
-    //   this.origLayout = this.layouts.find(el => {
-    //     el.name === this.currentBreakpoint;
-    //   });
-    //   this.origItemId = item.id;
-    // }
   }
-});
+};
 </script>
 
 <style lang="scss">

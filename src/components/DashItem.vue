@@ -325,32 +325,32 @@ export default {
     onMoveStart(e) {
       this.dragging = true;
       this.item._onMoveStart(e.detail.event);
-      this.$emit("moveStart", this.item);
+      this.$emit("moveStart", { ...this.item.toItem() });
     },
     onMove(el, left, top) {
       if (this.dragging) {
         this.item._onMove(left, top);
-        this.$emit("moving", this.item);
+        this.$emit("moving", { ...this.item.toItem() });
       }
     },
     onMoveEnd(e) {
       this.item._onMoveEnd(e.detail.event);
       this.dragging = false;
-      this.$emit("moveEnd", this.item);
+      this.$emit("moveEnd", { ...this.item.toItem() });
     },
     onResizeStart(e, location) {
       this.resizing = true;
       this.item._onResizeStart2(e.detail.event, location);
-      this.$emit("resizeStart", this.item);
+      this.$emit("resizeStart", { ...this.item.toItem() });
     },
     onResize(el, left, top) {
       this.item._onResize2(left, top);
-      this.$emit("resizing", this.item);
+      this.$emit("resizing", { ...this.item.toItem() });
     },
     onResizeEnd(e) {
       let location = "bottom";
       this.item._onResizeEnd2(e.detail.event);
-      this.$emit("resizeEnd", this.item);
+      this.$emit("resizeEnd", { ...this.item.toItem() });
       this.resizing = false;
     },
     createPropWatchers() {

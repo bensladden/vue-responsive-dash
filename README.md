@@ -15,7 +15,7 @@ Inspired by React-Grid-Layout & Vue-Grid-Layout
 </p>
 
 
-Example: [![Edit StickMan](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark)
+Example: [![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark)
 
 ## ⚙️ Installation
 ```sh
@@ -128,6 +128,14 @@ export default {
 
 
 ```
+
+### Grid Item Child Component
+
+[![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-idttk)
+
+See example above. The Grid Item object can be passed to the child component via props or injection. Typically the child component will look at the grid Item ID (which is unique) and decide what to render via a data/computed variable/s or VUEX. 
+
+See Example/Docs Website for more information.
 
 ## ⭐️ Show Your Support
 Please give a ⭐️ if this project helped you!

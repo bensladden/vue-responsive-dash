@@ -199,3 +199,53 @@ export default {
 </ClientOnly>
 </template>
 </ExampleViewer>
+
+## Dash Item Child Component Example:
+
+[![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-idttk)
+
+Child Component Code Below:
+
+```vue
+<template>
+  <div class="content">
+    Item ID by Inject: {{ id }}
+    <br>
+    Item ID by Prop: {{ itemId }}
+  </div>
+</template>
+
+<script>
+export default {
+  inject: { $item: { default: null } },
+  props: {
+    itemId: { type: [Number, String] }
+  },
+  computed: {
+    itemByinject() {
+      if (this.$item) {
+        return this.$item();
+      }
+      return null;
+    },
+    id() {
+      if (this.itemByinject) {
+        return this.itemByinject.id;
+      }
+      return "";
+    }
+  }
+};
+</script>
+
+<style>
+.content {
+  height: 100%;
+  width: 100%;
+  border: 2px solid #42b983;
+  border-radius: 5px;
+  background-color: #42b9833d;
+}
+</style>
+
+```

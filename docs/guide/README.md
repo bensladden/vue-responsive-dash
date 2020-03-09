@@ -115,6 +115,11 @@ export default {
 </style>
 ```
 
+### Grid Item Child Component
+
+[![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-idttk)
+
+See example above. The Grid Item object can be passed to the child component via props or injection. Typically the child component will look at the grid Item ID (which is unique) and decide what to render via a data/computed variable or VUEX. 
 
 ## Support
 Please give a ⭐️ if this project helped you!

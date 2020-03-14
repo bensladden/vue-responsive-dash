@@ -1,6 +1,6 @@
 <template>
   <b-card :style="{ width: widthPx + 'px', height: heightPx + 'px' }">
-    <div>{{ widthPx }} , {{ heightPx }}</div>
+    <slot></slot>
   </b-card>
 </template>
 

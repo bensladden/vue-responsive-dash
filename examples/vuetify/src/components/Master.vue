@@ -1,7 +1,6 @@
 <template>
   <v-card :elevation="4" :width="width" :height="height">
-    <v-card-title>Card Title</v-card-title>
-    <v-card-text>Some Text</v-card-text>
+    <slot></slot>
   </v-card>
 </template>
 

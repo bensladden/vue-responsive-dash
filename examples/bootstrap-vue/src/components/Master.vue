@@ -1,8 +1,7 @@
 <template>
-  <v-card :elevation="4" :width="width" :height="height">
-    <v-card-title>Card Title</v-card-title>
-    <v-card-text>Some Text</v-card-text>
-  </v-card>
+  <b-card :style="{ width: widthPx + 'px', height: heightPx + 'px' }">
+    <div>{{ widthPx }} , {{ heightPx }}</div>
+  </b-card>
 </template>
 
 <script>
@@ -12,10 +11,10 @@ export default {
     item() {
       return this.$item();
     },
-    width() {
+    widthPx() {
       return this.item.widthPx;
     },
-    height() {
+    heightPx() {
       return this.item.heightPx;
     }
   }

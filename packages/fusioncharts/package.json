@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:lib": "rimraf dist && vue-cli-service build --target lib ./src/components/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

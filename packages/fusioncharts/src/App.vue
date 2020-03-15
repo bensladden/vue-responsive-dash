@@ -11,11 +11,11 @@
           :key="item.id"
           v-bind.sync="item"
         >
-          <chart
+          <fusionChart
             :type="'column2d'"
             :dataFormat="'json'"
             :dataSource="myDataSource"
-          ></chart>
+          ></fusionChart>
           <template v-slot:resizeBottomRight> _| </template>
         </DashItem>
       </DashLayout>
@@ -25,7 +25,7 @@
 
 <script>
 import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
-import Chart from "./components/Chart.vue";
+import fusionChart from "./components/fusionChart.vue";
 
 export default {
   name: "App",
@@ -33,7 +33,7 @@ export default {
     Dashboard,
     DashLayout,
     DashItem,
-    Chart
+    fusionChart
   },
   data() {
     return {

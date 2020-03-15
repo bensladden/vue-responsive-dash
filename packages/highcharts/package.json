@@ -11,7 +11,8 @@
   "dependencies": {
     "highcharts": "^8.0.4",
     "highcharts-vue": "^1.3.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-responsive-dash": "^0.3.19"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",

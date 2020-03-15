@@ -33,6 +33,23 @@ export default {
     height() {
       return this.item.heightPx;
     }
+  },
+  watch: {
+    width() {
+      this.updateSize();
+    },
+    height() {
+      this.updateSize();
+    }
+  },
+  methods: {
+    updateSize() {
+      if (typeof this.$children[0] !== undefined) {
+        if (typeof this.$children[0].chart !== undefined) {
+          this.$children[0].chart.setSize(this.width, this.height);
+        }
+      }
+    }
   }
 };
 </script>

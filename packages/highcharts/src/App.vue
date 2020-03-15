@@ -35,7 +35,6 @@ export default {
       options: {
         series: [
           {
-            type: "pie",
             data: [
               {
                 name: "test1",

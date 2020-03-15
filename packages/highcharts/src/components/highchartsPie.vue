@@ -4,7 +4,7 @@
 
 <script>
 import highchartsChart from "./highchartsChart";
-
+import { merge } from "lodash";
 const chartDefaults = {
   chart: {
     plotBackgroundColor: null,
@@ -51,7 +51,7 @@ export default {
   watch: {
     options: {
       handler(newValue) {
-        this.chartOptions = Object.assign({}, chartDefaults, newValue);
+        this.chartOptions = merge({}, chartDefaults, newValue);
       },
       immediate: true,
       deep: true

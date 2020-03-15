@@ -1,9 +1,11 @@
 import Vue from "vue";
 
-import chart from "./chart.vue";
+import highchartsChart from "./highchartsChart.vue";
+import highchartsPie from "./highchartsPie.vue";
 
 const VueResponsiveDashHighcharts = {
-  chart
+  highchartsChart,
+  highchartsPie
 };
 
 Object.keys(VueResponsiveDashHighcharts).forEach(name => {
@@ -11,4 +13,4 @@ Object.keys(VueResponsiveDashHighcharts).forEach(name => {
 });
 
 export default VueResponsiveDashHighcharts;
-export { chart };
+export { highchartsChart, highchartsPie };

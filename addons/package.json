@@ -1,0 +1,12 @@
+{
+  "name": "@vue-responsive-dash/addons",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  },
+  "scripts": { 
+    "bootstrap": "lerna bootstrap --hoist",
+    "clean": "lerna clean",
+    "build:lib": "lerna run build:lib --stream"
+  }
+}

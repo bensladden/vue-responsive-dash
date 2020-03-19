@@ -7,6 +7,7 @@
   "scripts": { 
     "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
-    "build:lib": "lerna run build:lib --stream"
+    "build:lib": "lerna run build:lib --stream",
+    "lint": "lerna run lint"
   }
 }

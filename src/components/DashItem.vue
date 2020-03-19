@@ -6,6 +6,8 @@
     class="item"
     :class="classObj"
     :style="cssStyle"
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
   >
     <div
       draggable
@@ -249,7 +251,8 @@ export default {
       item: null,
       dragging: false,
       resizing: false,
-      unWatch: null
+      unWatch: null,
+      hover: false
     };
   },
   computed: {
@@ -374,6 +377,16 @@ export default {
       EMIT_PROPS.forEach(prop => {
         this.$watch("item." + prop, watchEmitProp(prop, true));
       });
+    }
+  },
+  watch: {
+    hover(newValue) {
+      this.item.hover = newValue;
+      if (newValue) {
+        this.$emit("hoverStart", this.item);
+      } else {
+        this.$emit("hovenEnd", this.item);
+      }
     }
   },
   mounted() {

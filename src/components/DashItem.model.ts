@@ -19,6 +19,7 @@ export class DashItem {
   private _resizeEdges: string;
   private _resizeHandleSize: number;
   private _moved: boolean = false;
+  private _hover: boolean = false;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
@@ -207,6 +208,12 @@ export class DashItem {
   }
   set heightPx(h: number) {
     this._heightPx = h;
+  }
+  get hover() {
+    return this._hover;
+  }
+  set hover(h: boolean) {
+    this._hover = h;
   }
   updatePositionAndSize() {
     this.left = DashItem.getLeftFromX(this.x, this.colWidth, this.margin);

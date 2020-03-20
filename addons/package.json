@@ -1,6 +1,7 @@
 {
   "name": "@vue-responsive-dash/addons",
   "private": true,
+  "version": "0.1.0",
   "devDependencies": {
     "lerna": "^3.20.2"
   },

@@ -1,6 +1,8 @@
 {
   "name": "@vue-responsive-dash/addons",
   "private": true,
+  "homepage": "https://vue-responsive-dash.netlify.com",
+	"author": "Ben Sladden",
   "version": "0.1.0",
   "devDependencies": {
     "lerna": "^3.20.2"

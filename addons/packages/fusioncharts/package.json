@@ -1,6 +1,8 @@
 {
   "name": "@vue-responsive-dash/fusioncharts",
   "version": "0.1.0",
+  "homepage": "https://vue-responsive-dash.netlify.com",
+	"author": "Ben Sladden",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -1,9 +1,9 @@
 {
-  "name": "@vue-responsive-dash/echarts",
+  "name": "@vue-responsive-dash/epic-spinners",
   "version": "0.1.0",
-  "private": true,
   "homepage": "https://vue-responsive-dash.netlify.com",
 	"author": "Ben Sladden",
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,10 +11,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "echarts": "^4.7.0",
-    "echarts-gl": "^1.1.1",
+    "epic-spinners": "^1.1.0",
     "vue": "^2.6.11",
-    "vue-echarts": "^5.0.0-beta.0",
     "vue-responsive-dash": "^0.3.19"
   },
   "devDependencies": {

@@ -4,6 +4,16 @@
   "homepage": "https://vue-responsive-dash.netlify.com",
 	"author": "Ben Sladden",
   "private": true,
+  "main": "dist/epic-spinners.common.js",
+  "unpkg": "dist/epic-spinners.umd.min.js",
+  "files": [
+		"dist"
+	],
+  "license": "MIT",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/bensladden/vue-responsive-dash.git"
+	},
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

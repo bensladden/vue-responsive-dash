@@ -41,12 +41,13 @@ module.exports = {
         ]
       },
       {
-        text: "Addons",
+        text: "Plugins",
         items: [
-          { text: "Chartjs", link: "/addons/#chartjs" },
-          { text: "eCharts", link: "/addons/#echarts" },
-          { text: "FusionCharts", link: "/addons/#fusioncharts" },
-          { text: "Highcharts", link: "/addons/#highcharts" }
+          { text: "epic-spinners", link: "/plugins/#epicspinners"},
+          { text: "Chartjs", link: "/plugins/#chartjs" },
+          { text: "eCharts", link: "/plugins/#echarts" },
+          { text: "FusionCharts", link: "/plugins/#fusioncharts" },
+          { text: "Highcharts", link: "/plugins/#highcharts" }
         ]
       },
       {

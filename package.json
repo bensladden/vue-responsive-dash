@@ -19,7 +19,8 @@
 		"url": "https://github.com/bensladden/vue-responsive-dash.git"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"./index.d.ts"
 	],
 	"types": "./index.d.ts",
 	"homepage": "https://vue-responsive-dash.netlify.com",

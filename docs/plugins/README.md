@@ -64,11 +64,44 @@ export default {
 
 ## Chartjs
 
+Implements vue-chartjs [https://vue-chartjs.org/](https://vue-chartjs.org/).
+This wrapper automatically scales the chart to fit DashItem. 
+
+See vue-chartjs for usage information: [https://vue-chartjs.org/guide/](https://vue-chartjs.org/guide/)
+
+```vue
+
+```
 
 ## eCharts
 
+Implements vue-echarts [https://ecomfe.github.io/vue-echarts/demo/](https://ecomfe.github.io/vue-echarts/demo/).
+This wrapper automatically scales the charts to fit each DashItem. 
+
+See vue-echarts for usage information: [https://github.com/ecomfe/vue-echarts](https://github.com/ecomfe/vue-echarts)
+
+```vue
+
+```
 
 ## FusionCharts
 
+Wrapper for fusioncharts [https://github.com/fusioncharts/vue-fusioncharts](https://github.com/fusioncharts/vue-fusioncharts).
+This wrapper automatically scales the chart to fit DashItem. 
+
+See vue-fusioncharts for usage information: [https://fusioncharts.github.io/vue-fusioncharts/](https://fusioncharts.github.io/vue-fusioncharts/)
+
+```vue
+
+```
 
 ## Highcharts
+
+Implements highcharts-vue [https://github.com/highcharts/highcharts-vue](https://github.com/highcharts/highcharts-vue).
+This wrapper automatically scales the chart to fit DashItem. 
+
+See highcharts-vue for usage information: [https://github.com/highcharts/highcharts-vue](https://github.com/highcharts/highcharts-vue)
+
+```vue
+
+```

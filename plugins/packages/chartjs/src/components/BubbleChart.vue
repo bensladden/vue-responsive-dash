@@ -1,15 +1,15 @@
 <template>
-  <line-chart
+  <bubble-chart
     v-if="chartData"
     :chart-data="chartData"
     :options="mergedOptions"
     :style="{ width: width + 'px', height: height + 'px' }"
-  ></line-chart>
+  ></bubble-chart>
 </template>
 
 <script>
 import { merge } from "lodash";
-import LineChart from "./lineChart.js";
+import BubbleChart from "./bubbleChart.js";
 import mixinComponent from "./mixinComponent.js";
 
 const defaultOptions = {
@@ -31,7 +31,7 @@ export default {
     }
   },
   components: {
-    LineChart
+    BubbleChart
   },
   data() {
     return {

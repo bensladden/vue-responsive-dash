@@ -1,15 +1,15 @@
 <template>
-  <line-chart
+  <horizontal-bar-chart
     v-if="chartData"
     :chart-data="chartData"
     :options="mergedOptions"
     :style="{ width: width + 'px', height: height + 'px' }"
-  ></line-chart>
+  ></horizontal-bar-chart>
 </template>
 
 <script>
 import { merge } from "lodash";
-import LineChart from "./lineChart.js";
+import HorizontalBarChart from "./horizontalBarChart.js";
 import mixinComponent from "./mixinComponent.js";
 
 const defaultOptions = {
@@ -31,7 +31,7 @@ export default {
     }
   },
   components: {
-    LineChart
+    HorizontalBarChart
   },
   data() {
     return {

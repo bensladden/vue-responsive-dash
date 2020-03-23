@@ -95,13 +95,3 @@ See vue-fusioncharts for usage information: [https://fusioncharts.github.io/vue-
 
 ```
 
-## Highcharts
-
-Implements highcharts-vue [https://github.com/highcharts/highcharts-vue](https://github.com/highcharts/highcharts-vue).
-This wrapper automatically scales the chart to fit DashItem. 
-
-See highcharts-vue for usage information: [https://github.com/highcharts/highcharts-vue](https://github.com/highcharts/highcharts-vue)
-
-```vue
-
-```

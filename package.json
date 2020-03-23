@@ -20,9 +20,9 @@
 	},
 	"files": [
 		"dist",
-		"./index.d.ts"
+		"types/*.d.ts"
 	],
-	"types": "./index.d.ts",
+	"types": "types/index.d.ts",
 	"homepage": "https://vue-responsive-dash.netlify.com",
 	"author": "Ben Sladden",
 	"main": "dist/vue-responsive-dash.common.js",

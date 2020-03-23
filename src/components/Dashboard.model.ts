@@ -1,33 +1,23 @@
-import { Margin, Breakpoint } from "../interfaces";
+import { Breakpoint } from "../interfaces";
 import { Layout } from "./Layout.model";
 
 export class Dashboard {
   private readonly _id: string | number;
   private _layouts: Layout[];
-  private _margin: Margin;
   private _autoHeight: boolean;
   private _width: number;
 
   constructor({
     id,
-    margin,
     autoHeight,
     width
   }: {
     id: string | number;
-    margin?: Margin;
     autoHeight?: boolean;
     width?: number;
   }) {
     this._id = id;
     this._layouts = [];
-    //Setup Margins
-    if (typeof margin !== "undefined") {
-      this._margin = margin;
-    } else {
-      this._margin = Dashboard.defaults.margin;
-    }
-
     if (typeof autoHeight !== "undefined") {
       this._autoHeight = autoHeight;
     } else {
@@ -75,12 +65,6 @@ export class Dashboard {
   set layouts(l: Layout[]) {
     this._layouts = l;
   }
-  get margin() {
-    return this._margin;
-  }
-  set margin(m: Margin) {
-    this._margin = m;
-  }
   get autoHeight() {
     return this._autoHeight;
   }
@@ -110,10 +94,6 @@ export class Dashboard {
       }
     }
     return matching;
-  }
-  setMargins(m: Margin) {
-    this.margin = m;
-    //this.updateResponsiveVariables();
   }
   sortBreakpoints() {
     this.breakpoints.sort((a, b) => {
@@ -147,7 +127,6 @@ export class Dashboard {
   }
   static get defaults() {
     return {
-      margin: { x: 10, y: 10 } as Margin,
       autoHeight: true as boolean,
       width: 400 as number
     };

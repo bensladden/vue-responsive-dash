@@ -9,6 +9,7 @@
         v-bind="layout"
         :key="layout.breakpoint"
         :compact="compact"
+        :margin="margin"
       >
         <Dash-Item
           v-for="item in layout.items"
@@ -40,6 +41,7 @@ export default {
   data() {
     return {
       compact: true,
+      margin: { x: 20, y: 20 },
       layouts: [
         {
           breakpoint: "xl",

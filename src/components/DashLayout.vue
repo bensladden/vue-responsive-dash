@@ -52,7 +52,8 @@ export default {
       default: Layout.defaults.useCssTransforms
     },
     compact: { type: Boolean, default: Layout.defaults.compact },
-    debug: { type: Boolean, default: false }
+    debug: { type: Boolean, default: false },
+    margin: { type: Object, default: () => Layout.defaults.margin }
   },
   components: {
     DashItem

@@ -1,4 +1,4 @@
-# fusioncharts
+# @vue-responsive-dash/fusioncharts
 
 Wrapper for fusioncharts [https://github.com/fusioncharts/vue-fusioncharts](https://github.com/fusioncharts/vue-fusioncharts).
 This wrapper automatically scales the chart to fit DashItem. 

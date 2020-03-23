@@ -346,34 +346,6 @@ export default {
         }
       ]
     };
-  },
-  mounted() {
-    this.fillData();
-    setInterval(() => {
-      this.fillData();
-    }, 2000);
-  },
-  methods: {
-    fillData() {
-      this.datacollection = {
-        labels: [this.getRandomInt(), this.getRandomInt()],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          },
-          {
-            label: "Data Two",
-            backgroundColor: "#8888",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          }
-        ]
-      };
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    }
   }
 };
 </script>

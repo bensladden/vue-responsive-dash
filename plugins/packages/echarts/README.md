@@ -1,4 +1,4 @@
-# echarts
+# @vue-responsive-dash/echarts
 
 Implements vue-echarts [https://ecomfe.github.io/vue-echarts/demo/](https://ecomfe.github.io/vue-echarts/demo/).
 This wrapper automatically scales the charts to fit each DashItem. 

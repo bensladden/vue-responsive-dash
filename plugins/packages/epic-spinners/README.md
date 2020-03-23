@@ -1,4 +1,4 @@
-# epic-spinners
+# @vue-responsive-dash/epic-spinners
 
 Wrapper for [https://github.com/epicmaxco/epic-spinners](https://github.com/epicmaxco/epic-spinners).
 Places the choice of spinner automatically in the middle of the DashItem.

@@ -1,0 +1,18 @@
+{
+  "name": "@vue-responsive-dash/plugins",
+  "private": true,
+  "homepage": "https://vue-responsive-dash.netlify.com",
+	"author": "Ben Sladden",
+  "version": "0.1.0",
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  },
+  "scripts": { 
+    "bootstrap": "lerna bootstrap --hoist",
+    "clean": "lerna clean",
+    "build:lib": "lerna run build:lib --stream",
+    "lint": "lerna run lint",
+    "version": "lerna version --conventional-commits",
+    "publish" : "lerna publish"
+  }
+}

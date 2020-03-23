@@ -64,6 +64,8 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizeStart | Fires initially when an item size is changing (via human interaction) |
 | resizing | Fires while the item is being resized |
 | resizeEnd | Fires once resizing is complete |
+| hoverStart | Fires when mouse begins to hover over DashItem |
+| hoverEnd | Fires when mouse moves our of DashItem | 
 
 ### Resizing Slots
 

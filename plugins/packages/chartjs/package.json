@@ -1,0 +1,46 @@
+{
+  "name": "@vue-responsive-dash/chartjs",
+  "version": "0.1.0",
+  "homepage": "https://vue-responsive-dash.netlify.com",
+	"author": "Ben Sladden",
+  "private": false,
+  "main": "dist/chartjs.common.js",
+  "unpkg": "dist/chartjs.umd.min.js",
+  "files": [
+    "dist",
+    "src"
+	],
+  "license": "MIT",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/bensladden/vue-responsive-dash.git"
+	},
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:lib": "rimraf dist && vue-cli-service build --target lib ./src/components/index.js",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "vue-chartjs": "^3.5.0"
+  },
+  "peerDependencies": {
+    "chart.js": "^2.9.3",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "chart.js": "^2.9.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-vue": "^6.1.2",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11",
+    "vue-responsive-dash": "^0.3.19"
+  }
+}

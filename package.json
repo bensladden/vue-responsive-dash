@@ -1,6 +1,6 @@
 {
 	"name": "vue-responsive-dash",
-	"version": "0.3.19",
+	"version": "0.3.21",
 	"keywords": [
 		"vuejs",
 		"vue",
@@ -19,8 +19,10 @@
 		"url": "https://github.com/bensladden/vue-responsive-dash.git"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"types/*.d.ts"
 	],
+	"types": "types/index.d.ts",
 	"homepage": "https://vue-responsive-dash.netlify.com",
 	"author": "Ben Sladden",
 	"main": "dist/vue-responsive-dash.common.js",

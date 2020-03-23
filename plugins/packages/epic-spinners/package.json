@@ -3,7 +3,6 @@
   "version": "0.1.2",
   "homepage": "https://vue-responsive-dash.netlify.com",
   "author": "Ben Sladden",
-  "private": false,
   "main": "dist/epic-spinners.common.js",
   "unpkg": "dist/epic-spinners.umd.min.js",
   "files": [

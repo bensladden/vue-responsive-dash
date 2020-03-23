@@ -1,6 +1,5 @@
 {
   "name": "@vue-responsive-dash/plugins",
-  "private": true,
   "homepage": "https://vue-responsive-dash.netlify.com",
 	"author": "Ben Sladden",
   "version": "0.1.0",

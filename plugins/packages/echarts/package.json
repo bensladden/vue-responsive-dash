@@ -3,7 +3,6 @@
   "version": "0.1.2",
   "homepage": "https://vue-responsive-dash.netlify.com",
   "author": "Ben Sladden",
-  "private": true,
   "main": "dist/echarts.common.js",
   "unpkg": "dist/echarts.umd.min.js",
   "files": [

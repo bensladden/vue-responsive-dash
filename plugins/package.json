@@ -13,6 +13,6 @@
     "build:lib": "lerna run build:lib --stream",
     "lint": "lerna run lint",
     "version": "lerna version --conventional-commits",
-    "publish" : "lerna publish"
+    "publish" : "lerna publish --conventional-commits"
   }
 }

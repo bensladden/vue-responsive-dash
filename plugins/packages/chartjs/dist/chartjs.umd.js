@@ -667,272 +667,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ "0ed3":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "default", function() { return /* binding */ addStylesClient; });
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-style-loader/lib/listToStyles.js
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-style-loader/lib/addStylesClient.js
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-function addStylesClient (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-
 /***/ "10be":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1693,9 +1427,17 @@ function applyToTag (styleElement, obj) {
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
+__webpack_require__.d(__webpack_exports__, "BarChart", function() { return /* reexport */ BarChart; });
+__webpack_require__.d(__webpack_exports__, "BubbleChart", function() { return /* reexport */ BubbleChart; });
+__webpack_require__.d(__webpack_exports__, "DoughnutChart", function() { return /* reexport */ DoughnutChart; });
+__webpack_require__.d(__webpack_exports__, "HorizontalBarChart", function() { return /* reexport */ HorizontalBarChart; });
 __webpack_require__.d(__webpack_exports__, "LineChart", function() { return /* reexport */ LineChart; });
+__webpack_require__.d(__webpack_exports__, "PieChart", function() { return /* reexport */ PieChart; });
+__webpack_require__.d(__webpack_exports__, "PolarAreaChart", function() { return /* reexport */ PolarAreaChart; });
+__webpack_require__.d(__webpack_exports__, "RadarChart", function() { return /* reexport */ RadarChart; });
+__webpack_require__.d(__webpack_exports__, "ScatterChart", function() { return /* reexport */ ScatterChart; });
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
 
 if (typeof window !== 'undefined') {
@@ -1716,17 +1458,17 @@ if (typeof window !== 'undefined') {
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=6e283abc&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('line-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=template&id=0591e5d8&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('bar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=6e283abc&
+// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=template&id=0591e5d8&
 
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/lodash/lodash.js
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/lodash/lodash.js
 var lodash = __webpack_require__("9ec3");
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-chartjs/es/mixins/index.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-chartjs/es/mixins/index.js
 function dataHandler(newData, oldData) {
   if (oldData) {
     var chart = this.$data._chart;
@@ -1821,11 +1563,11 @@ var reactiveProp = {
   reactiveData: reactiveData,
   reactiveProp: reactiveProp
 });
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/chart.js/dist/Chart.js
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/chart.js/dist/Chart.js
 var Chart = __webpack_require__("8d48");
 var Chart_default = /*#__PURE__*/__webpack_require__.n(Chart);
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-chartjs/es/BaseCharts.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-chartjs/es/BaseCharts.js
 
 function generateChart(chartId, chartType) {
   return {
@@ -1921,7 +1663,7 @@ var Scatter = generateChart('scatter-chart', 'scatter');
   Bubble: Bubble,
   Scatter: Scatter
 });
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-chartjs/es/index.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-chartjs/es/index.js
 
 
 var VueCharts = {
@@ -1942,13 +1684,13 @@ var VueCharts = {
 };
 /* harmony default export */ var es = (VueCharts);
 
-// CONCATENATED MODULE: ./src/components/lineChart.js
+// CONCATENATED MODULE: ./src/components/barChart.js
 
-const { reactiveProp: lineChart_reactiveProp } = mixins;
+const { reactiveProp: barChart_reactiveProp } = mixins;
 
-/* harmony default export */ var lineChart = ({
-  extends: Line,
-  mixins: [lineChart_reactiveProp],
+/* harmony default export */ var barChart = ({
+  extends: Bar,
+  mixins: [barChart_reactiveProp],
   props: ["options"],
   mounted() {
     // this.chartData is created in the mixin.
@@ -1957,7 +1699,29 @@ const { reactiveProp: lineChart_reactiveProp } = mixins;
   }
 });
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./src/components/mixinComponent.js
+/* harmony default export */ var mixinComponent = ({
+  inject: ["$item"],
+  computed: {
+    item() {
+      return this.$item();
+    },
+    width() {
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
+    },
+    height() {
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
+    }
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -1967,6 +1731,8 @@ const { reactiveProp: lineChart_reactiveProp } = mixins;
 //
 //
 //
+
+
 
 
 
@@ -1974,7 +1740,8 @@ const defaultOptions = {
   responsive: true,
   maintainAspectRatio: false
 };
-/* harmony default export */ var LineChartvue_type_script_lang_js_ = ({
+/* harmony default export */ var BarChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
@@ -1988,24 +1755,12 @@ const defaultOptions = {
     }
   },
   components: {
-    LineChart: lineChart
+    BarChart: barChart
   },
-  inject: ["$item"],
   data() {
     return {
       mergedOptions: defaultOptions
     };
-  },
-  computed: {
-    item() {
-      return this.$item();
-    },
-    width() {
-      return this.item.widthPx;
-    },
-    height() {
-      return this.item.heightPx;
-    }
   },
   watch: {
     options: {
@@ -2016,12 +1771,9 @@ const defaultOptions = {
   }
 });
 
-// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_LineChartvue_type_script_lang_js_ = (LineChartvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/LineChart.vue?vue&type=style&index=0&lang=css&
-var LineChartvue_type_style_index_0_lang_css_ = __webpack_require__("f968");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_BarChartvue_type_script_lang_js_ = (BarChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
@@ -2116,8 +1868,7 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./src/components/LineChart.vue
-
+// CONCATENATED MODULE: ./src/components/BarChart.vue
 
 
 
@@ -2126,7 +1877,7 @@ function normalizeComponent (
 /* normalize component */
 
 var component = normalizeComponent(
-  components_LineChartvue_type_script_lang_js_,
+  components_BarChartvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -2136,14 +1887,782 @@ var component = normalizeComponent(
   
 )
 
-/* harmony default export */ var LineChart = (component.exports);
+/* harmony default export */ var BarChart = (component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BubbleChart.vue?vue&type=template&id=e21be390&
+var BubbleChartvue_type_template_id_e21be390_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('bubble-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var BubbleChartvue_type_template_id_e21be390_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/BubbleChart.vue?vue&type=template&id=e21be390&
+
+// CONCATENATED MODULE: ./src/components/bubbleChart.js
+
+const { reactiveProp: bubbleChart_reactiveProp } = mixins;
+
+/* harmony default export */ var bubbleChart = ({
+  extends: Bubble,
+  mixins: [bubbleChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BubbleChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const BubbleChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var BubbleChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return BubbleChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    BubbleChart: bubbleChart
+  },
+  data() {
+    return {
+      mergedOptions: BubbleChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, BubbleChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/BubbleChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_BubbleChartvue_type_script_lang_js_ = (BubbleChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/BubbleChart.vue
+
+
+
+
+
+/* normalize component */
+
+var BubbleChart_component = normalizeComponent(
+  components_BubbleChartvue_type_script_lang_js_,
+  BubbleChartvue_type_template_id_e21be390_render,
+  BubbleChartvue_type_template_id_e21be390_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var BubbleChart = (BubbleChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/DoughnutChart.vue?vue&type=template&id=5c29794c&
+var DoughnutChartvue_type_template_id_5c29794c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('doughnut-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var DoughnutChartvue_type_template_id_5c29794c_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/DoughnutChart.vue?vue&type=template&id=5c29794c&
+
+// CONCATENATED MODULE: ./src/components/doughnutChart.js
+
+const { reactiveProp: doughnutChart_reactiveProp } = mixins;
+
+/* harmony default export */ var doughnutChart = ({
+  extends: Doughnut,
+  mixins: [doughnutChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/DoughnutChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const DoughnutChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var DoughnutChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return DoughnutChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    DoughnutChart: doughnutChart
+  },
+  data() {
+    return {
+      mergedOptions: DoughnutChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, DoughnutChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/DoughnutChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_DoughnutChartvue_type_script_lang_js_ = (DoughnutChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/DoughnutChart.vue
+
+
+
+
+
+/* normalize component */
+
+var DoughnutChart_component = normalizeComponent(
+  components_DoughnutChartvue_type_script_lang_js_,
+  DoughnutChartvue_type_template_id_5c29794c_render,
+  DoughnutChartvue_type_template_id_5c29794c_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var DoughnutChart = (DoughnutChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HorizontalBarChart.vue?vue&type=template&id=881d20d0&
+var HorizontalBarChartvue_type_template_id_881d20d0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('horizontal-bar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var HorizontalBarChartvue_type_template_id_881d20d0_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue?vue&type=template&id=881d20d0&
+
+// CONCATENATED MODULE: ./src/components/horizontalBarChart.js
+
+const { reactiveProp: horizontalBarChart_reactiveProp } = mixins;
+
+/* harmony default export */ var horizontalBarChart = ({
+  extends: HorizontalBar,
+  mixins: [horizontalBarChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HorizontalBarChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const HorizontalBarChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var HorizontalBarChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return HorizontalBarChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    HorizontalBarChart: horizontalBarChart
+  },
+  data() {
+    return {
+      mergedOptions: HorizontalBarChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, HorizontalBarChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_HorizontalBarChartvue_type_script_lang_js_ = (HorizontalBarChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue
+
+
+
+
+
+/* normalize component */
+
+var HorizontalBarChart_component = normalizeComponent(
+  components_HorizontalBarChartvue_type_script_lang_js_,
+  HorizontalBarChartvue_type_template_id_881d20d0_render,
+  HorizontalBarChartvue_type_template_id_881d20d0_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var HorizontalBarChart = (HorizontalBarChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=7012ace8&
+var LineChartvue_type_template_id_7012ace8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('line-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var LineChartvue_type_template_id_7012ace8_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=7012ace8&
+
+// CONCATENATED MODULE: ./src/components/lineChart.js
+
+const { reactiveProp: lineChart_reactiveProp } = mixins;
+
+/* harmony default export */ var lineChart = ({
+  extends: Line,
+  mixins: [lineChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const LineChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var LineChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return LineChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    LineChart: lineChart
+  },
+  data() {
+    return {
+      mergedOptions: LineChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, LineChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_LineChartvue_type_script_lang_js_ = (LineChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/LineChart.vue
+
+
+
+
+
+/* normalize component */
+
+var LineChart_component = normalizeComponent(
+  components_LineChartvue_type_script_lang_js_,
+  LineChartvue_type_template_id_7012ace8_render,
+  LineChartvue_type_template_id_7012ace8_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var LineChart = (LineChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=template&id=50e03158&
+var PieChartvue_type_template_id_50e03158_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('pie-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var PieChartvue_type_template_id_50e03158_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=template&id=50e03158&
+
+// CONCATENATED MODULE: ./src/components/pieChart.js
+
+const { reactiveProp: pieChart_reactiveProp } = mixins;
+
+/* harmony default export */ var pieChart = ({
+  extends: Pie,
+  mixins: [pieChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const PieChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var PieChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return PieChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    PieChart: pieChart
+  },
+  data() {
+    return {
+      mergedOptions: PieChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, PieChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_PieChartvue_type_script_lang_js_ = (PieChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/PieChart.vue
+
+
+
+
+
+/* normalize component */
+
+var PieChart_component = normalizeComponent(
+  components_PieChartvue_type_script_lang_js_,
+  PieChartvue_type_template_id_50e03158_render,
+  PieChartvue_type_template_id_50e03158_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var PieChart = (PieChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PolarAreaChart.vue?vue&type=template&id=3f0002e0&
+var PolarAreaChartvue_type_template_id_3f0002e0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('polar-area-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var PolarAreaChartvue_type_template_id_3f0002e0_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/PolarAreaChart.vue?vue&type=template&id=3f0002e0&
+
+// CONCATENATED MODULE: ./src/components/polarAreaChart.js
+
+const { reactiveProp: polarAreaChart_reactiveProp } = mixins;
+
+/* harmony default export */ var polarAreaChart = ({
+  extends: PolarArea,
+  mixins: [polarAreaChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PolarAreaChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const PolarAreaChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var PolarAreaChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return PolarAreaChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    PolarAreaChart: polarAreaChart
+  },
+  data() {
+    return {
+      mergedOptions: PolarAreaChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, PolarAreaChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/PolarAreaChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_PolarAreaChartvue_type_script_lang_js_ = (PolarAreaChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/PolarAreaChart.vue
+
+
+
+
+
+/* normalize component */
+
+var PolarAreaChart_component = normalizeComponent(
+  components_PolarAreaChartvue_type_script_lang_js_,
+  PolarAreaChartvue_type_template_id_3f0002e0_render,
+  PolarAreaChartvue_type_template_id_3f0002e0_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var PolarAreaChart = (PolarAreaChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=template&id=91c90800&
+var RadarChartvue_type_template_id_91c90800_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('radar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var RadarChartvue_type_template_id_91c90800_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=template&id=91c90800&
+
+// CONCATENATED MODULE: ./src/components/radarChart.js
+
+const { reactiveProp: radarChart_reactiveProp } = mixins;
+
+/* harmony default export */ var radarChart = ({
+  extends: Radar,
+  mixins: [radarChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const RadarChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var RadarChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return RadarChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    RadarChart: radarChart
+  },
+  data() {
+    return {
+      mergedOptions: RadarChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, RadarChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RadarChartvue_type_script_lang_js_ = (RadarChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/RadarChart.vue
+
+
+
+
+
+/* normalize component */
+
+var RadarChart_component = normalizeComponent(
+  components_RadarChartvue_type_script_lang_js_,
+  RadarChartvue_type_template_id_91c90800_render,
+  RadarChartvue_type_template_id_91c90800_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var RadarChart = (RadarChart_component.exports);
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3db25946-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=template&id=beaafe40&
+var ScatterChartvue_type_template_id_beaafe40_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('scatter-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var ScatterChartvue_type_template_id_beaafe40_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=template&id=beaafe40&
+
+// CONCATENATED MODULE: ./src/components/scatterChart.js
+
+const { reactiveProp: scatterChart_reactiveProp } = mixins;
+
+/* harmony default export */ var scatterChart = ({
+  extends: Scatter,
+  mixins: [scatterChart_reactiveProp],
+  props: ["options"],
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const ScatterChartvue_type_script_lang_js_defaultOptions = {
+  responsive: true,
+  maintainAspectRatio: false
+};
+/* harmony default export */ var ScatterChartvue_type_script_lang_js_ = ({
+  mixins: [mixinComponent],
+  props: {
+    chartData: {
+      type: Object,
+      default: null
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return ScatterChartvue_type_script_lang_js_defaultOptions;
+      }
+    }
+  },
+  components: {
+    ScatterChart: scatterChart
+  },
+  data() {
+    return {
+      mergedOptions: ScatterChartvue_type_script_lang_js_defaultOptions
+    };
+  },
+  watch: {
+    options: {
+      handler(newValue) {
+        this.mergedOptions = Object(lodash["merge"])({}, ScatterChartvue_type_script_lang_js_defaultOptions, newValue);
+      }
+    }
+  }
+});
+
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ScatterChartvue_type_script_lang_js_ = (ScatterChartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue
+
+
+
+
+
+/* normalize component */
+
+var ScatterChart_component = normalizeComponent(
+  components_ScatterChartvue_type_script_lang_js_,
+  ScatterChartvue_type_template_id_beaafe40_render,
+  ScatterChartvue_type_template_id_beaafe40_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ScatterChart = (ScatterChart_component.exports);
 // CONCATENATED MODULE: ./src/components/index.js
 
 
 
 
+
+
+
+
+
+
+
+
 const VueResponsiveDashChartJs = {
-  LineChart: LineChart
+  BarChart: BarChart,
+  BubbleChart: BubbleChart,
+  DoughnutChart: DoughnutChart,
+  HorizontalBarChart: HorizontalBarChart,
+  LineChart: LineChart,
+  PieChart: PieChart,
+  PolarAreaChart: PolarAreaChart,
+  RadarChart: RadarChart,
+  ScatterChart: ScatterChart
 };
 
 Object.keys(VueResponsiveDashChartJs).forEach(name => {
@@ -2153,7 +2672,8 @@ Object.keys(VueResponsiveDashChartJs).forEach(name => {
 /* harmony default export */ var components = (VueResponsiveDashChartJs);
 
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
 /* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components);
@@ -2229,20 +2749,6 @@ Object.keys(VueResponsiveDashChartJs).forEach(name => {
     return enAu;
 
 })));
-
-
-/***/ }),
-
-/***/ "20c2":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("3c10");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".small{max-width:600px;margin:150px auto}", ""]);
-// Exports
-module.exports = exports;
 
 
 /***/ }),
@@ -4460,107 +4966,6 @@ webpackContext.id = "3113";
 
 /***/ }),
 
-/***/ "3c10":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
-module.exports = function (useSourceMap) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item, useSourceMap);
-
-      if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
-      }
-
-      return content;
-    }).join('');
-  }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
-
-
-  list.i = function (modules, mediaQuery, dedupe) {
-    if (typeof modules === 'string') {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, '']];
-    }
-
-    var alreadyImportedModules = {};
-
-    if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
-
-        if (id != null) {
-          alreadyImportedModules[id] = true;
-        }
-      }
-    }
-
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
-
-      if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
-        } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
-        }
-      }
-
-      list.push(item);
-    }
-  };
-
-  return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
-
-  var cssMapping = item[3];
-
-  if (!cssMapping) {
-    return content;
-  }
-
-  if (useSourceMap && typeof btoa === 'function') {
-    var sourceMapping = toComment(cssMapping);
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-  }
-
-  return [content].join('\n');
-} // Adapted from convert-source-map (MIT)
-
-
-function toComment(sourceMap) {
-  // eslint-disable-next-line no-undef
-  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
-  return "/*# ".concat(data, " */");
-}
-
-/***/ }),
-
 /***/ "3c6b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6372,21 +6777,6 @@ function toComment(sourceMap) {
 
 })));
 
-
-/***/ }),
-
-/***/ "507d":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("20c2");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__("0ed3").default
-var update = add("c13f37d0", content, true, {"sourceMap":false,"shadowMode":false});
 
 /***/ }),
 
@@ -51174,17 +51564,6 @@ return src;
 
 })));
 
-
-/***/ }),
-
-/***/ "f968":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("507d");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

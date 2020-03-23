@@ -1,18 +1,6 @@
-<template>
-  <v-chart
-    :initOptions="initOptions"
-    :options="options"
-    :theme="theme"
-    :group="group"
-    :watchShallow="watchShallow"
-    :manualUpdate="manualUpdate"
-    autoresize
-    :style="{ width: width + 'px', height: height + 'px' }"
-  ></v-chart>
-</template>
-
-<script>
+import ECharts from "vue-echarts";
 export default {
+  components: { "v-chart": ECharts },
   props: {
     initOptions: Object,
     options: Object,
@@ -40,4 +28,3 @@ export default {
     }
   }
 };
-</script>

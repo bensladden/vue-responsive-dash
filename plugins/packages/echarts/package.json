@@ -7,7 +7,8 @@
   "main": "dist/echarts.common.js",
   "unpkg": "dist/echarts.umd.min.js",
   "files": [
-		"dist"
+    "dist",
+    "src"
 	],
   "license": "MIT",
   "repository": {
@@ -21,21 +22,25 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "vue-echarts": "^5.0.0-beta.0"
+  },
+  "peerDependencies": {
     "echarts": "^4.7.0",
-    "echarts-gl": "^1.1.1",
-    "vue": "^2.6.11",
-    "vue-echarts": "^5.0.0-beta.0",
-    "vue-responsive-dash": "^0.3.19"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "echarts": "^4.7.0",
+    "echarts-gl": "^1.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.1.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11",
+    "vue-responsive-dash": "^0.3.19"
   }
 }

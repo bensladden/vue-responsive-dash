@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "FusionChart", function() { return /* reexport */ FusionChart; });
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
 
 if (typeof window !== 'undefined') {
@@ -127,14 +127,14 @@ if (typeof window !== 'undefined') {
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"624a9cd3-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib??vue-loader-options!./src/components/FusionChart.vue?vue&type=template&id=42b9c077&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"624a9cd3-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/FusionChart.vue?vue&type=template&id=42b9c077&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('fusioncharts',{attrs:{"type":_vm.type,"width":_vm.width,"height":_vm.height,"dataFormat":_vm.dataFormat,"dataSource":_vm.dataSource}})}
 var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/components/FusionChart.vue?vue&type=template&id=42b9c077&
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib??vue-loader-options!./src/components/FusionChart.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/FusionChart.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -165,7 +165,7 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/FusionChart.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_FusionChartvue_type_script_lang_js_ = (FusionChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
@@ -296,7 +296,7 @@ Object.keys(VueResponsiveDashFusioncharts).forEach(name => {
 /* harmony default export */ var components = (VueResponsiveDashFusioncharts);
 
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/addons/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
 /* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components);

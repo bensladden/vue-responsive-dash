@@ -7,11 +7,14 @@
         v-bind="layout"
       >
         <DashItem
-          v-for="item in layout.items"
+          v-for="(item, index) in layout.items"
           :key="item.id"
           v-bind.sync="item"
         >
-          <Chart :options="options"></Chart>
+          <component
+            :is="items[index].template"
+            :options="items[index].data"
+          ></component>
           <template v-slot:resizeBottomRight> _| </template>
         </DashItem>
       </DashLayout>
@@ -21,56 +24,89 @@
 
 <script>
 import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
-import Chart from "./components/Chart.vue";
-import { layouts } from "../../common/dataItems";
+import {
+  BarChart,
+  EffectScatterChart,
+  LineChart,
+  MapChart,
+  PieChart,
+  RadarChart,
+  ScatterChart
+} from "./components/";
+import {
+  barData,
+  pieData,
+  polarData,
+  scatterData,
+  radarData,
+  lineData
+} from "./components/data";
+import mapData from "./components/mapData";
+import { largeLayouts } from "../../common/dataItems";
 export default {
   name: "App",
   components: {
     Dashboard,
     DashLayout,
     DashItem,
-    Chart
+    BarChart,
+    EffectScatterChart,
+    LineChart,
+    MapChart,
+    PieChart,
+    RadarChart,
+    ScatterChart
   },
   data() {
     return {
-      layouts: layouts,
-      options: {
-        title: {
-          text: "Pie",
-          x: "center"
+      layouts: largeLayouts,
+      items: [
+        {
+          id: "1",
+          template: "BarChart",
+          data: barData
         },
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        {
+          id: "2",
+          template: "EffectScatterChart",
+          data: scatterData
         },
-        legend: {
-          orient: "vertical",
-          left: "left",
-          data: ["S1", "S2", "S3", "S4", "S5"]
+        {
+          id: "3",
+          template: "LineChart",
+          data: lineData
         },
-        series: [
-          {
-            name: "Pie",
-            type: "pie",
-            radius: "55%",
-            center: ["50%", "60%"],
-            data: [
-              { value: 335, name: "S1" },
-              { value: 310, name: "S2" },
-              { value: 234, name: "S3" },
-              { value: 135, name: "S4" },
-              { value: 1548, name: "S5" }
-            ],
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
-              }
-            }
-          }
-        ]
-      }
+        {
+          id: "4",
+          template: "MapChart",
+          data: mapData
+        },
+        {
+          id: "5",
+          template: "PieChart",
+          data: pieData
+        },
+        {
+          id: "6",
+          template: "RadarChart",
+          data: radarData
+        },
+        {
+          id: "7",
+          template: "ScatterChart",
+          data: scatterData
+        },
+        {
+          id: "8",
+          template: "RadarChart",
+          data: polarData
+        },
+        {
+          id: "9",
+          template: "RadarChart",
+          data: polarData
+        }
+      ]
     };
   }
 };

@@ -1,27 +1,25 @@
 {
   "name": "@vue-responsive-dash/epic-spinners",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://vue-responsive-dash.netlify.com",
-	"author": "Ben Sladden",
+  "author": "Ben Sladden",
   "private": false,
   "main": "dist/epic-spinners.common.js",
   "unpkg": "dist/epic-spinners.umd.min.js",
   "files": [
     "dist",
     "src"
-	],
+  ],
   "license": "MIT",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/bensladden/vue-responsive-dash.git"
-	},
+    "type": "git",
+    "url": "https://github.com/bensladden/vue-responsive-dash.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:lib": "rimraf dist && vue-cli-service build --target lib ./src/components/index.js",
     "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
   },
   "peerDependencies": {
     "epic-spinners": "^1.1.0",
@@ -38,7 +36,7 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19"
+    "vue-responsive-dash": "^0.3.19",
+    "vue-template-compiler": "^2.6.11"
   }
 }

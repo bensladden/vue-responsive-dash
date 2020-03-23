@@ -1,20 +1,20 @@
 {
   "name": "@vue-responsive-dash/echarts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://vue-responsive-dash.netlify.com",
-  "author": "Ben Sladden",  
+  "author": "Ben Sladden",
   "private": true,
   "main": "dist/echarts.common.js",
   "unpkg": "dist/echarts.umd.min.js",
   "files": [
     "dist",
     "src"
-	],
+  ],
   "license": "MIT",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/bensladden/vue-responsive-dash.git"
-	},
+    "type": "git",
+    "url": "https://github.com/bensladden/vue-responsive-dash.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -40,7 +40,7 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19"
+    "vue-responsive-dash": "^0.3.19",
+    "vue-template-compiler": "^2.6.11"
   }
 }

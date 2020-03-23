@@ -1,20 +1,20 @@
 {
   "name": "@vue-responsive-dash/fusioncharts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://vue-responsive-dash.netlify.com",
-	"author": "Ben Sladden",
+  "author": "Ben Sladden",
   "private": true,
   "main": "dist/fusioncharts.common.js",
   "unpkg": "dist/fusioncharts.umd.min.js",
   "files": [
     "dist",
     "src"
-	],
+  ],
   "license": "MIT",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/bensladden/vue-responsive-dash.git"
-	},
+    "type": "git",
+    "url": "https://github.com/bensladden/vue-responsive-dash.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -24,7 +24,7 @@
   "dependencies": {
     "vue-fusioncharts": "^3.0.4"
   },
-  "peerDependencies": {    
+  "peerDependencies": {
     "fusioncharts": "^3.15.1"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19"
+    "vue-responsive-dash": "^0.3.19",
+    "vue-template-compiler": "^2.6.11"
   }
 }

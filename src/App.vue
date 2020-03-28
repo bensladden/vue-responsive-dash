@@ -176,7 +176,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .content {
   height: 100%;
   width: 100%;

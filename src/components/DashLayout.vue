@@ -37,7 +37,7 @@ const watchProp = (key, deep) => ({
     }
     this.l[key] = newValue;
   },
-  deep
+  deep,
 });
 
 export default {
@@ -49,14 +49,14 @@ export default {
     numberOfCols: { type: Number, default: Layout.defaults.numberOfCols },
     useCssTransforms: {
       type: Boolean,
-      default: Layout.defaults.useCssTransforms
+      default: Layout.defaults.useCssTransforms,
     },
     compact: { type: Boolean, default: Layout.defaults.compact },
     debug: { type: Boolean, default: false },
-    margin: { type: Object, default: () => Layout.defaults.margin }
+    margin: { type: Object, default: () => Layout.defaults.margin },
   },
   components: {
-    DashItem
+    DashItem,
   },
   data() {
     return {
@@ -64,12 +64,12 @@ export default {
       placeholderId: "-1Placeholder",
       placeholderY: 0,
       placeholderHeight: 0,
-      unWatch: null
+      unWatch: null,
     };
   },
   provide() {
     return {
-      $layout: () => this.l
+      $layout: () => this.l,
     };
   },
   inject: { $dashboard: { default: null } },
@@ -115,15 +115,15 @@ export default {
         return this.l.height + "px";
       }
       return "0px";
-    }
+    },
   },
   methods: {
     createPropWatchers() {
       //Setup prop watches to sync with the Dash Item
-      Object.keys(this.$props).forEach(key => {
+      Object.keys(this.$props).forEach((key) => {
         this.$watch(key, watchProp(key, true));
       });
-    }
+    },
   },
   mounted() {
     this.l = new Layout(this.$props);
@@ -134,7 +134,7 @@ export default {
     } else {
       this.unWatch = this.$watch(
         "dashboard",
-        function(newValue) {
+        function (newValue) {
           if (newValue) {
             this.dashboard.addLayoutInstance(this.l);
             this.createPropWatchers();
@@ -149,7 +149,7 @@ export default {
     if (this.dashboard) {
       this.dashboard.removeLayoutInstance(this.l);
     }
-  }
+  },
 };
 </script>
 

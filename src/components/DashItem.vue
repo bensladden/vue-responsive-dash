@@ -20,7 +20,7 @@
         right: 0 + 'px',
         position: 'absolute',
         cursor: 'move',
-        zIndex: draggableZIndex
+        zIndex: draggableZIndex,
       }"
       v-if="draggable"
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
@@ -37,7 +37,7 @@
           right: 0,
           cursor: 'ns-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeTop && !dragging"
         v-displace="{ customMove: onResize }"
@@ -57,7 +57,7 @@
           bottom: 0 + 'px',
           cursor: 'ns-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeBottom && !dragging"
         v-displace="{ customMove: onResize }"
@@ -77,7 +77,7 @@
           left: 0 + 'px',
           cursor: 'ew-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -97,7 +97,7 @@
           right: 0 + 'px',
           cursor: 'ew-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -117,7 +117,7 @@
           left: resizeHandleSize / -2 + 'px',
           cursor: 'nw-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeTopLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -137,7 +137,7 @@
           right: resizeHandleSize / -2 + 'px',
           cursor: 'ne-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeTopRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -157,7 +157,7 @@
           left: resizeHandleSize / -2 + 'px',
           cursor: 'ne-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeBottomLeft && !dragging"
         v-displace="{ customMove: onResize }"
@@ -177,7 +177,7 @@
           right: resizeHandleSize / -2 + 'px',
           cursor: 'nw-resize',
           position: 'absolute',
-          zIndex: resizableZIndex
+          zIndex: resizableZIndex,
         }"
         v-if="resizeBottomRight && !dragging"
         v-displace="{ customMove: onResize }"
@@ -204,7 +204,7 @@ const watchProp = (key, deep) => ({
     }
     this.item[key] = newValue;
   },
-  deep
+  deep,
 });
 
 //Props to change via interaction and need to be emitted for prop.sync usage
@@ -218,14 +218,14 @@ const watchEmitProp = (key, deep) => ({
     }
     this.$emit("update:" + key, newValue);
   },
-  deep
+  deep,
 });
 
 export default {
   name: "DashItem",
   inheritAttrs: false,
   directives: {
-    displace
+    displace,
   },
   props: {
     id: { type: [Number, String], required: true },
@@ -238,12 +238,12 @@ export default {
     resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 },
     draggableZIndex: { type: Number, default: 1 },
-    resizableZIndex: { type: Number, default: 1 }
+    resizableZIndex: { type: Number, default: 1 },
   },
   inject: { $layout: { default: null } },
   provide() {
     return {
-      $item: () => this.item
+      $item: () => this.item,
     };
   },
   data() {
@@ -252,7 +252,7 @@ export default {
       dragging: false,
       resizing: false,
       unWatch: null,
-      hover: false
+      hover: false,
     };
   },
   computed: {
@@ -262,7 +262,7 @@ export default {
     classObj() {
       return {
         dragging: this.resizingOrDragging,
-        cssTransforms: this.useCssTransforms
+        cssTransforms: this.useCssTransforms,
       };
     },
     layout() {
@@ -329,7 +329,7 @@ export default {
     },
     resizeBottomRight() {
       return this.resizeBottom && this.resizeRight;
-    }
+    },
   },
   methods: {
     ignoreMove() {
@@ -368,16 +368,16 @@ export default {
     },
     createPropWatchers() {
       //Setup prop watches to sync with the Dash Item
-      Object.keys(this.$props).forEach(key => {
+      Object.keys(this.$props).forEach((key) => {
         this.$watch(key, watchProp(key, true));
       });
     },
     createDashItemWatchers() {
       //Setup Watchers for emmit sync option
-      EMIT_PROPS.forEach(prop => {
+      EMIT_PROPS.forEach((prop) => {
         this.$watch("item." + prop, watchEmitProp(prop, true));
       });
-    }
+    },
   },
   watch: {
     hover(newValue) {
@@ -387,7 +387,7 @@ export default {
       } else {
         this.$emit("hovenEnd", this.item);
       }
-    }
+    },
   },
   mounted() {
     this.item = new DashItem(this.$props);
@@ -400,7 +400,7 @@ export default {
     } else {
       this.unWatch = this.$watch(
         "layout",
-        function(newValue) {
+        function (newValue) {
           if (newValue) {
             this.layout.addDashItem(this.item);
             this.createPropWatchers();
@@ -416,7 +416,7 @@ export default {
     if (this.layout) {
       this.layout.removeDashItem(this.item);
     }
-  }
+  },
 };
 </script>
 

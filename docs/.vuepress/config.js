@@ -43,7 +43,7 @@ module.exports = {
       {
         text: "Plugins",
         items: [
-          { text: "epic-spinners", link: "/plugins/#epicspinners"},
+          { text: "epic-spinners", link: "/plugins/#epicspinners" },
           { text: "Chartjs", link: "/plugins/#chartjs" },
           { text: "eCharts", link: "/plugins/#echarts" },
           { text: "FusionCharts", link: "/plugins/#fusioncharts" },
@@ -58,11 +58,13 @@ module.exports = {
   },
   plugins: [
     "@vuepress/last-updated",
-    "vuepress-plugin-typescript",
-    {
-      tsLoaderOptions: {
-        // All options of ts-loader
+    [
+      "vuepress-plugin-typescript",
+      {
+        tsLoaderOptions: {
+          // All options of ts-loader
+        }
       }
-    }
+    ]
   ]
 };

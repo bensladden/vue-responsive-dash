@@ -48,7 +48,7 @@ export class DashItem {
     draggable,
     resizable,
     resizeEdges,
-    resizeHandleSize
+    resizeHandleSize,
   }: {
     id: string | number;
     x?: number;
@@ -271,7 +271,7 @@ export class DashItem {
       height: this.height,
       heightPx: this.heightPx,
       draggable: this.draggable,
-      resizable: this.resizable
+      resizable: this.resizable,
     } as Item;
     return item;
   }
@@ -479,7 +479,7 @@ export class DashItem {
       width: 1,
       height: 1,
       draggable: true,
-      resizable: true
+      resizable: true,
     };
     return defaults;
   }
@@ -497,7 +497,7 @@ export class DashItem {
       msTransform: translate,
       OTransform: translate,
       width: widthPx + "px",
-      height: heightPx + "px"
+      height: heightPx + "px",
     };
   }
   static cssTopLeft(
@@ -510,7 +510,7 @@ export class DashItem {
       top: top + "px",
       left: left + "px",
       width: widthPx + "px",
-      height: heightPx + "px"
+      height: heightPx + "px",
     };
   }
 }

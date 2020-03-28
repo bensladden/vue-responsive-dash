@@ -7,10 +7,10 @@ import Dashboard from "./Dashboard.vue";
 const VueResponsiveDash = {
   DashItem,
   DashLayout,
-  Dashboard
+  Dashboard,
 };
 
-Object.keys(VueResponsiveDash).forEach(name => {
+Object.keys(VueResponsiveDash).forEach((name) => {
   Vue.component(name, VueResponsiveDash[name]);
 });
 

@@ -10,7 +10,7 @@ export class Dashboard {
   constructor({
     id,
     autoHeight,
-    width
+    width,
   }: {
     id: string | number;
     autoHeight?: boolean;
@@ -39,7 +39,7 @@ export class Dashboard {
       bp.push({
         name: layout.breakpoint,
         numberOfCols: layout.numberOfCols,
-        setpoint: layout.breakpointWidth
+        setpoint: layout.breakpointWidth,
       });
     }
     bp.sort((a, b) => {
@@ -113,12 +113,12 @@ export class Dashboard {
     this._layouts.push(l);
   }
   updateLayouts() {
-    this._layouts.forEach(layout => {
+    this._layouts.forEach((layout) => {
       layout.width = this.width;
     });
   }
   removeLayoutInstance(l: Layout) {
-    let index = this.layouts.findIndex(layout => {
+    let index = this.layouts.findIndex((layout) => {
       return l.breakpoint === layout.breakpoint;
     });
     if (index >= 0) {
@@ -128,7 +128,7 @@ export class Dashboard {
   static get defaults() {
     return {
       autoHeight: true as boolean,
-      width: 400 as number
+      width: 400 as number,
     };
   }
 }

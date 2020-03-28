@@ -34,7 +34,7 @@ export class Layout {
     width,
     height,
     rowHeight,
-    compact
+    compact,
   }: {
     breakpoint: string;
     numberOfCols: number;
@@ -211,45 +211,45 @@ export class Layout {
     this._dashItems.push(d);
     this.updateDashItems();
     //Drag Subscriptions
-    let unDragStart = d.onDragStart.subscribe(item => {
+    let unDragStart = d.onDragStart.subscribe((item) => {
       this.itemDragging(item);
     });
     this._dragStartListeners.push({
       id: d.id,
-      unsubscribe: unDragStart
+      unsubscribe: unDragStart,
     });
-    let unDrag = d.onDrag.subscribe(item => {
+    let unDrag = d.onDrag.subscribe((item) => {
       this.itemDragging(item);
     });
     this._dragListeners.push({
       id: d.id,
-      unsubscribe: unDrag
+      unsubscribe: unDrag,
     });
-    let unDragEnd = d.onDragEnd.subscribe(item => {
+    let unDragEnd = d.onDragEnd.subscribe((item) => {
       this.itemDraggingComplete(item);
     });
     this._dragEndListeners.push({ id: d.id, unsubscribe: unDragEnd });
     //Resize Subscirptions
-    let unResizeStart = d.onResizeStart.subscribe(item => {
+    let unResizeStart = d.onResizeStart.subscribe((item) => {
       this.itemResizing(item);
     });
     this._resizeStartListeners.push({
       id: d.id,
-      unsubscribe: unResizeStart
+      unsubscribe: unResizeStart,
     });
-    let unResize = d.onResize.subscribe(item => {
+    let unResize = d.onResize.subscribe((item) => {
       this.itemResizing(item);
     });
     this._resizeListeners.push({
       id: d.id,
-      unsubscribe: unResize
+      unsubscribe: unResize,
     });
-    let unResizeEnd = d.onResizeEnd.subscribe(item => {
+    let unResizeEnd = d.onResizeEnd.subscribe((item) => {
       this.itemResizingComplete(item);
     });
     this._resizeEndListeners.push({
       id: d.id,
-      unsubscribe: unResizeEnd
+      unsubscribe: unResizeEnd,
     });
 
     //Check that the added item has not caused a collision and if so move the others.
@@ -257,28 +257,28 @@ export class Layout {
     this.syncItems(items);
   }
   removeDashItem(d: DashItem) {
-    let index = this._dashItems.findIndex(item => {
+    let index = this._dashItems.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
       this._dashItems.splice(index, 1);
     }
     //Remove Event Listerners
-    index = this._dragStartListeners.findIndex(item => {
+    index = this._dragStartListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
       this._dragStartListeners[index].unsubscribe();
       this._dragStartListeners.splice(index, 1);
     }
-    index = this._dragListeners.findIndex(item => {
+    index = this._dragListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
       this._dragListeners[index].unsubscribe();
       this._dragListeners.splice(index, 1);
     }
-    index = this._dragEndListeners.findIndex(item => {
+    index = this._dragEndListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
@@ -286,21 +286,21 @@ export class Layout {
       this._dragEndListeners.splice(index, 1);
     }
     //Remove Drag Listerners
-    index = this._resizeStartListeners.findIndex(item => {
+    index = this._resizeStartListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
       this._resizeStartListeners[index].unsubscribe();
       this._resizeStartListeners.splice(index, 1);
     }
-    index = this._resizeListeners.findIndex(item => {
+    index = this._resizeListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
       this._resizeListeners[index].unsubscribe();
       this._resizeListeners.splice(index, 1);
     }
-    index = this._resizeEndListeners.findIndex(item => {
+    index = this._resizeEndListeners.findIndex((item) => {
       return item.id === d.id;
     });
     if (index >= 0) {
@@ -309,7 +309,7 @@ export class Layout {
     }
   }
   getDashItemById(id: string | number) {
-    let index = this._dashItems.findIndex(item => {
+    let index = this._dashItems.findIndex((item) => {
       return item.id === id;
     });
     if (index >= 0) {
@@ -318,7 +318,7 @@ export class Layout {
     return null;
   }
   updateDashItems() {
-    this._dashItems.forEach(item => {
+    this._dashItems.forEach((item) => {
       item.colWidth = this.colWidth;
       item.rowHeight = this.rowHeight;
       item.margin = this.margin;
@@ -327,7 +327,7 @@ export class Layout {
   //Item Methods
   get items() {
     let items: Item[] = [];
-    this._dashItems.forEach(dashItem => {
+    this._dashItems.forEach((dashItem) => {
       items.push(dashItem.toItem());
     });
     return items;
@@ -343,10 +343,10 @@ export class Layout {
     //Take a copy of items
     let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
     //Remove the item being dragged as the placeholder takes its place. Otherwise the item will snap while being dragged.
-    let items = itemsCopy.filter(i => {
+    let items = itemsCopy.filter((i) => {
       return i.id !== item.id;
     });
-    let placeholderIndex = items.findIndex(i => {
+    let placeholderIndex = items.findIndex((i) => {
       return i.id === this.placeholder!.id;
     });
     //items = this.correctBounds(items);
@@ -397,10 +397,10 @@ export class Layout {
     //Take a copy of items
     let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
     //Remove the item being resized as the placeholder takes its place. Otherwise the item will snap while being resized.
-    let items = itemsCopy.filter(i => {
+    let items = itemsCopy.filter((i) => {
       return i.id !== item.id;
     });
-    let placeholderIndex = items.findIndex(i => {
+    let placeholderIndex = items.findIndex((i) => {
       return i.id === this.placeholder!.id;
     });
     items = this.moveItem(
@@ -455,7 +455,7 @@ export class Layout {
     return null;
   }
   getAllCollisions(items: Item[], d: Item) {
-    return items.filter(item => this.checkForCollision(item, d));
+    return items.filter((item) => this.checkForCollision(item, d));
   }
   //Layout and Item Moving Methods
   correctItemBounds(item: Item) {
@@ -491,7 +491,7 @@ export class Layout {
       // Add to comparison array. We only collide with items before this one.
       compareWith.push(l);
       // Add to output array to make sure they still come out in the right order.
-      let index = items.findIndex(item => {
+      let index = items.findIndex((item) => {
         return item.id === l.id;
       });
       out[index] = l;
@@ -547,7 +547,7 @@ export class Layout {
       if (d.y > collision.y && d.y - collision.y > collision.height / 4) {
         continue;
       }
-      let collisionIndex = items.findIndex(item => {
+      let collisionIndex = items.findIndex((item) => {
         return item.id === collision.id;
       });
       items = this.moveItemFromCollision(
@@ -571,7 +571,7 @@ export class Layout {
         x: itemToMove.x,
         y: itemToMove.y,
         width: itemToMove.width,
-        height: itemToMove.height
+        height: itemToMove.height,
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
       if (!this.getFirstCollision(items, fakeItem)) {
@@ -581,7 +581,7 @@ export class Layout {
     return this.moveItem(items, itemToMove, itemToMove.x, itemToMove.y + 1);
   }
   syncItems(items: Item[]) {
-    items.forEach(i => {
+    items.forEach((i) => {
       let dashItem = this.getDashItemById(i.id);
       dashItem!.fromItem(i);
     });
@@ -597,7 +597,7 @@ export class Layout {
       width: 400 as number,
       height: 400 as number,
       rowHeight: 200 as number,
-      compact: true as boolean
+      compact: true as boolean,
     };
   }
 }

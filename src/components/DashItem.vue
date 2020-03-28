@@ -26,166 +26,165 @@
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
       @onMouseDown="onMoveStart"
       @onMouseUp="onMoveEnd"
+    ></div>
+    <div
+      draggable
+      :id="id + '-resizeTop'"
+      :ref="id + '-resizeTop'"
+      :style="{
+        height: resizeHandleSize + 'px',
+        left: 0,
+        right: 0,
+        cursor: 'ns-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeTop && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'top')"
+      @onMouseUp="onResizeEnd($event)"
     >
-      <div
-        draggable
-        :id="id + '-resizeTop'"
-        :ref="id + '-resizeTop'"
-        :style="{
-          height: resizeHandleSize + 'px',
-          left: 0,
-          right: 0,
-          cursor: 'ns-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeTop && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'top')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeTop"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeBottom'"
-        :ref="id + '-resizeBottom'"
-        :style="{
-          height: resizeHandleSize + 'px',
-          left: 0 + 'px',
-          right: 0 + 'px',
-          bottom: 0 + 'px',
-          cursor: 'ns-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeBottom && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'bottom')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeBottom"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeLeft'"
-        :ref="id + '-resizeLeft'"
-        :style="{
-          width: resizeHandleSize + 'px',
-          top: 0 + 'px',
-          bottom: 0 + 'px',
-          left: 0 + 'px',
-          cursor: 'ew-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeLeft && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'left')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeLeft"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeRight'"
-        :ref="id + '-resizeRight'"
-        :style="{
-          width: resizeHandleSize + 'px',
-          top: 0 + 'px',
-          bottom: 0 + 'px',
-          right: 0 + 'px',
-          cursor: 'ew-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeRight && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'right')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeRight"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeTopLeft'"
-        :ref="id + '-resizeTopLeft'"
-        :style="{
-          width: resizeHandleSize * 2 + 'px',
-          height: resizeHandleSize * 2 + 'px',
-          top: resizeHandleSize / -2 + 'px',
-          left: resizeHandleSize / -2 + 'px',
-          cursor: 'nw-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeTopLeft && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'top left')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeTopLeft"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeTopRight'"
-        :ref="id + '-resizeTopRight'"
-        :style="{
-          width: resizeHandleSize * 2 + 'px',
-          height: resizeHandleSize * 2 + 'px',
-          top: resizeHandleSize / -2 + 'px',
-          right: resizeHandleSize / -2 + 'px',
-          cursor: 'ne-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeTopRight && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'top right')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeTopRight"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeBottomLeft'"
-        :ref="id + '-resizeBottomLeft'"
-        :style="{
-          width: resizeHandleSize * 2 + 'px',
-          height: resizeHandleSize * 2 + 'px',
-          bottom: resizeHandleSize / -2 + 'px',
-          left: resizeHandleSize / -2 + 'px',
-          cursor: 'ne-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeBottomLeft && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'bottom left')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeBottomLeft"></slot>
-      </div>
-      <div
-        draggable
-        :id="id + '-resizeBottomRight'"
-        :ref="id + '-resizeBottomRight'"
-        :style="{
-          width: resizeHandleSize * 2 + 'px',
-          height: resizeHandleSize * 2 + 'px',
-          bottom: resizeHandleSize / -2 + 'px',
-          right: resizeHandleSize / -2 + 'px',
-          cursor: 'nw-resize',
-          position: 'absolute',
-          zIndex: resizableZIndex,
-        }"
-        v-if="resizeBottomRight && !dragging"
-        v-displace="{ customMove: onResize }"
-        @onMouseDown="onResizeStart($event, 'bottom right')"
-        @onMouseUp="onResizeEnd($event)"
-      >
-        <slot name="resizeBottomRight"></slot>
-      </div>
+      <slot name="resizeTop"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeBottom'"
+      :ref="id + '-resizeBottom'"
+      :style="{
+        height: resizeHandleSize + 'px',
+        left: 0 + 'px',
+        right: 0 + 'px',
+        bottom: 0 + 'px',
+        cursor: 'ns-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeBottom && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'bottom')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeBottom"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeLeft'"
+      :ref="id + '-resizeLeft'"
+      :style="{
+        width: resizeHandleSize + 'px',
+        top: 0 + 'px',
+        bottom: 0 + 'px',
+        left: 0 + 'px',
+        cursor: 'ew-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeLeft && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'left')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeLeft"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeRight'"
+      :ref="id + '-resizeRight'"
+      :style="{
+        width: resizeHandleSize + 'px',
+        top: 0 + 'px',
+        bottom: 0 + 'px',
+        right: 0 + 'px',
+        cursor: 'ew-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeRight && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'right')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeRight"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeTopLeft'"
+      :ref="id + '-resizeTopLeft'"
+      :style="{
+        width: resizeHandleSize * 2 + 'px',
+        height: resizeHandleSize * 2 + 'px',
+        top: resizeHandleSize / -2 + 'px',
+        left: resizeHandleSize / -2 + 'px',
+        cursor: 'nw-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeTopLeft && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'top left')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeTopLeft"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeTopRight'"
+      :ref="id + '-resizeTopRight'"
+      :style="{
+        width: resizeHandleSize * 2 + 'px',
+        height: resizeHandleSize * 2 + 'px',
+        top: resizeHandleSize / -2 + 'px',
+        right: resizeHandleSize / -2 + 'px',
+        cursor: 'ne-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeTopRight && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'top right')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeTopRight"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeBottomLeft'"
+      :ref="id + '-resizeBottomLeft'"
+      :style="{
+        width: resizeHandleSize * 2 + 'px',
+        height: resizeHandleSize * 2 + 'px',
+        bottom: resizeHandleSize / -2 + 'px',
+        left: resizeHandleSize / -2 + 'px',
+        cursor: 'ne-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeBottomLeft && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'bottom left')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeBottomLeft"></slot>
+    </div>
+    <div
+      draggable
+      :id="id + '-resizeBottomRight'"
+      :ref="id + '-resizeBottomRight'"
+      :style="{
+        width: resizeHandleSize * 2 + 'px',
+        height: resizeHandleSize * 2 + 'px',
+        bottom: resizeHandleSize / -2 + 'px',
+        right: resizeHandleSize / -2 + 'px',
+        cursor: 'nw-resize',
+        position: 'absolute',
+        zIndex: resizableZIndex,
+      }"
+      v-if="resizeBottomRight && !dragging"
+      v-displace="{ customMove: onResize }"
+      @onMouseDown="onResizeStart($event, 'bottom right')"
+      @onMouseUp="onResizeEnd($event)"
+    >
+      <slot name="resizeBottomRight"></slot>
     </div>
     <slot></slot>
   </div>
@@ -307,16 +306,16 @@ export default {
       }
     },
     resizeTop() {
-      return this.resizeEdges.includes("top");
+      return this.resizable && this.resizeEdges.includes("top");
     },
     resizeBottom() {
-      return this.resizeEdges.includes("bottom");
+      return this.resizable && this.resizeEdges.includes("bottom");
     },
     resizeLeft() {
-      return this.resizeEdges.includes("left");
+      return this.resizable && this.resizeEdges.includes("left");
     },
     resizeRight() {
-      return this.resizeEdges.includes("right");
+      return this.resizable && this.resizeEdges.includes("right");
     },
     resizeTopLeft() {
       return this.resizeTop && this.resizeLeft;

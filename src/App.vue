@@ -15,13 +15,19 @@
           v-for="item in layout.items"
           v-bind.sync="item"
           :key="item.id"
+          :resizable="resizable"
+          :draggable="draggable"
         >
           <div class="content">{{ JSON.stringify(item, null, 2) }}</div>
         </Dash-Item>
       </Dash-Layout>
     </dashboard>
     <button @click="compact = !compact">toggle compact</button> {{ compact }}
-    <button @click="addItem">Add Item</button> Current Breakpoint:
+    <button @click="resizable = !resizable">toggle resizable</button>
+    {{ resizable }}
+    <button @click="draggable = !draggable">toggle draggable</button>
+    {{ draggable }} <button @click="addItem">Add Item</button> Current
+    Breakpoint:
     {{ currentBreakpoint }}
   </div>
 </template>
@@ -41,6 +47,8 @@ export default {
   data() {
     return {
       compact: true,
+      draggable: true,
+      resizable: true,
       margin: { x: 20, y: 20 },
       layouts: [
         {

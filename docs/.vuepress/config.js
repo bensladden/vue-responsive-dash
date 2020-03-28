@@ -58,13 +58,6 @@ module.exports = {
   },
   plugins: [
     "@vuepress/last-updated",
-    [
-      "vuepress-plugin-typescript",
-      {
-        tsLoaderOptions: {
-          // All options of ts-loader
-        }
-      }
-    ]
+    "vuepress-plugin-typescript",
   ]
 };

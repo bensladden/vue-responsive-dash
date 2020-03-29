@@ -1,7 +1,11 @@
 <template>
-  <v-app-bar app color="indigo" dark>
-    <v-app-bar-nav-icon />
+  <v-app-bar app dark>
     <v-toolbar-title>Vue Responsive Dash</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn :to="'/'" text router exact>Basic</v-btn>
+    <v-btn :to="'EpicSpinners'" text router exact>Epic Spinners</v-btn>
+    <v-btn :to="'Echarts'" text router exact>Echarts</v-btn>
+    <v-btn :to="'Chartjs'" text router exact>Chartjs</v-btn>
   </v-app-bar>
 </template>
 

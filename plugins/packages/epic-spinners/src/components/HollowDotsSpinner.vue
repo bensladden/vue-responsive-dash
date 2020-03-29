@@ -3,10 +3,12 @@
     :animation-duration="animationDuration"
     :size="size"
     :color="color"
+    :dotSize="dotSize"
+    :dotsNum="dotsNum"
     :style="{
       position: 'absolute',
-      left: (width - size) / 2 + 'px',
-      top: (height - size) / 2 + 'px'
+      left: (width - spinnerWidth) / 2 + 'px',
+      top: (height - spinnerHeight) / 2 + 'px',
     }"
   />
 </template>
@@ -19,7 +21,28 @@ export default {
   name: "HollowDotsSpinnerWrapper",
   mixins: [mixinComponent],
   components: {
-    HollowDotsSpinner
-  }
+    HollowDotsSpinner,
+  },
+  props: {
+    dotSize: {
+      type: Number,
+      default: 15,
+    },
+    dotsNum: {
+      type: Number,
+      default: 3,
+    },
+  },
+  computed: {
+    spinnerHeight() {
+      return this.dotSize;
+    },
+    horizontalMargin() {
+      return this.dotSize / 2;
+    },
+    spinnerWidth() {
+      return (this.dotSize + this.horizontalMargin * 2) * this.dotsNum;
+    },
+  },
 };
 </script>

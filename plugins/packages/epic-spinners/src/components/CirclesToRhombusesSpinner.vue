@@ -5,8 +5,8 @@
     :color="color"
     :style="{
       position: 'absolute',
-      left: (width - size) / 2 + 'px',
-      top: (height - size) / 2 + 'px'
+      left: (width - circlesWidth) / 2 + 'px',
+      top: (height - circleSize) / 2 + 'px',
     }"
   />
 </template>
@@ -19,7 +19,25 @@ export default {
   name: "CirclesToRhombusesSpinnerWrapper",
   mixins: [mixinComponent],
   components: {
-    CirclesToRhombusesSpinner
-  }
+    CirclesToRhombusesSpinner,
+  },
+  props: {
+    circleSize: {
+      type: Number,
+      default: 15,
+    },
+    circlesNum: {
+      type: Number,
+      default: 3,
+    },
+  },
+  computed: {
+    circleMarginLeft() {
+      return this.circleSize * 1.125;
+    },
+    circlesWidth() {
+      return (this.circleSize + this.circleMarginLeft) * this.circlesNum;
+    },
+  },
 };
 </script>

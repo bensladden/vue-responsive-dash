@@ -5,8 +5,8 @@
     :color="color"
     :style="{
       position: 'absolute',
-      left: (width - size) / 2 + 'px',
-      top: (height - size) / 2 + 'px'
+      left: (width - spinnerWidth) / 2 + 'px',
+      top: (height - rhombusSize) / 2 + 'px',
     }"
   />
 </template>
@@ -19,7 +19,18 @@ export default {
   name: "LoopingRhombusesSpinnerWrapper",
   mixins: [mixinComponent],
   components: {
-    LoopingRhombusesSpinner
-  }
+    LoopingRhombusesSpinner,
+  },
+  props: {
+    rhombusSize: {
+      type: Number,
+      default: 15,
+    },
+  },
+  computed: {
+    spinnerWidth() {
+      return this.rhombusSize * 4;
+    },
+  },
 };
 </script>

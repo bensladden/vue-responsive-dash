@@ -34,6 +34,7 @@
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-store": "0.0.7",
     "vue-cli-plugin-vuetify": "~2.0.5",
+    "vue-cli-plugin-vuetify-preset-reply": "~1.0.3",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.3.0"
   }

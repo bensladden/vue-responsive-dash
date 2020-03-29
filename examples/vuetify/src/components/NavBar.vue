@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app dark>
+  <v-app-bar app color="quaternary">
     <v-toolbar-title>Vue Responsive Dash</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn :to="'/'" text router exact>Basic</v-btn>

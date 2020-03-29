@@ -480,16 +480,16 @@ if (typeof window !== 'undefined') {
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HollowDotsSpinner.vue?vue&type=template&id=15c3f9c8&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HollowDotsSpinner.vue?vue&type=template&id=d94061ea&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('HollowDotsSpinner',{style:({
     position: 'absolute',
     left: (_vm.width - _vm.spinnerWidth) / 2 + 'px',
     top: (_vm.height - _vm.spinnerHeight) / 2 + 'px',
-  }),attrs:{"animation-duration":_vm.animationDuration,"size":_vm.size,"color":_vm.color,"dotSize":_vm.dotSize,"dotNum":_vm.dotNum}})}
+  }),attrs:{"animation-duration":_vm.animationDuration,"size":_vm.size,"color":_vm.color,"dotSize":_vm.dotSize,"dotsNum":_vm.dotsNum}})}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/HollowDotsSpinner.vue?vue&type=template&id=15c3f9c8&
+// CONCATENATED MODULE: ./src/components/HollowDotsSpinner.vue?vue&type=template&id=d94061ea&
 
 // CONCATENATED MODULE: ./src/components/MixinComponent.js
 /* harmony default export */ var MixinComponent = ({
@@ -761,13 +761,16 @@ var component = normalizeComponent(
       type: Number,
       default: 3,
     },
-    computed: {
-      spinnerWidth() {
-        return this.dotSize;
-      },
-      spinnerHeight() {
-        return (this.dotSize + this.dotSize / 2) * 2 * this.dotsNum;
-      },
+  },
+  computed: {
+    spinnerHeight() {
+      return this.dotSize;
+    },
+    horizontalMargin() {
+      return this.dotSize / 2;
+    },
+    spinnerWidth() {
+      return (this.dotSize + this.horizontalMargin * 2) * this.dotsNum;
     },
   },
 });
@@ -2068,16 +2071,16 @@ var components_FulfillingSquareSpinner_component = normalizeComponent(
 )
 
 /* harmony default export */ var components_FulfillingSquareSpinner = (components_FulfillingSquareSpinner_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/CirclesToRhombusesSpinner.vue?vue&type=template&id=0628acd9&
-var CirclesToRhombusesSpinnervue_type_template_id_0628acd9_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('CirclesToRhombusesSpinner',{style:({
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/CirclesToRhombusesSpinner.vue?vue&type=template&id=3d0e8840&
+var CirclesToRhombusesSpinnervue_type_template_id_3d0e8840_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('CirclesToRhombusesSpinner',{style:({
     position: 'absolute',
-    left: (_vm.width - _vm.size) / 2 + 'px',
-    top: (_vm.height - _vm.size) / 2 + 'px'
+    left: (_vm.width - _vm.circlesWidth) / 2 + 'px',
+    top: (_vm.height - _vm.circleSize) / 2 + 'px',
   }),attrs:{"animation-duration":_vm.animationDuration,"size":_vm.size,"color":_vm.color}})}
-var CirclesToRhombusesSpinnervue_type_template_id_0628acd9_staticRenderFns = []
+var CirclesToRhombusesSpinnervue_type_template_id_3d0e8840_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/CirclesToRhombusesSpinner.vue?vue&type=template&id=0628acd9&
+// CONCATENATED MODULE: ./src/components/CirclesToRhombusesSpinner.vue?vue&type=template&id=3d0e8840&
 
 // CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/epic-spinners/src/components/lib/CirclesToRhombusesSpinner.vue?vue&type=template&id=7a6e17e5&scoped=true&
 var CirclesToRhombusesSpinnervue_type_template_id_7a6e17e5_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"circles-to-rhombuses-spinner",style:(_vm.spinnertStyle)},_vm._l((_vm.circlesStyles),function(cs,index){return _c('div',{key:index,staticClass:"circle",style:(cs)})}),0)}
@@ -2207,8 +2210,26 @@ var CirclesToRhombusesSpinner_component = normalizeComponent(
   name: "CirclesToRhombusesSpinnerWrapper",
   mixins: [MixinComponent],
   components: {
-    CirclesToRhombusesSpinner: CirclesToRhombusesSpinner
-  }
+    CirclesToRhombusesSpinner: CirclesToRhombusesSpinner,
+  },
+  props: {
+    circleSize: {
+      type: Number,
+      default: 15,
+    },
+    circlesNum: {
+      type: Number,
+      default: 3,
+    },
+  },
+  computed: {
+    circleMarginLeft() {
+      return this.circleSize * 1.125;
+    },
+    circlesWidth() {
+      return (this.circleSize + this.circleMarginLeft) * this.circlesNum;
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/CirclesToRhombusesSpinner.vue?vue&type=script&lang=js&
@@ -2223,8 +2244,8 @@ var CirclesToRhombusesSpinner_component = normalizeComponent(
 
 var components_CirclesToRhombusesSpinner_component = normalizeComponent(
   src_components_CirclesToRhombusesSpinnervue_type_script_lang_js_,
-  CirclesToRhombusesSpinnervue_type_template_id_0628acd9_render,
-  CirclesToRhombusesSpinnervue_type_template_id_0628acd9_staticRenderFns,
+  CirclesToRhombusesSpinnervue_type_template_id_3d0e8840_render,
+  CirclesToRhombusesSpinnervue_type_template_id_3d0e8840_staticRenderFns,
   false,
   null,
   null,
@@ -3601,16 +3622,16 @@ var components_SpringSpinner_component = normalizeComponent(
 )
 
 /* harmony default export */ var components_SpringSpinner = (components_SpringSpinner_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LoopingRhombusesSpinner.vue?vue&type=template&id=1bb9f959&
-var LoopingRhombusesSpinnervue_type_template_id_1bb9f959_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('LoopingRhombusesSpinner',{style:({
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LoopingRhombusesSpinner.vue?vue&type=template&id=36c9f6c4&
+var LoopingRhombusesSpinnervue_type_template_id_36c9f6c4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('LoopingRhombusesSpinner',{style:({
     position: 'absolute',
-    left: (_vm.width - _vm.size) / 2 + 'px',
-    top: (_vm.height - _vm.size) / 2 + 'px'
+    left: (_vm.width - _vm.spinnerWidth) / 2 + 'px',
+    top: (_vm.height - _vm.rhombusSize) / 2 + 'px',
   }),attrs:{"animation-duration":_vm.animationDuration,"size":_vm.size,"color":_vm.color}})}
-var LoopingRhombusesSpinnervue_type_template_id_1bb9f959_staticRenderFns = []
+var LoopingRhombusesSpinnervue_type_template_id_36c9f6c4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/LoopingRhombusesSpinner.vue?vue&type=template&id=1bb9f959&
+// CONCATENATED MODULE: ./src/components/LoopingRhombusesSpinner.vue?vue&type=template&id=36c9f6c4&
 
 // CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"d0269fc8-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/epic-spinners/src/components/lib/LoopingRhombusesSpinner.vue?vue&type=template&id=49d9ad28&scoped=true&
 var LoopingRhombusesSpinnervue_type_template_id_49d9ad28_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"looping-rhombuses-spinner",style:(_vm.spinnerStyle)},_vm._l((_vm.rhombusesStyles),function(rs,index){return _c('div',{staticClass:"rhombus",style:(rs),attrs:{"ikey":index}})}),0)}
@@ -3738,8 +3759,19 @@ var LoopingRhombusesSpinner_component = normalizeComponent(
   name: "LoopingRhombusesSpinnerWrapper",
   mixins: [MixinComponent],
   components: {
-    LoopingRhombusesSpinner: LoopingRhombusesSpinner
-  }
+    LoopingRhombusesSpinner: LoopingRhombusesSpinner,
+  },
+  props: {
+    rhombusSize: {
+      type: Number,
+      default: 15,
+    },
+  },
+  computed: {
+    spinnerWidth() {
+      return this.rhombusSize * 4;
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/LoopingRhombusesSpinner.vue?vue&type=script&lang=js&
@@ -3754,8 +3786,8 @@ var LoopingRhombusesSpinner_component = normalizeComponent(
 
 var components_LoopingRhombusesSpinner_component = normalizeComponent(
   src_components_LoopingRhombusesSpinnervue_type_script_lang_js_,
-  LoopingRhombusesSpinnervue_type_template_id_1bb9f959_render,
-  LoopingRhombusesSpinnervue_type_template_id_1bb9f959_staticRenderFns,
+  LoopingRhombusesSpinnervue_type_template_id_36c9f6c4_render,
+  LoopingRhombusesSpinnervue_type_template_id_36c9f6c4_staticRenderFns,
   false,
   null,
   null,

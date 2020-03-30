@@ -1449,12 +1449,12 @@ if (typeof window !== 'undefined') {
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=template&id=0591e5d8&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=template&id=6d4745a4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('bar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=template&id=0591e5d8&
+// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=template&id=6d4745a4&
 
 // EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/lodash/lodash.js
 var lodash = __webpack_require__("9ec3");
@@ -1729,37 +1729,38 @@ const { reactiveProp: barChart_reactiveProp } = mixins;
 
 const defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var BarChartvue_type_script_lang_js_ = ({
+  name: "barChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    BarChart: barChart
+    BarChart: barChart,
   },
   data() {
     return {
-      mergedOptions: defaultOptions
+      mergedOptions: defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=script&lang=js&
@@ -1879,12 +1880,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var BarChart = (component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BubbleChart.vue?vue&type=template&id=e21be390&
-var BubbleChartvue_type_template_id_e21be390_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('bubble-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var BubbleChartvue_type_template_id_e21be390_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BubbleChart.vue?vue&type=template&id=c76cb39a&
+var BubbleChartvue_type_template_id_c76cb39a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('bubble-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var BubbleChartvue_type_template_id_c76cb39a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/BubbleChart.vue?vue&type=template&id=e21be390&
+// CONCATENATED MODULE: ./src/components/BubbleChart.vue?vue&type=template&id=c76cb39a&
 
 // CONCATENATED MODULE: ./src/components/bubbleChart.js
 
@@ -1918,37 +1919,38 @@ const { reactiveProp: bubbleChart_reactiveProp } = mixins;
 
 const BubbleChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var BubbleChartvue_type_script_lang_js_ = ({
+  name: "bubbleChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return BubbleChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    BubbleChart: bubbleChart
+    BubbleChart: bubbleChart,
   },
   data() {
     return {
-      mergedOptions: BubbleChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: BubbleChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, BubbleChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/BubbleChart.vue?vue&type=script&lang=js&
@@ -1963,8 +1965,8 @@ const BubbleChartvue_type_script_lang_js_defaultOptions = {
 
 var BubbleChart_component = normalizeComponent(
   components_BubbleChartvue_type_script_lang_js_,
-  BubbleChartvue_type_template_id_e21be390_render,
-  BubbleChartvue_type_template_id_e21be390_staticRenderFns,
+  BubbleChartvue_type_template_id_c76cb39a_render,
+  BubbleChartvue_type_template_id_c76cb39a_staticRenderFns,
   false,
   null,
   null,
@@ -1973,12 +1975,12 @@ var BubbleChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var BubbleChart = (BubbleChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/DoughnutChart.vue?vue&type=template&id=5c29794c&
-var DoughnutChartvue_type_template_id_5c29794c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('doughnut-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var DoughnutChartvue_type_template_id_5c29794c_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/DoughnutChart.vue?vue&type=template&id=20192f65&
+var DoughnutChartvue_type_template_id_20192f65_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('doughnut-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var DoughnutChartvue_type_template_id_20192f65_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DoughnutChart.vue?vue&type=template&id=5c29794c&
+// CONCATENATED MODULE: ./src/components/DoughnutChart.vue?vue&type=template&id=20192f65&
 
 // CONCATENATED MODULE: ./src/components/doughnutChart.js
 
@@ -2012,37 +2014,38 @@ const { reactiveProp: doughnutChart_reactiveProp } = mixins;
 
 const DoughnutChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var DoughnutChartvue_type_script_lang_js_ = ({
+  name: "doughnutChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return DoughnutChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    DoughnutChart: doughnutChart
+    DoughnutChart: doughnutChart,
   },
   data() {
     return {
-      mergedOptions: DoughnutChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: DoughnutChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, DoughnutChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/DoughnutChart.vue?vue&type=script&lang=js&
@@ -2057,8 +2060,8 @@ const DoughnutChartvue_type_script_lang_js_defaultOptions = {
 
 var DoughnutChart_component = normalizeComponent(
   components_DoughnutChartvue_type_script_lang_js_,
-  DoughnutChartvue_type_template_id_5c29794c_render,
-  DoughnutChartvue_type_template_id_5c29794c_staticRenderFns,
+  DoughnutChartvue_type_template_id_20192f65_render,
+  DoughnutChartvue_type_template_id_20192f65_staticRenderFns,
   false,
   null,
   null,
@@ -2067,12 +2070,12 @@ var DoughnutChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var DoughnutChart = (DoughnutChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HorizontalBarChart.vue?vue&type=template&id=881d20d0&
-var HorizontalBarChartvue_type_template_id_881d20d0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('horizontal-bar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var HorizontalBarChartvue_type_template_id_881d20d0_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/HorizontalBarChart.vue?vue&type=template&id=b9c05dcc&
+var HorizontalBarChartvue_type_template_id_b9c05dcc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('horizontal-bar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var HorizontalBarChartvue_type_template_id_b9c05dcc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue?vue&type=template&id=881d20d0&
+// CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue?vue&type=template&id=b9c05dcc&
 
 // CONCATENATED MODULE: ./src/components/horizontalBarChart.js
 
@@ -2106,37 +2109,38 @@ const { reactiveProp: horizontalBarChart_reactiveProp } = mixins;
 
 const HorizontalBarChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var HorizontalBarChartvue_type_script_lang_js_ = ({
+  name: "horizontalBarWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return HorizontalBarChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    HorizontalBarChart: horizontalBarChart
+    HorizontalBarChart: horizontalBarChart,
   },
   data() {
     return {
-      mergedOptions: HorizontalBarChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: HorizontalBarChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, HorizontalBarChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/HorizontalBarChart.vue?vue&type=script&lang=js&
@@ -2151,8 +2155,8 @@ const HorizontalBarChartvue_type_script_lang_js_defaultOptions = {
 
 var HorizontalBarChart_component = normalizeComponent(
   components_HorizontalBarChartvue_type_script_lang_js_,
-  HorizontalBarChartvue_type_template_id_881d20d0_render,
-  HorizontalBarChartvue_type_template_id_881d20d0_staticRenderFns,
+  HorizontalBarChartvue_type_template_id_b9c05dcc_render,
+  HorizontalBarChartvue_type_template_id_b9c05dcc_staticRenderFns,
   false,
   null,
   null,
@@ -2161,12 +2165,12 @@ var HorizontalBarChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var HorizontalBarChart = (HorizontalBarChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=7012ace8&
-var LineChartvue_type_template_id_7012ace8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('line-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var LineChartvue_type_template_id_7012ace8_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=5133cbaa&
+var LineChartvue_type_template_id_5133cbaa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('line-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var LineChartvue_type_template_id_5133cbaa_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=7012ace8&
+// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=5133cbaa&
 
 // CONCATENATED MODULE: ./src/components/lineChart.js
 
@@ -2200,37 +2204,38 @@ const { reactiveProp: lineChart_reactiveProp } = mixins;
 
 const LineChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var LineChartvue_type_script_lang_js_ = ({
+  name: "lineChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return LineChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    LineChart: lineChart
+    LineChart: lineChart,
   },
   data() {
     return {
-      mergedOptions: LineChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: LineChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, LineChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=script&lang=js&
@@ -2245,8 +2250,8 @@ const LineChartvue_type_script_lang_js_defaultOptions = {
 
 var LineChart_component = normalizeComponent(
   components_LineChartvue_type_script_lang_js_,
-  LineChartvue_type_template_id_7012ace8_render,
-  LineChartvue_type_template_id_7012ace8_staticRenderFns,
+  LineChartvue_type_template_id_5133cbaa_render,
+  LineChartvue_type_template_id_5133cbaa_staticRenderFns,
   false,
   null,
   null,
@@ -2255,12 +2260,12 @@ var LineChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var LineChart = (LineChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=template&id=50e03158&
-var PieChartvue_type_template_id_50e03158_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('pie-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var PieChartvue_type_template_id_50e03158_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=template&id=62131be3&
+var PieChartvue_type_template_id_62131be3_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('pie-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var PieChartvue_type_template_id_62131be3_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=template&id=50e03158&
+// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=template&id=62131be3&
 
 // CONCATENATED MODULE: ./src/components/pieChart.js
 
@@ -2294,37 +2299,38 @@ const { reactiveProp: pieChart_reactiveProp } = mixins;
 
 const PieChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var PieChartvue_type_script_lang_js_ = ({
+  name: "pieChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return PieChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    PieChart: pieChart
+    PieChart: pieChart,
   },
   data() {
     return {
-      mergedOptions: PieChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: PieChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, PieChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=script&lang=js&
@@ -2339,8 +2345,8 @@ const PieChartvue_type_script_lang_js_defaultOptions = {
 
 var PieChart_component = normalizeComponent(
   components_PieChartvue_type_script_lang_js_,
-  PieChartvue_type_template_id_50e03158_render,
-  PieChartvue_type_template_id_50e03158_staticRenderFns,
+  PieChartvue_type_template_id_62131be3_render,
+  PieChartvue_type_template_id_62131be3_staticRenderFns,
   false,
   null,
   null,
@@ -2349,12 +2355,12 @@ var PieChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var PieChart = (PieChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PolarAreaChart.vue?vue&type=template&id=3f0002e0&
-var PolarAreaChartvue_type_template_id_3f0002e0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('polar-area-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var PolarAreaChartvue_type_template_id_3f0002e0_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PolarAreaChart.vue?vue&type=template&id=3eff5b0a&
+var PolarAreaChartvue_type_template_id_3eff5b0a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('polar-area-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var PolarAreaChartvue_type_template_id_3eff5b0a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/PolarAreaChart.vue?vue&type=template&id=3f0002e0&
+// CONCATENATED MODULE: ./src/components/PolarAreaChart.vue?vue&type=template&id=3eff5b0a&
 
 // CONCATENATED MODULE: ./src/components/polarAreaChart.js
 
@@ -2388,37 +2394,38 @@ const { reactiveProp: polarAreaChart_reactiveProp } = mixins;
 
 const PolarAreaChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var PolarAreaChartvue_type_script_lang_js_ = ({
+  name: "polarAreaChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return PolarAreaChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    PolarAreaChart: polarAreaChart
+    PolarAreaChart: polarAreaChart,
   },
   data() {
     return {
-      mergedOptions: PolarAreaChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: PolarAreaChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, PolarAreaChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/PolarAreaChart.vue?vue&type=script&lang=js&
@@ -2433,8 +2440,8 @@ const PolarAreaChartvue_type_script_lang_js_defaultOptions = {
 
 var PolarAreaChart_component = normalizeComponent(
   components_PolarAreaChartvue_type_script_lang_js_,
-  PolarAreaChartvue_type_template_id_3f0002e0_render,
-  PolarAreaChartvue_type_template_id_3f0002e0_staticRenderFns,
+  PolarAreaChartvue_type_template_id_3eff5b0a_render,
+  PolarAreaChartvue_type_template_id_3eff5b0a_staticRenderFns,
   false,
   null,
   null,
@@ -2443,12 +2450,12 @@ var PolarAreaChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var PolarAreaChart = (PolarAreaChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=template&id=91c90800&
-var RadarChartvue_type_template_id_91c90800_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('radar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var RadarChartvue_type_template_id_91c90800_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=template&id=3728d335&
+var RadarChartvue_type_template_id_3728d335_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('radar-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var RadarChartvue_type_template_id_3728d335_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=template&id=91c90800&
+// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=template&id=3728d335&
 
 // CONCATENATED MODULE: ./src/components/radarChart.js
 
@@ -2482,37 +2489,38 @@ const { reactiveProp: radarChart_reactiveProp } = mixins;
 
 const RadarChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var RadarChartvue_type_script_lang_js_ = ({
+  name: "radarChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return RadarChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    RadarChart: radarChart
+    RadarChart: radarChart,
   },
   data() {
     return {
-      mergedOptions: RadarChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: RadarChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, RadarChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=script&lang=js&
@@ -2527,8 +2535,8 @@ const RadarChartvue_type_script_lang_js_defaultOptions = {
 
 var RadarChart_component = normalizeComponent(
   components_RadarChartvue_type_script_lang_js_,
-  RadarChartvue_type_template_id_91c90800_render,
-  RadarChartvue_type_template_id_91c90800_staticRenderFns,
+  RadarChartvue_type_template_id_3728d335_render,
+  RadarChartvue_type_template_id_3728d335_staticRenderFns,
   false,
   null,
   null,
@@ -2537,12 +2545,12 @@ var RadarChart_component = normalizeComponent(
 )
 
 /* harmony default export */ var RadarChart = (RadarChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"01fc336e-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=template&id=beaafe40&
-var ScatterChartvue_type_template_id_beaafe40_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('scatter-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
-var ScatterChartvue_type_template_id_beaafe40_staticRenderFns = []
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"21316638-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=template&id=29700f6d&
+var ScatterChartvue_type_template_id_29700f6d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.chartData)?_c('scatter-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"chart-data":_vm.chartData,"options":_vm.mergedOptions}}):_vm._e()}
+var ScatterChartvue_type_template_id_29700f6d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=template&id=beaafe40&
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=template&id=29700f6d&
 
 // CONCATENATED MODULE: ./src/components/scatterChart.js
 
@@ -2576,37 +2584,38 @@ const { reactiveProp: scatterChart_reactiveProp } = mixins;
 
 const ScatterChartvue_type_script_lang_js_defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 /* harmony default export */ var ScatterChartvue_type_script_lang_js_ = ({
+  name: "ScatterChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return ScatterChartvue_type_script_lang_js_defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    ScatterChart: scatterChart
+    ScatterChart: scatterChart,
   },
   data() {
     return {
-      mergedOptions: ScatterChartvue_type_script_lang_js_defaultOptions
+      mergedOptions: ScatterChartvue_type_script_lang_js_defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = Object(lodash["merge"])({}, ScatterChartvue_type_script_lang_js_defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=script&lang=js&
@@ -2621,8 +2630,8 @@ const ScatterChartvue_type_script_lang_js_defaultOptions = {
 
 var ScatterChart_component = normalizeComponent(
   components_ScatterChartvue_type_script_lang_js_,
-  ScatterChartvue_type_template_id_beaafe40_render,
-  ScatterChartvue_type_template_id_beaafe40_staticRenderFns,
+  ScatterChartvue_type_template_id_29700f6d_render,
+  ScatterChartvue_type_template_id_29700f6d_staticRenderFns,
   false,
   null,
   null,

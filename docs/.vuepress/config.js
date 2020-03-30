@@ -53,11 +53,30 @@ module.exports = {
       {
         text: "Examples",
         items: [{ text: "Green", link: "/examples/#green" }]
+      },
+      {
+        text: "Vuetify Examples",
+        items: [
+          {
+            text: "Basic",
+            link: "https://vue-responsive-dash-vuetify.netlify.com/#/"
+          },
+          {
+            text: "Epic-Spinners",
+            link:
+              "https://vue-responsive-dash-vuetify.netlify.com/#/EpicSpinners"
+          },
+          {
+            text: "Chartjs",
+            link: "https://vue-responsive-dash-vuetify.netlify.com/#/Chartjs"
+          },
+          {
+            text: "Echarts",
+            link: "https://vue-responsive-dash-vuetify.netlify.com/#/Echarts"
+          }
+        ]
       }
     ]
   },
-  plugins: [
-    "@vuepress/last-updated",
-    "vuepress-plugin-typescript",
-  ]
+  plugins: ["@vuepress/last-updated", "vuepress-plugin-typescript"]
 };

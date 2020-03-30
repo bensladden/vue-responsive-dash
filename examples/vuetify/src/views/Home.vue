@@ -11,7 +11,16 @@
           :key="item.id"
           v-bind.sync="item"
         >
-          <Master></Master>
+          <Master
+            ><TextCentered>
+              Item ID: {{ item.id }}<br />
+              Item X: {{ item.x }}<br />
+              Item Y: {{ item.y }}<br />
+              Item Width: {{ item.width }}<br />
+              Item Height: {{ item.height }}<br />
+            </TextCentered>
+          </Master>
+
           <template v-slot:resizeBottomRight>
             <v-icon style="vertical-align:top;" size="13">
               mdi-arrow-bottom-right
@@ -26,13 +35,15 @@
 <script>
 import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
 import Master from "../components/Master";
+import TextCentered from "../components/TextCentered";
 export default {
   name: "Home",
   components: {
     Dashboard,
     DashLayout,
     DashItem,
-    Master
+    Master,
+    TextCentered
   },
   data() {
     return {

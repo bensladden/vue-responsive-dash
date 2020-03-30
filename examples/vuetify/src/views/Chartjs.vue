@@ -69,7 +69,9 @@ export default {
     };
   },
   mounted() {
-    this.layouts = this.$store.getters["layouts/getLayouts"];
+    this.layouts = this.layouts = JSON.parse(
+      JSON.stringify(this.$store.getters["layouts/getLayouts"])
+    );
     this.items = this.$store.getters["chartjs/getItems"];
   }
 };

@@ -12,6 +12,7 @@
           v-bind.sync="item"
         >
           <component
+            v-if="items && items[index]"
             :is="items[index].template"
             :options="items[index].data"
           ></component>
@@ -31,7 +32,7 @@ import {
   MapChart,
   PieChart,
   RadarChart,
-  ScatterChart
+  ScatterChart,
 } from "./components/";
 import {
   barData,
@@ -39,7 +40,7 @@ import {
   polarData,
   scatterData,
   radarData,
-  lineData
+  lineData,
 } from "./components/data";
 import mapData from "./components/mapData";
 import { largeLayouts } from "../../common/dataItems";
@@ -55,7 +56,7 @@ export default {
     MapChart,
     PieChart,
     RadarChart,
-    ScatterChart
+    ScatterChart,
   },
   data() {
     return {
@@ -64,51 +65,51 @@ export default {
         {
           id: "1",
           template: "BarChart",
-          data: barData
+          data: barData,
         },
         {
           id: "2",
           template: "EffectScatterChart",
-          data: scatterData
+          data: scatterData,
         },
         {
           id: "3",
           template: "LineChart",
-          data: lineData
+          data: lineData,
         },
         {
           id: "4",
           template: "MapChart",
-          data: mapData
+          data: mapData,
         },
         {
           id: "5",
           template: "PieChart",
-          data: pieData
+          data: pieData,
         },
         {
           id: "6",
           template: "RadarChart",
-          data: radarData
+          data: radarData,
         },
         {
           id: "7",
           template: "ScatterChart",
-          data: scatterData
+          data: scatterData,
         },
         {
           id: "8",
           template: "RadarChart",
-          data: polarData
+          data: polarData,
         },
         {
           id: "9",
           template: "RadarChart",
-          data: polarData
-        }
-      ]
+          data: polarData,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

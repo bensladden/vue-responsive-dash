@@ -14,36 +14,37 @@ import mixinComponent from "./mixinComponent.js";
 
 const defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 export default {
+  name: "doughnutChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    DoughnutChart
+    DoughnutChart,
   },
   data() {
     return {
-      mergedOptions: defaultOptions
+      mergedOptions: defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = merge({}, defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

@@ -14,36 +14,37 @@ import mixinComponent from "./mixinComponent.js";
 
 const defaultOptions = {
   responsive: true,
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
 };
 export default {
+  name: "bubbleChartWrapper",
   mixins: [mixinComponent],
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
       default: () => {
         return defaultOptions;
-      }
-    }
+      },
+    },
   },
   components: {
-    BubbleChart
+    BubbleChart,
   },
   data() {
     return {
-      mergedOptions: defaultOptions
+      mergedOptions: defaultOptions,
     };
   },
   watch: {
     options: {
       handler(newValue) {
         this.mergedOptions = merge({}, defaultOptions, newValue);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

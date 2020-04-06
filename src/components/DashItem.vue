@@ -352,18 +352,19 @@ export default {
     },
     onResizeStart(e, location) {
       this.resizing = true;
-      this.item._onResizeStart2(e.detail.event, location);
+      this.item._onResizeStart(e.detail.event, location);
       this.$emit("resizeStart", { ...this.item.toItem() });
     },
     onResize(el, left, top) {
-      this.item._onResize2(left, top);
-      this.$emit("resizing", { ...this.item.toItem() });
+      if (this.resizing) {
+        this.item._onResize(left, top);
+        this.$emit("resizing", { ...this.item.toItem() });
+      }
     },
     onResizeEnd(e) {
-      let location = "bottom";
-      this.item._onResizeEnd2(e.detail.event);
-      this.$emit("resizeEnd", { ...this.item.toItem() });
+      this.item._onResizeEnd(e.detail.event);
       this.resizing = false;
+      this.$emit("resizeEnd", { ...this.item.toItem() });
     },
     createPropWatchers() {
       //Setup prop watches to sync with the Dash Item

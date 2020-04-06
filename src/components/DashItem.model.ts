@@ -343,7 +343,7 @@ export class DashItem {
     return this._onDragEndEventDispatcher.asEvent();
   }
   //ResizeEventManagement
-  _onResizeStart2(event: DragEvent, location: string) {
+  _onResizeStart(event: DragEvent, location: string) {
     this.onResizeStartLeft = this.left;
     this.onResizeStartTop = this.top;
     this.onResizeStartingWidth = this.widthPx;
@@ -351,18 +351,7 @@ export class DashItem {
     this._onResizeLocation = location;
     this._onResizeStartEventDispatcher.dispatch(this.toItem());
   }
-  _onResizeStart(event: DragEvent, _: string) {
-    if (event && event.dataTransfer) {
-      this.onResizeStartEvent = event;
-      event.dataTransfer.setData("text/plain", this.id.toString());
-    }
-    this.onResizeStartLeft = this.left;
-    this.onResizeStartTop = this.top;
-    this.onResizeStartingWidth = this.widthPx;
-    this.onResizeStartingHeight = this.heightPx;
-    this._onResizeStartEventDispatcher.dispatch(this.toItem());
-  }
-  _onResize2(left: number, top: number) {
+  _onResize(left: number, top: number) {
     let location = this._onResizeLocation;
     //will fire
     if (location.includes("right")) {
@@ -373,68 +362,13 @@ export class DashItem {
     }
     this._onResizeEventDispatcher.dispatch(this.toItem());
   }
-  _onResize(event: DragEvent, location: String) {
-    //Should never fire at present
-    if (location.includes("left")) {
-      let left =
-        +this.onResizeStartLeft -
-        this.onResizeStartEvent!.screenX +
-        event.screenX;
-      this.left = left;
-      let width =
-        +this.onResizeStartingWidth +
-        this.onResizeStartEvent!.screenX -
-        event.screenX;
-      this.widthPx = width;
-    }
-    //will fire
-    if (location.includes("right")) {
-      let width =
-        +this.onResizeStartingWidth -
-        this.onResizeStartEvent!.screenX +
-        event.screenX;
-      this.widthPx = width;
-    }
-    //Should never fire currently
-    if (location.includes("top")) {
-      let top =
-        +this.onResizeStartTop -
-        this.onResizeStartEvent!.screenY +
-        event.screenY;
-      this.top = top;
-      let height =
-        +this.onResizeStartingHeight +
-        this.onResizeStartEvent!.screenY -
-        event.screenY;
-      this.heightPx = height;
-    }
-    //will fire
-    if (location.includes("bottom")) {
-      let height =
-        +this.onResizeStartingHeight -
-        this.onResizeStartEvent!.screenY +
-        event.screenY;
-      this.heightPx = height;
-    }
-    this._onResizeEventDispatcher.dispatch(this.toItem());
-  }
-  _onResizeEnd2(e: DragEvent) {
+  _onResizeEnd(e: DragEvent) {
     this.onResizeStartEvent = undefined;
     this.onResizeStartLeft = 0;
     this.onResizeStartTop = 0;
     this.onResizeStartingHeight = 0;
     this.onResizeStartingWidth = 0;
     this._onResizeLocation = "";
-    this._onResizeEndEventDispatcher.dispatch(this.toItem());
-  }
-  _onResizeEnd(event: DragEvent, location: string) {
-    event.preventDefault();
-    this._onResize(event, location);
-    this.onResizeStartEvent = undefined;
-    this.onResizeStartLeft = 0;
-    this.onResizeStartTop = 0;
-    this.onResizeStartingHeight = 0;
-    this.onResizeStartingWidth = 0;
     this._onResizeEndEventDispatcher.dispatch(this.toItem());
   }
   get onResizeStart() {

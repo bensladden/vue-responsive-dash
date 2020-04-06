@@ -9105,7 +9105,7 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=413d6cfb&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=50c0ec91&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":_vm.id},on:{"mouseover":function($event){_vm.hover = true},"mouseleave":function($event){_vm.hover = false}}},[(_vm.draggable)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onMove, ignoreFn: _vm.ignoreMove }),expression:"{ customMove: onMove, ignoreFn: ignoreMove }"}],ref:_vm.id + '-overlay',style:({
       top: 0 + 'px',
       left: 0 + 'px',
@@ -9181,7 +9181,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=413d6cfb&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=50c0ec91&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -9516,9 +9516,9 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._onDragEndEventDispatcher.dispatch(this.toItem());
     }
   }, {
-    key: "_onResizeStart2",
+    key: "_onResizeStart",
     //ResizeEventManagement
-    value: function _onResizeStart2(event, location) {
+    value: function _onResizeStart(event, location) {
       this.onResizeStartLeft = this.left;
       this.onResizeStartTop = this.top;
       this.onResizeStartingWidth = this.widthPx;
@@ -9528,23 +9528,8 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._onResizeStartEventDispatcher.dispatch(this.toItem());
     }
   }, {
-    key: "_onResizeStart",
-    value: function _onResizeStart(event, _) {
-      if (event && event.dataTransfer) {
-        this.onResizeStartEvent = event;
-        event.dataTransfer.setData("text/plain", this.id.toString());
-      }
-
-      this.onResizeStartLeft = this.left;
-      this.onResizeStartTop = this.top;
-      this.onResizeStartingWidth = this.widthPx;
-      this.onResizeStartingHeight = this.heightPx;
-
-      this._onResizeStartEventDispatcher.dispatch(this.toItem());
-    }
-  }, {
-    key: "_onResize2",
-    value: function _onResize2(left, top) {
+    key: "_onResize",
+    value: function _onResize(left, top) {
       var location = this._onResizeLocation; //will fire
 
       if (location.includes("right")) {
@@ -9558,64 +9543,14 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._onResizeEventDispatcher.dispatch(this.toItem());
     }
   }, {
-    key: "_onResize",
-    value: function _onResize(event, location) {
-      //Should never fire at present
-      if (location.includes("left")) {
-        var left = +this.onResizeStartLeft - this.onResizeStartEvent.screenX + event.screenX;
-        this.left = left;
-        var width = +this.onResizeStartingWidth + this.onResizeStartEvent.screenX - event.screenX;
-        this.widthPx = width;
-      } //will fire
-
-
-      if (location.includes("right")) {
-        var _width = +this.onResizeStartingWidth - this.onResizeStartEvent.screenX + event.screenX;
-
-        this.widthPx = _width;
-      } //Should never fire currently
-
-
-      if (location.includes("top")) {
-        var top = +this.onResizeStartTop - this.onResizeStartEvent.screenY + event.screenY;
-        this.top = top;
-        var height = +this.onResizeStartingHeight + this.onResizeStartEvent.screenY - event.screenY;
-        this.heightPx = height;
-      } //will fire
-
-
-      if (location.includes("bottom")) {
-        var _height = +this.onResizeStartingHeight - this.onResizeStartEvent.screenY + event.screenY;
-
-        this.heightPx = _height;
-      }
-
-      this._onResizeEventDispatcher.dispatch(this.toItem());
-    }
-  }, {
-    key: "_onResizeEnd2",
-    value: function _onResizeEnd2(e) {
+    key: "_onResizeEnd",
+    value: function _onResizeEnd(e) {
       this.onResizeStartEvent = undefined;
       this.onResizeStartLeft = 0;
       this.onResizeStartTop = 0;
       this.onResizeStartingHeight = 0;
       this.onResizeStartingWidth = 0;
       this._onResizeLocation = "";
-
-      this._onResizeEndEventDispatcher.dispatch(this.toItem());
-    }
-  }, {
-    key: "_onResizeEnd",
-    value: function _onResizeEnd(event, location) {
-      event.preventDefault();
-
-      this._onResize(event, location);
-
-      this.onResizeStartEvent = undefined;
-      this.onResizeStartLeft = 0;
-      this.onResizeStartTop = 0;
-      this.onResizeStartingHeight = 0;
-      this.onResizeStartingWidth = 0;
 
       this._onResizeEndEventDispatcher.dispatch(this.toItem());
     }
@@ -10287,22 +10222,22 @@ var watchEmitProp = function watchEmitProp(key, deep) {
     onResizeStart: function onResizeStart(e, location) {
       this.resizing = true;
 
-      this.item._onResizeStart2(e.detail.event, location);
+      this.item._onResizeStart(e.detail.event, location);
 
       this.$emit("resizeStart", _objectSpread2({}, this.item.toItem()));
     },
     onResize: function onResize(el, left, top) {
-      this.item._onResize2(left, top);
+      if (this.resizing) {
+        this.item._onResize(left, top);
 
-      this.$emit("resizing", _objectSpread2({}, this.item.toItem()));
+        this.$emit("resizing", _objectSpread2({}, this.item.toItem()));
+      }
     },
     onResizeEnd: function onResizeEnd(e) {
-      var location = "bottom";
+      this.item._onResizeEnd(e.detail.event);
 
-      this.item._onResizeEnd2(e.detail.event);
-
-      this.$emit("resizeEnd", _objectSpread2({}, this.item.toItem()));
       this.resizing = false;
+      this.$emit("resizeEnd", _objectSpread2({}, this.item.toItem()));
     },
     createPropWatchers: function createPropWatchers() {
       var _this2 = this;

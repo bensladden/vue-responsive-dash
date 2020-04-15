@@ -307,6 +307,9 @@ export class Layout {
       this._resizeEndListeners[index].unsubscribe();
       this._resizeEndListeners.splice(index, 1);
     }
+    //Compact layout after removal
+    let items = this.compactLayout(this.items);
+    this.syncItems(items);
   }
   getDashItemById(id: string | number) {
     let index = this._dashItems.findIndex((item) => {

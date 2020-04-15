@@ -26,8 +26,8 @@
     <button @click="resizable = !resizable">toggle resizable</button>
     {{ resizable }}
     <button @click="draggable = !draggable">toggle draggable</button>
-    {{ draggable }} <button @click="addItem">Add Item</button> Current
-    Breakpoint:
+    {{ draggable }} <button @click="addItem">Add Item</button
+    ><button @click="removeItem">Remove Item</button> Current Breakpoint:
     {{ currentBreakpoint }}
   </div>
 </template>
@@ -175,6 +175,11 @@ export default {
           width: 2,
           height: 1,
         });
+      }
+    },
+    removeItem() {
+      for (let layout of this.layouts) {
+        layout.items.splice(0, 1);
       }
     },
     updateCurrentBreakpoint(val) {

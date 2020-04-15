@@ -10717,7 +10717,11 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         this._resizeEndListeners[index].unsubscribe();
 
         this._resizeEndListeners.splice(index, 1);
-      }
+      } //Compact layout after removal
+
+
+      var items = this.compactLayout(this.items);
+      this.syncItems(items);
     }
   }, {
     key: "getDashItemById",

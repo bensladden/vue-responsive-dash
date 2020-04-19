@@ -10423,12 +10423,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var components_DashItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=d9b41ce8&
-var DashLayoutvue_type_template_id_d9b41ce8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Current ColWidth: "+_vm._s(_vm.colWidth)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" ")]):_vm._e()]):_vm._e()}
-var DashLayoutvue_type_template_id_d9b41ce8_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=c1ab4c20&
+var DashLayoutvue_type_template_id_c1ab4c20_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height, width: _vm.width })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" ")]):_vm._e()]):_vm._e()}
+var DashLayoutvue_type_template_id_c1ab4c20_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=d9b41ce8&
+// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=c1ab4c20&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.description.js
 var es_symbol_description = __webpack_require__("e01a");
@@ -10474,11 +10474,15 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         breakpointWidth = _ref.breakpointWidth,
         margin = _ref.margin,
         autoHeight = _ref.autoHeight,
-        keepSquare = _ref.keepSquare,
         useCssTransforms = _ref.useCssTransforms,
         width = _ref.width,
         height = _ref.height,
         rowHeight = _ref.rowHeight,
+        minRowHeight = _ref.minRowHeight,
+        maxRowHeight = _ref.maxRowHeight,
+        colWidth = _ref.colWidth,
+        minColWidth = _ref.minColWidth,
+        maxColWidth = _ref.maxColWidth,
         compact = _ref.compact;
 
     _classCallCheck(this, Layout);
@@ -10513,12 +10517,6 @@ var Layout_model_Layout = /*#__PURE__*/function () {
       this._autoHeight = Layout.defaults.autoHeight;
     }
 
-    if (typeof keepSquare !== "undefined") {
-      this._keepSquare = keepSquare;
-    } else {
-      this._keepSquare = Layout.defaults.keepSquare;
-    }
-
     if (typeof useCssTransforms !== "undefined") {
       this._useCssTransforms = useCssTransforms;
     } else {
@@ -10543,6 +10541,36 @@ var Layout_model_Layout = /*#__PURE__*/function () {
       this._rowHeight = Layout.defaults.rowHeight;
     }
 
+    if (typeof minRowHeight !== "undefined") {
+      this._minRowHeight = minRowHeight;
+    } else {
+      this._minRowHeight = Layout.defaults.minRowHeight;
+    }
+
+    if (typeof maxRowHeight !== "undefined") {
+      this._maxRowHeight = maxRowHeight;
+    } else {
+      this._maxRowHeight = Layout.defaults.maxRowHeight;
+    }
+
+    if (typeof colWidth !== "undefined") {
+      this._colWidth = colWidth;
+    } else {
+      this._colWidth = Layout.defaults.colWidth;
+    }
+
+    if (typeof minColWidth !== "undefined") {
+      this._minColWidth = minColWidth;
+    } else {
+      this._minColWidth = Layout.defaults.minColWidth;
+    }
+
+    if (typeof maxColWidth !== "undefined") {
+      this._maxColWidth = maxColWidth;
+    } else {
+      this._maxColWidth = Layout.defaults.maxColWidth;
+    }
+
     if (typeof compact !== "undefined") {
       this._compact = compact;
     } else {
@@ -10551,8 +10579,18 @@ var Layout_model_Layout = /*#__PURE__*/function () {
   }
 
   _createClass(Layout, [{
+    key: "calculateWidth",
+    //used when colWidth is defined (i.e. not looking or caring about width of window )
+    value: function calculateWidth() {
+      if (typeof this._colWidth == "number" && typeof this.colWidth == "number") {
+        return this.numberOfCols * (this.colWidth + this.margin.x) + this.margin.x;
+      }
+
+      return this._width;
+    } //Reactive Methods
+
+  }, {
     key: "calculateHeight",
-    //Reactive Methods
     value: function calculateHeight() {
       var maxY = 0;
       var bottomY = 0;
@@ -11119,7 +11157,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
   }, {
     key: "width",
     get: function get() {
-      return this._width;
+      return this.calculateWidth();
     },
     set: function set(w) {
       this._width = w;
@@ -11155,29 +11193,97 @@ var Layout_model_Layout = /*#__PURE__*/function () {
       this._autoHeight = ah;
     }
   }, {
-    key: "keepSquare",
+    key: "maxRowHeight",
     get: function get() {
-      return this._keepSquare;
+      return this._maxRowHeight;
     },
-    set: function set(k) {
-      this._keepSquare = k;
+    set: function set(mrh) {
+      this._maxRowHeight = mrh;
+      this.updateDashItems();
+    }
+  }, {
+    key: "minRowHeight",
+    get: function get() {
+      return this._minRowHeight;
+    },
+    set: function set(mrh) {
+      this._minRowHeight = mrh;
+      this.updateDashItems();
     }
   }, {
     key: "rowHeight",
     get: function get() {
-      if (this.keepSquare) {
-        return this.colWidth;
+      var rH = 0;
+
+      if (typeof this._rowHeight == "number") {
+        rH = this._rowHeight;
+      } else {
+        rH = this.colWidth;
       }
 
-      return this._rowHeight;
+      if (typeof this.maxRowHeight == "number") {
+        if (rH > this.maxRowHeight) {
+          rH = this.maxRowHeight;
+        }
+      }
+
+      if (typeof this.minRowHeight == "number") {
+        if (rH < this.minRowHeight) {
+          rH = this.minRowHeight;
+        }
+      }
+
+      return rH;
     },
     set: function set(rh) {
       this._rowHeight = rh;
+      this.updateDashItems();
+    }
+  }, {
+    key: "maxColWidth",
+    set: function set(mcw) {
+      this._maxColWidth = mcw;
+      this.updateDashItems();
+    },
+    get: function get() {
+      return this._maxColWidth;
+    }
+  }, {
+    key: "minColWidth",
+    set: function set(mcw) {
+      this._minColWidth = mcw;
+      this.updateDashItems();
+    },
+    get: function get() {
+      return this._minColWidth;
     }
   }, {
     key: "colWidth",
+    set: function set(cw) {
+      this._colWidth = cw;
+    },
     get: function get() {
-      return (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols;
+      var colWidthCalc = 0;
+
+      if (typeof this._colWidth == "number") {
+        colWidthCalc = this._colWidth;
+      } else {
+        colWidthCalc = (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols;
+      }
+
+      if (typeof this.maxColWidth == "number") {
+        if (colWidthCalc > this.maxColWidth) {
+          colWidthCalc = this.maxColWidth;
+        }
+      }
+
+      if (typeof this.minColWidth == "number") {
+        if (colWidthCalc < this.minColWidth) {
+          colWidthCalc = this.minColWidth;
+        }
+      }
+
+      return colWidthCalc;
     } //Item Methods
 
   }, {
@@ -11213,6 +11319,14 @@ var Layout_model_Layout = /*#__PURE__*/function () {
       this._compact = c;
     }
   }, {
+    key: "useCssTransforms",
+    get: function get() {
+      return this._useCssTransforms;
+    },
+    set: function set(uct) {
+      this._useCssTransforms = uct;
+    }
+  }, {
     key: "items",
     get: function get() {
       var items = [];
@@ -11238,7 +11352,12 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         useCssTransforms: false,
         width: 400,
         height: 400,
-        rowHeight: 200,
+        rowHeight: false,
+        maxRowHeight: false,
+        minRowHeight: false,
+        colWidth: false,
+        maxColWidth: false,
+        minColWidth: false,
         compact: true
       };
     }
@@ -11251,6 +11370,8 @@ var Layout_model_Layout = /*#__PURE__*/function () {
 
 
 
+//
+//
 //
 //
 //
@@ -11327,6 +11448,30 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
       default: function _default() {
         return Layout_model_Layout.defaults.margin;
       }
+    },
+    rowHeight: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.rowHeight
+    },
+    maxRowHeight: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.maxRowHeight
+    },
+    minRowHeight: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.minRowHeight
+    },
+    colWidth: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.colWidth
+    },
+    maxColWidth: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.maxColWidth
+    },
+    minColWidth: {
+      type: [Boolean, Number],
+      default: Layout_model_Layout.defaults.minColWidth
     }
   },
   components: {
@@ -11392,16 +11537,16 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
 
       return [];
     },
-    colWidth: function colWidth() {
-      if (this.l) {
-        return this.l.colWidth;
-      }
-
-      return "";
-    },
     height: function height() {
       if (this.l) {
         return this.l.height + "px";
+      }
+
+      return "0px";
+    },
+    width: function width() {
+      if (this.l) {
+        return this.l.width + "px";
       }
 
       return "0px";
@@ -11457,8 +11602,8 @@ var DashLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("f19a");
 
 var DashLayout_component = normalizeComponent(
   components_DashLayoutvue_type_script_lang_js_,
-  DashLayoutvue_type_template_id_d9b41ce8_render,
-  DashLayoutvue_type_template_id_d9b41ce8_staticRenderFns,
+  DashLayoutvue_type_template_id_c1ab4c20_render,
+  DashLayoutvue_type_template_id_c1ab4c20_staticRenderFns,
   false,
   null,
   null,

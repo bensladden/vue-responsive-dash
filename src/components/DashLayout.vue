@@ -1,6 +1,9 @@
 <template>
   <div v-if="currentBreakpoint === breakpoint">
-    <div v-if="l" :style="{ position: 'relative', height: height }">
+    <div
+      v-if="l"
+      :style="{ position: 'relative', height: height, width: width }"
+    >
       <slot></slot>
       <DashItem
         :id="placeholderId"
@@ -15,7 +18,6 @@
     </div>
     <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />
-      Current ColWidth: {{ colWidth }} <br />
       Layout Number of Cols: {{ numberOfCols }} <br />
       placeholder: {{ JSON.stringify(placeholder) }} <br />
       Items: {{ JSON.stringify(itemsFromLayout) }} <br />
@@ -54,6 +56,30 @@ export default {
     compact: { type: Boolean, default: Layout.defaults.compact },
     debug: { type: Boolean, default: false },
     margin: { type: Object, default: () => Layout.defaults.margin },
+    rowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.rowHeight,
+    },
+    maxRowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.maxRowHeight,
+    },
+    minRowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.minRowHeight,
+    },
+    colWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.colWidth,
+    },
+    maxColWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.maxColWidth,
+    },
+    minColWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.minColWidth,
+    },
   },
   components: {
     DashItem,
@@ -104,15 +130,15 @@ export default {
       }
       return [];
     },
-    colWidth() {
-      if (this.l) {
-        return this.l.colWidth;
-      }
-      return "";
-    },
     height() {
       if (this.l) {
         return this.l.height + "px";
+      }
+      return "0px";
+    },
+    width() {
+      if (this.l) {
+        return this.l.width + "px";
       }
       return "0px";
     },

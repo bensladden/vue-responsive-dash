@@ -33,6 +33,12 @@ Note that only one layout should have the breakpointWidth `undefined`. This layo
 | breakpointWidth | `number` | no | | Width used to determine which layout is most appropriate for the screen size |
 | useCssTransforms | `boolean` | no | `false` | Use translate3d instead of direct top left css properties |
 | compact | `boolean` | no | `true` | Automatically move items up if there is space available |
+| colWidth | `boolean | number` | no | `false` | When set to a number the column width is statically set to this value |
+| maxColWidth | `boolean | number` | no | `false` | When set to a number the colWidth will never be greater than this number |
+| minColWidth | `boolean | number` | no | `false` | When set tp a number the colWidth will never be less than this number |
+| rowHeight | `boolean | number` | no | `false` | When set to a number the row height will be set to this number (as opposed to being set to the colWidth to keep the items square) |
+| maxRowHeight | `boolean | number` | no | `false` | When set to a number the rowHeight will never be greater than this number |
+| minRowHeight | `boolean | number` | no | `false` | When set tp a number the rowHeight will never be less than this number |
 
 ## Dash Item
 

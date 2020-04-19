@@ -9,8 +9,12 @@ export class Layout {
   private _height: number;
   private _numberOfCols: number;
   private _autoHeight: boolean;
-  private _keepSquare: boolean;
-  private _rowHeight: number;
+  private _rowHeight: number | boolean;
+  private _minRowHeight: number | boolean;
+  private _maxRowHeight: number | boolean;
+  private _colWidth: number | boolean;
+  private _minColWidth: number | boolean;
+  private _maxColWidth: number | boolean;
   private _compact: boolean;
   private _useCssTransforms: boolean;
   private _itemBeingDragged: boolean = false;
@@ -29,11 +33,15 @@ export class Layout {
     breakpointWidth,
     margin,
     autoHeight,
-    keepSquare,
     useCssTransforms,
     width,
     height,
     rowHeight,
+    minRowHeight,
+    maxRowHeight,
+    colWidth,
+    minColWidth,
+    maxColWidth,
     compact,
   }: {
     breakpoint: string;
@@ -41,11 +49,15 @@ export class Layout {
     breakpointWidth?: number;
     margin?: Margin;
     autoHeight?: boolean;
-    keepSquare?: boolean;
     useCssTransforms?: boolean;
     width?: number;
     height?: number;
-    rowHeight?: number;
+    rowHeight?: number | boolean;
+    minRowHeight?: number | boolean;
+    maxRowHeight?: number | boolean;
+    colWidth?: number | boolean;
+    minColWidth?: number | boolean;
+    maxColWidth?: number | boolean;
     compact?: boolean;
   }) {
     this._breakpoint = breakpoint;
@@ -68,11 +80,6 @@ export class Layout {
     } else {
       this._autoHeight = Layout.defaults.autoHeight;
     }
-    if (typeof keepSquare !== "undefined") {
-      this._keepSquare = keepSquare;
-    } else {
-      this._keepSquare = Layout.defaults.keepSquare;
-    }
 
     if (typeof useCssTransforms !== "undefined") {
       this._useCssTransforms = useCssTransforms;
@@ -85,17 +92,46 @@ export class Layout {
     } else {
       this._width = Layout.defaults.width;
     }
-
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
       this._height = Layout.defaults.height;
     }
+
     if (typeof rowHeight !== "undefined") {
       this._rowHeight = rowHeight;
     } else {
       this._rowHeight = Layout.defaults.rowHeight;
     }
+
+    if (typeof minRowHeight !== "undefined") {
+      this._minRowHeight = minRowHeight;
+    } else {
+      this._minRowHeight = Layout.defaults.minRowHeight;
+    }
+
+    if (typeof maxRowHeight !== "undefined") {
+      this._maxRowHeight = maxRowHeight;
+    } else {
+      this._maxRowHeight = Layout.defaults.maxRowHeight;
+    }
+
+    if (typeof colWidth !== "undefined") {
+      this._colWidth = colWidth;
+    } else {
+      this._colWidth = Layout.defaults.colWidth;
+    }
+    if (typeof minColWidth !== "undefined") {
+      this._minColWidth = minColWidth;
+    } else {
+      this._minColWidth = Layout.defaults.minColWidth;
+    }
+    if (typeof maxColWidth !== "undefined") {
+      this._maxColWidth = maxColWidth;
+    } else {
+      this._maxColWidth = Layout.defaults.maxColWidth;
+    }
+
     if (typeof compact !== "undefined") {
       this._compact = compact;
     } else {
@@ -121,7 +157,7 @@ export class Layout {
     this._margin = m;
   }
   get width() {
-    return this._width;
+    return this.calculateWidth();
   }
   set width(w: number) {
     this._width = w;
@@ -149,25 +185,82 @@ export class Layout {
   set autoHeight(ah: boolean) {
     this._autoHeight = ah;
   }
-  get keepSquare() {
-    return this._keepSquare;
+  get maxRowHeight() {
+    return this._maxRowHeight;
   }
-  set keepSquare(k: boolean) {
-    this._keepSquare = k;
+  set maxRowHeight(mrh: boolean | number) {
+    this._maxRowHeight = mrh;
+    this.updateDashItems();
+  }
+  get minRowHeight() {
+    return this._minRowHeight;
+  }
+  set minRowHeight(mrh: boolean | number) {
+    this._minRowHeight = mrh;
+    this.updateDashItems();
   }
   get rowHeight() {
-    if (this.keepSquare) {
-      return this.colWidth;
+    let rH = 0;
+    if (typeof this._rowHeight == "number") {
+      rH = this._rowHeight;
+    } else {
+      rH = this.colWidth as number;
     }
-    return this._rowHeight;
+    if (typeof this.maxRowHeight == "number") {
+      if (rH > this.maxRowHeight) {
+        rH = this.maxRowHeight;
+      }
+    }
+    if (typeof this.minRowHeight == "number") {
+      if (rH < this.minRowHeight) {
+        rH = this.minRowHeight;
+      }
+    }
+    return rH;
   }
   set rowHeight(rh: number) {
     this._rowHeight = rh;
+    this.updateDashItems();
+  }
+
+  set maxColWidth(mcw: boolean | number) {
+    this._maxColWidth = mcw;
+    this.updateDashItems();
+  }
+  get maxColWidth() {
+    return this._maxColWidth;
+  }
+  set minColWidth(mcw: boolean | number) {
+    this._minColWidth = mcw;
+    this.updateDashItems();
+  }
+  get minColWidth() {
+    return this._minColWidth;
+  }
+  set colWidth(cw: number | boolean) {
+    this._colWidth = cw;
   }
   get colWidth() {
-    return (
-      (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols
-    );
+    let colWidthCalc = 0;
+    if (typeof this._colWidth == "number") {
+      colWidthCalc = this._colWidth;
+    } else {
+      colWidthCalc =
+        (this.width - this.margin.x * (this.numberOfCols + 1)) /
+        this.numberOfCols;
+    }
+
+    if (typeof this.maxColWidth == "number") {
+      if (colWidthCalc > this.maxColWidth) {
+        colWidthCalc = this.maxColWidth;
+      }
+    }
+    if (typeof this.minColWidth == "number") {
+      if (colWidthCalc < this.minColWidth) {
+        colWidthCalc = this.minColWidth;
+      }
+    }
+    return colWidthCalc;
   }
   //Item Methods
   get itemBeingDragged() {
@@ -193,6 +286,21 @@ export class Layout {
   }
   set compact(c: boolean) {
     this._compact = c;
+  }
+  get useCssTransforms() {
+    return this._useCssTransforms;
+  }
+  set useCssTransforms(uct: boolean) {
+    this._useCssTransforms = uct;
+  }
+  //used when colWidth is defined (i.e. not looking or caring about width of window )
+  calculateWidth() {
+    if (typeof this._colWidth == "number" && typeof this.colWidth == "number") {
+      return (
+        this.numberOfCols * (this.colWidth + this.margin.x) + this.margin.x
+      );
+    }
+    return this._width;
   }
   //Reactive Methods
   calculateHeight() {
@@ -322,8 +430,8 @@ export class Layout {
   }
   updateDashItems() {
     this._dashItems.forEach((item) => {
-      item.colWidth = this.colWidth;
-      item.rowHeight = this.rowHeight;
+      item.colWidth = this.colWidth as number;
+      item.rowHeight = this.rowHeight as number;
       item.margin = this.margin;
     });
   }
@@ -356,7 +464,7 @@ export class Layout {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getXFromLeft(item.left!, this.colWidth as number, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
@@ -379,7 +487,7 @@ export class Layout {
     this.itemBeingResized = true;
     this.placeholder!.x = DashItem.getXFromLeft(
       item.left!,
-      this.colWidth,
+      this.colWidth as number,
       this.margin
     );
     this.placeholder!.y = DashItem.getYFromTop(
@@ -389,7 +497,7 @@ export class Layout {
     );
     this.placeholder!.width = DashItem.getWidthFromPx(
       item.widthPx!,
-      this.colWidth,
+      this.colWidth as number,
       this.margin
     );
     this.placeholder!.height = DashItem.getHeightFromPx(
@@ -409,7 +517,7 @@ export class Layout {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getXFromLeft(item.left!, this.colWidth as number, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
@@ -599,7 +707,12 @@ export class Layout {
       useCssTransforms: false as boolean,
       width: 400 as number,
       height: 400 as number,
-      rowHeight: 200 as number,
+      rowHeight: false as number | boolean,
+      maxRowHeight: false as number | boolean,
+      minRowHeight: false as number | boolean,
+      colWidth: false as number | boolean,
+      maxColWidth: false as number | boolean,
+      minColWidth: false as number | boolean,
       compact: true as boolean,
     };
   }

@@ -6,8 +6,14 @@
     >
       <Dash-Layout
         v-for="layout in layouts"
-        v-bind="layout"
         :key="layout.breakpoint"
+        v-bind="layout"
+        :rowHeight="rowHeight"
+        :colWidth="colWidth"
+        :maxColWidth="maxColWidth"
+        :minColWidth="minColWidth"
+        :maxRowHeight="maxRowHeight"
+        :minRowHeight="minRowHeight"
         :compact="compact"
         :margin="margin"
       >
@@ -22,13 +28,29 @@
         </Dash-Item>
       </Dash-Layout>
     </dashboard>
-    <button @click="compact = !compact">toggle compact</button> {{ compact }}
-    <button @click="resizable = !resizable">toggle resizable</button>
-    {{ resizable }}
-    <button @click="draggable = !draggable">toggle draggable</button>
-    {{ draggable }} <button @click="addItem">Add Item</button
-    ><button @click="removeItem">Remove Item</button> Current Breakpoint:
-    {{ currentBreakpoint }}
+    Current Breakpoint:
+    {{ currentBreakpoint }} <br />
+    <button @click="compact = !compact">toggle compact ({{ compact }})</button>
+    <button @click="resizable = !resizable">
+      toggle resizable ({{ resizable }})
+    </button>
+    <button @click="draggable = !draggable">
+      toggle draggable ({{ draggable }})
+    </button>
+    <button @click="addItem">Add Item</button
+    ><button @click="removeItem">Remove Item</button>
+    <button @click="enableStaticRowHeight = !enableStaticRowHeight">
+      Toggle Static Row Height ({{ enableStaticRowHeight }})
+    </button>
+    <button @click="enableStaticColWidth = !enableStaticColWidth">
+      Toggle Static Col Width ({{ enableStaticColWidth }})
+    </button>
+    <button @click="enableColWidthLimits = !enableColWidthLimits">
+      Toggle Col Width Limits ({{ enableColWidthLimits }})
+    </button>
+    <button @click="enableRowHeightLimits = !enableRowHeightLimits">
+      Toggle Row Height Limits ({{ enableRowHeightLimits }})
+    </button>
   </div>
 </template>
 
@@ -163,7 +185,55 @@ export default {
       currentBreakpoint: "",
       origLayout: [],
       testHelper: false,
+      rowHeightInput: 200,
+      enableStaticRowHeight: false,
+      colWidthInput: 200,
+      maxColWidthInput: 210,
+      minColWidthInput: 190,
+      maxRowHeightInput: 210,
+      minRowHeightInput: 190,
+      enableStaticColWidth: false,
+      enableColWidthLimits: false,
+      enableRowHeightLimits: false,
     };
+  },
+  computed: {
+    rowHeight() {
+      if (this.enableStaticRowHeight) {
+        return this.rowHeightInput;
+      }
+      return this.enableStaticRowHeight;
+    },
+    colWidth() {
+      if (this.enableStaticColWidth) {
+        return this.colWidthInput;
+      }
+      return this.enableStaticColWidth;
+    },
+    maxColWidth() {
+      if (this.enableColWidthLimits) {
+        return this.maxColWidthInput;
+      }
+      return this.enableColWidthLimits;
+    },
+    minColWidth() {
+      if (this.enableColWidthLimits) {
+        return this.minColWidthInput;
+      }
+      return this.enableColWidthLimits;
+    },
+    maxRowHeight() {
+      if (this.enableRowHeightLimits) {
+        return this.maxRowHeightInput;
+      }
+      return this.enableRowHeightLimits;
+    },
+    minRowHeight() {
+      if (this.enableRowHeightLimits) {
+        return this.minRowHeightInput;
+      }
+      return this.enableRowHeightLimits;
+    },
   },
   methods: {
     addItem() {

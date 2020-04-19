@@ -15,7 +15,6 @@
     </div>
     <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />
-      Current ColWidth: {{ colWidth }} <br />
       Layout Number of Cols: {{ numberOfCols }} <br />
       placeholder: {{ JSON.stringify(placeholder) }} <br />
       Items: {{ JSON.stringify(itemsFromLayout) }} <br />
@@ -54,7 +53,10 @@ export default {
     compact: { type: Boolean, default: Layout.defaults.compact },
     debug: { type: Boolean, default: false },
     margin: { type: Object, default: () => Layout.defaults.margin },
-    keepSquare: { type: Boolean, default: Layout.defaults.keepSquare },
+    rowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.rowHeight,
+    },
     maxRowHeight: {
       type: [Boolean, Number],
       default: Layout.defaults.maxRowHeight,
@@ -62,6 +64,10 @@ export default {
     minRowHeight: {
       type: [Boolean, Number],
       default: Layout.defaults.minRowHeight,
+    },
+    colWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.colWidth,
     },
     maxColWidth: {
       type: [Boolean, Number],
@@ -120,12 +126,6 @@ export default {
         return this.l.items;
       }
       return [];
-    },
-    colWidth() {
-      if (this.l) {
-        return this.l.colWidth;
-      }
-      return "";
     },
     height() {
       if (this.l) {

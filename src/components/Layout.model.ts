@@ -9,11 +9,10 @@ export class Layout {
   private _height: number;
   private _numberOfCols: number;
   private _autoHeight: boolean;
-  private _keepSquare: boolean;
-  private _rowHeight: number;
+  private _rowHeight: number | boolean;
   private _minRowHeight: number | boolean;
   private _maxRowHeight: number | boolean;
-  //private _colWidth: number;
+  private _colWidth: number | boolean;
   private _minColWidth: number | boolean;
   private _maxColWidth: number | boolean;
   private _compact: boolean;
@@ -34,13 +33,13 @@ export class Layout {
     breakpointWidth,
     margin,
     autoHeight,
-    keepSquare,
     useCssTransforms,
     width,
     height,
     rowHeight,
     minRowHeight,
     maxRowHeight,
+    colWidth,
     minColWidth,
     maxColWidth,
     compact,
@@ -50,13 +49,13 @@ export class Layout {
     breakpointWidth?: number;
     margin?: Margin;
     autoHeight?: boolean;
-    keepSquare?: boolean;
     useCssTransforms?: boolean;
     width?: number;
     height?: number;
-    rowHeight?: number;
+    rowHeight?: number | boolean;
     minRowHeight?: number | boolean;
     maxRowHeight?: number | boolean;
+    colWidth?: number | boolean;
     minColWidth?: number | boolean;
     maxColWidth?: number | boolean;
     compact?: boolean;
@@ -81,11 +80,6 @@ export class Layout {
     } else {
       this._autoHeight = Layout.defaults.autoHeight;
     }
-    if (typeof keepSquare !== "undefined") {
-      this._keepSquare = keepSquare;
-    } else {
-      this._keepSquare = Layout.defaults.keepSquare;
-    }
 
     if (typeof useCssTransforms !== "undefined") {
       this._useCssTransforms = useCssTransforms;
@@ -98,12 +92,12 @@ export class Layout {
     } else {
       this._width = Layout.defaults.width;
     }
-
     if (typeof height !== "undefined") {
       this._height = height;
     } else {
       this._height = Layout.defaults.height;
     }
+
     if (typeof rowHeight !== "undefined") {
       this._rowHeight = rowHeight;
     } else {
@@ -122,16 +116,20 @@ export class Layout {
       this._maxRowHeight = Layout.defaults.maxRowHeight;
     }
 
-    if (typeof maxColWidth !== "undefined") {
-      this._maxColWidth = maxColWidth;
+    if (typeof colWidth !== "undefined") {
+      this._colWidth = colWidth;
     } else {
-      this._maxColWidth = Layout.defaults.maxColWidth;
+      this._colWidth = Layout.defaults.colWidth;
     }
-
     if (typeof minColWidth !== "undefined") {
       this._minColWidth = minColWidth;
     } else {
       this._minColWidth = Layout.defaults.minColWidth;
+    }
+    if (typeof maxColWidth !== "undefined") {
+      this._maxColWidth = maxColWidth;
+    } else {
+      this._maxColWidth = Layout.defaults.maxColWidth;
     }
 
     if (typeof compact !== "undefined") {
@@ -187,30 +185,26 @@ export class Layout {
   set autoHeight(ah: boolean) {
     this._autoHeight = ah;
   }
-  get keepSquare() {
-    return this._keepSquare;
-  }
-  set keepSquare(k: boolean) {
-    this._keepSquare = k;
-  }
-
   get maxRowHeight() {
     return this._maxRowHeight;
   }
   set maxRowHeight(mrh: boolean | number) {
     this._maxRowHeight = mrh;
+    this.updateDashItems();
   }
   get minRowHeight() {
     return this._minRowHeight;
   }
   set minRowHeight(mrh: boolean | number) {
     this._minRowHeight = mrh;
+    this.updateDashItems();
   }
   get rowHeight() {
-    let rH = this._rowHeight;
-
-    if (this.keepSquare) {
-      rH = this.colWidth;
+    let rH = 0;
+    if (typeof this._rowHeight == "number") {
+      rH = this._rowHeight;
+    } else {
+      rH = this.colWidth as number;
     }
     if (typeof this.maxRowHeight == "number") {
       if (rH > this.maxRowHeight) {
@@ -226,27 +220,35 @@ export class Layout {
   }
   set rowHeight(rh: number) {
     this._rowHeight = rh;
+    this.updateDashItems();
   }
 
   set maxColWidth(mcw: boolean | number) {
     this._maxColWidth = mcw;
+    this.updateDashItems();
   }
   get maxColWidth() {
     return this._maxColWidth;
   }
   set minColWidth(mcw: boolean | number) {
     this._minColWidth = mcw;
+    this.updateDashItems();
   }
   get minColWidth() {
     return this._minColWidth;
   }
-  // set colWidth(cw: number) {
-  //   this._colWidth = cw
-  // }
+  set colWidth(cw: number | boolean) {
+    this._colWidth = cw;
+  }
   get colWidth() {
-    let colWidthCalc =
-      (this.width - this.margin.x * (this.numberOfCols + 1)) /
-      this.numberOfCols;
+    let colWidthCalc = 0;
+    if (typeof this._colWidth == "number") {
+      colWidthCalc = this._colWidth;
+    } else {
+      colWidthCalc =
+        (this.width - this.margin.x * (this.numberOfCols + 1)) /
+        this.numberOfCols;
+    }
 
     if (typeof this.maxColWidth == "number") {
       if (colWidthCalc > this.maxColWidth) {
@@ -284,6 +286,12 @@ export class Layout {
   }
   set compact(c: boolean) {
     this._compact = c;
+  }
+  get useCssTransforms() {
+    return this._useCssTransforms;
+  }
+  set useCssTransforms(uct: boolean) {
+    this._useCssTransforms = uct;
   }
   //Reactive Methods
   calculateHeight() {
@@ -413,8 +421,8 @@ export class Layout {
   }
   updateDashItems() {
     this._dashItems.forEach((item) => {
-      item.colWidth = this.colWidth;
-      item.rowHeight = this.rowHeight;
+      item.colWidth = this.colWidth as number;
+      item.rowHeight = this.rowHeight as number;
       item.margin = this.margin;
     });
   }
@@ -447,7 +455,7 @@ export class Layout {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getXFromLeft(item.left!, this.colWidth as number, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
@@ -470,7 +478,7 @@ export class Layout {
     this.itemBeingResized = true;
     this.placeholder!.x = DashItem.getXFromLeft(
       item.left!,
-      this.colWidth,
+      this.colWidth as number,
       this.margin
     );
     this.placeholder!.y = DashItem.getYFromTop(
@@ -480,7 +488,7 @@ export class Layout {
     );
     this.placeholder!.width = DashItem.getWidthFromPx(
       item.widthPx!,
-      this.colWidth,
+      this.colWidth as number,
       this.margin
     );
     this.placeholder!.height = DashItem.getHeightFromPx(
@@ -500,7 +508,7 @@ export class Layout {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      DashItem.getXFromLeft(item.left!, this.colWidth, this.margin),
+      DashItem.getXFromLeft(item.left!, this.colWidth as number, this.margin),
       DashItem.getYFromTop(item.top!, this.rowHeight, this.margin),
       true
     );
@@ -690,9 +698,10 @@ export class Layout {
       useCssTransforms: false as boolean,
       width: 400 as number,
       height: 400 as number,
-      rowHeight: 200 as number,
+      rowHeight: false as number | boolean,
       maxRowHeight: false as number | boolean,
       minRowHeight: false as number | boolean,
+      colWidth: false as number | boolean,
       maxColWidth: false as number | boolean,
       minColWidth: false as number | boolean,
       compact: true as boolean,

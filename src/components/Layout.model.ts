@@ -11,6 +11,11 @@ export class Layout {
   private _autoHeight: boolean;
   private _keepSquare: boolean;
   private _rowHeight: number;
+  private _minRowHeight: number | boolean;
+  private _maxRowHeight: number | boolean;
+  //private _colWidth: number;
+  private _minColWidth: number | boolean;
+  private _maxColWidth: number | boolean;
   private _compact: boolean;
   private _useCssTransforms: boolean;
   private _itemBeingDragged: boolean = false;
@@ -34,6 +39,10 @@ export class Layout {
     width,
     height,
     rowHeight,
+    minRowHeight,
+    maxRowHeight,
+    minColWidth,
+    maxColWidth,
     compact,
   }: {
     breakpoint: string;
@@ -46,6 +55,10 @@ export class Layout {
     width?: number;
     height?: number;
     rowHeight?: number;
+    minRowHeight?: number | boolean;
+    maxRowHeight?: number | boolean;
+    minColWidth?: number | boolean;
+    maxColWidth?: number | boolean;
     compact?: boolean;
   }) {
     this._breakpoint = breakpoint;
@@ -96,6 +109,31 @@ export class Layout {
     } else {
       this._rowHeight = Layout.defaults.rowHeight;
     }
+
+    if (typeof minRowHeight !== "undefined") {
+      this._minRowHeight = minRowHeight;
+    } else {
+      this._minRowHeight = Layout.defaults.minRowHeight;
+    }
+
+    if (typeof maxRowHeight !== "undefined") {
+      this._maxRowHeight = maxRowHeight;
+    } else {
+      this._maxRowHeight = Layout.defaults.maxRowHeight;
+    }
+
+    if (typeof maxColWidth !== "undefined") {
+      this._maxColWidth = maxColWidth;
+    } else {
+      this._maxColWidth = Layout.defaults.maxColWidth;
+    }
+
+    if (typeof minColWidth !== "undefined") {
+      this._minColWidth = minColWidth;
+    } else {
+      this._minColWidth = Layout.defaults.minColWidth;
+    }
+
     if (typeof compact !== "undefined") {
       this._compact = compact;
     } else {
@@ -155,19 +193,72 @@ export class Layout {
   set keepSquare(k: boolean) {
     this._keepSquare = k;
   }
+
+  get maxRowHeight() {
+    return this._maxRowHeight;
+  }
+  set maxRowHeight(mrh: boolean | number) {
+    this._maxRowHeight = mrh;
+  }
+  get minRowHeight() {
+    return this._minRowHeight;
+  }
+  set minRowHeight(mrh: boolean | number) {
+    this._minRowHeight = mrh;
+  }
   get rowHeight() {
+    let rH = this._rowHeight;
+
     if (this.keepSquare) {
-      return this.colWidth;
+      rH = this.colWidth;
     }
-    return this._rowHeight;
+    if (typeof this.maxRowHeight == "number") {
+      if (rH > this.maxRowHeight) {
+        rH = this.maxRowHeight;
+      }
+    }
+    if (typeof this.minRowHeight == "number") {
+      if (rH < this.minRowHeight) {
+        rH = this.minRowHeight;
+      }
+    }
+    return rH;
   }
   set rowHeight(rh: number) {
     this._rowHeight = rh;
   }
+
+  set maxColWidth(mcw: boolean | number) {
+    this._maxColWidth = mcw;
+  }
+  get maxColWidth() {
+    return this._maxColWidth;
+  }
+  set minColWidth(mcw: boolean | number) {
+    this._minColWidth = mcw;
+  }
+  get minColWidth() {
+    return this._minColWidth;
+  }
+  // set colWidth(cw: number) {
+  //   this._colWidth = cw
+  // }
   get colWidth() {
-    return (
-      (this.width - this.margin.x * (this.numberOfCols + 1)) / this.numberOfCols
-    );
+    let colWidthCalc =
+      (this.width - this.margin.x * (this.numberOfCols + 1)) /
+      this.numberOfCols;
+
+    if (typeof this.maxColWidth == "number") {
+      if (colWidthCalc > this.maxColWidth) {
+        colWidthCalc = this.maxColWidth;
+      }
+    }
+    if (typeof this.minColWidth == "number") {
+      if (colWidthCalc < this.minColWidth) {
+        colWidthCalc = this.minColWidth;
+      }
+    }
+    return colWidthCalc;
   }
   //Item Methods
   get itemBeingDragged() {
@@ -600,6 +691,10 @@ export class Layout {
       width: 400 as number,
       height: 400 as number,
       rowHeight: 200 as number,
+      maxRowHeight: false as number | boolean,
+      minRowHeight: false as number | boolean,
+      maxColWidth: false as number | boolean,
+      minColWidth: false as number | boolean,
       compact: true as boolean,
     };
   }

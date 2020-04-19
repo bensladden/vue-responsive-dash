@@ -54,6 +54,23 @@ export default {
     compact: { type: Boolean, default: Layout.defaults.compact },
     debug: { type: Boolean, default: false },
     margin: { type: Object, default: () => Layout.defaults.margin },
+    keepSquare: { type: Boolean, default: Layout.defaults.keepSquare },
+    maxRowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.maxRowHeight,
+    },
+    minRowHeight: {
+      type: [Boolean, Number],
+      default: Layout.defaults.minRowHeight,
+    },
+    maxColWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.maxColWidth,
+    },
+    minColWidth: {
+      type: [Boolean, Number],
+      default: Layout.defaults.minColWidth,
+    },
   },
   components: {
     DashItem,

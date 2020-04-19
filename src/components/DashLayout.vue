@@ -1,6 +1,9 @@
 <template>
   <div v-if="currentBreakpoint === breakpoint">
-    <div v-if="l" :style="{ position: 'relative', height: height }">
+    <div
+      v-if="l"
+      :style="{ position: 'relative', height: height, width: width }"
+    >
       <slot></slot>
       <DashItem
         :id="placeholderId"
@@ -130,6 +133,12 @@ export default {
     height() {
       if (this.l) {
         return this.l.height + "px";
+      }
+      return "0px";
+    },
+    width() {
+      if (this.l) {
+        return this.l.width + "px";
       }
       return "0px";
     },

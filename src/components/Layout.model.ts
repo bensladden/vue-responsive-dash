@@ -157,7 +157,7 @@ export class Layout {
     this._margin = m;
   }
   get width() {
-    return this._width;
+    return this.calculateWidth();
   }
   set width(w: number) {
     this._width = w;
@@ -292,6 +292,15 @@ export class Layout {
   }
   set useCssTransforms(uct: boolean) {
     this._useCssTransforms = uct;
+  }
+  //used when colWidth is defined (i.e. not looking or caring about width of window )
+  calculateWidth() {
+    if (typeof this._colWidth == "number" && typeof this.colWidth == "number") {
+      return (
+        this.numberOfCols * (this.colWidth + this.margin.x) + this.margin.x
+      );
+    }
+    return this._width;
   }
   //Reactive Methods
   calculateHeight() {

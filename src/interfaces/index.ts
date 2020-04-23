@@ -5,8 +5,12 @@ export interface Item {
   top?: number;
   left?: number;
   width: number;
+  minWidth: number | boolean;
+  maxWidth: number | boolean;
   widthPx?: number;
   height: number;
+  minHeight: number | boolean;
+  maxHeight: number | boolean;
   heightPx?: number;
   draggable?: boolean;
   resizable?: boolean;

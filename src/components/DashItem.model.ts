@@ -12,6 +12,10 @@ export class DashItem {
   private _top: number;
   private _width: number;
   private _height: number;
+  private _minWidth: number | boolean;
+  private _maxWidth: number | boolean;
+  private _minHeight: number | boolean;
+  private _maxHeight: number | boolean;
   private _widthPx: number;
   private _heightPx: number;
   private _draggable: boolean;
@@ -42,6 +46,10 @@ export class DashItem {
     y,
     width,
     height,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
     colWidth,
     rowHeight,
     margin,
@@ -55,6 +63,10 @@ export class DashItem {
     y?: number;
     width?: number;
     height?: number;
+    minWidth?: number | boolean;
+    maxWidth?: number | boolean;
+    minHeight?: number | boolean;
+    maxHeight?: number | boolean;
     colWidth?: number;
     rowHeight?: number;
     margin?: Margin;
@@ -92,21 +104,42 @@ export class DashItem {
       this._y = DashItem.defaults.y;
     }
     this._top = DashItem.getTopFromY(this._y, this._rowHeight, this._margin);
+
+    if (typeof minWidth !== "undefined") {
+      this._minWidth = minWidth;
+    } else {
+      this._minWidth = DashItem.defaults.minWidth;
+    }
+    if (typeof maxWidth !== "undefined") {
+      this._maxWidth = maxWidth;
+    } else {
+      this._maxWidth = DashItem.defaults.maxWidth;
+    }
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
       this._width = DashItem.defaults.width;
+    }
+    if (typeof minHeight !== "undefined") {
+      this._minHeight = minHeight;
+    } else {
+      this._minHeight = DashItem.defaults.minHeight;
+    }
+    if (typeof maxHeight !== "undefined") {
+      this._maxHeight = maxHeight;
+    } else {
+      this._maxHeight = DashItem.defaults.maxHeight;
+    }
+    if (typeof height !== "undefined") {
+      this._height = height;
+    } else {
+      this._height = DashItem.defaults.height;
     }
     this._widthPx = DashItem.getWidthInPx(
       this._width,
       this._colWidth,
       this._margin
     );
-    if (typeof height !== "undefined") {
-      this._height = height;
-    } else {
-      this._height = DashItem.defaults.height;
-    }
     this._heightPx = DashItem.getHeightInPx(
       this._height,
       this._rowHeight,
@@ -183,18 +216,46 @@ export class DashItem {
   set top(t: number) {
     this._top = t;
   }
+
+  get minWidth() {
+    return this._minWidth;
+  }
+  set minWidth(mW: number | boolean) {
+    this._minWidth = mW;
+  }
+  get maxWidth() {
+    return this._maxWidth;
+  }
+  set maxWidth(mW: number | boolean) {
+    this._maxWidth = mW;
+  }
   get width() {
     return this._width;
   }
   set width(w: number) {
     this._width = w;
+    this.checkSizeLimits();
     this.updatePositionAndSize();
+  }
+
+  get minHeight() {
+    return this._minHeight;
+  }
+  set minHeight(mW: number | boolean) {
+    this._minHeight = mW;
+  }
+  get maxHeight() {
+    return this._maxHeight;
+  }
+  set maxHeight(mW: number | boolean) {
+    this._maxHeight = mW;
   }
   get height() {
     return this._height;
   }
   set height(h: number) {
     this._height = h;
+    this.checkSizeLimits();
     this.updatePositionAndSize();
   }
   get widthPx() {
@@ -214,6 +275,28 @@ export class DashItem {
   }
   set hover(h: boolean) {
     this._hover = h;
+  }
+  checkSizeLimits() {
+    if (typeof this.maxWidth == "number") {
+      if (this.maxWidth > this.width) {
+        this.width = this.maxWidth;
+      }
+    }
+    if (typeof this.minWidth == "number") {
+      if (this.minWidth < this.width) {
+        this.width = this.minWidth;
+      }
+    }
+    if (typeof this.maxHeight == "number") {
+      if (this.maxHeight > this.height) {
+        this.height = this.maxHeight;
+      }
+    }
+    if (typeof this.minHeight == "number") {
+      if (this.minHeight < this.height) {
+        this.height = this.minHeight;
+      }
+    }
   }
   updatePositionAndSize() {
     this.left = DashItem.getLeftFromX(this.x, this.colWidth, this.margin);
@@ -412,6 +495,10 @@ export class DashItem {
       y: 0,
       width: 1,
       height: 1,
+      minWidth: false,
+      maxWidth: false,
+      minHeight: false,
+      maxHeight: false,
       draggable: true,
       resizable: true,
     };

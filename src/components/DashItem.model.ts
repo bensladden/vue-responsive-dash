@@ -278,22 +278,22 @@ export class DashItem {
   }
   checkSizeLimits() {
     if (typeof this.maxWidth == "number") {
-      if (this.maxWidth > this.width) {
+      if (this.width > this.maxWidth) {
         this.width = this.maxWidth;
       }
     }
     if (typeof this.minWidth == "number") {
-      if (this.minWidth < this.width) {
+      if (this.width < this.minWidth) {
         this.width = this.minWidth;
       }
     }
     if (typeof this.maxHeight == "number") {
-      if (this.maxHeight > this.height) {
+      if (this.height > this.maxHeight) {
         this.height = this.maxHeight;
       }
     }
     if (typeof this.minHeight == "number") {
-      if (this.minHeight < this.height) {
+      if (this.height < this.minHeight) {
         this.height = this.minHeight;
       }
     }

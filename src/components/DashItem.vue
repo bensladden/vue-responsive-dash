@@ -231,7 +231,17 @@ export default {
     x: { type: Number, default: DashItem.defaults.x },
     y: { type: Number, default: DashItem.defaults.y },
     width: { type: Number, default: DashItem.defaults.width },
+    maxWidth: { type: [Number, Boolean], default: DashItem.defaults.maxWidth },
+    minWidth: { type: [Number, Boolean], default: DashItem.defaults.minWidth },
     height: { type: Number, default: DashItem.defaults.height },
+    maxHeight: {
+      type: [Number, Boolean],
+      default: DashItem.defaults.maxHeight,
+    },
+    minHeight: {
+      type: [Number, Boolean],
+      default: DashItem.defaults.minHeight,
+    },
     draggable: { type: Boolean, default: DashItem.defaults.draggable },
     resizable: { type: Boolean, default: DashItem.defaults.resizable },
     resizeEdges: { type: String, default: "bottom right" },

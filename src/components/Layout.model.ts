@@ -505,6 +505,10 @@ export class Layout {
       this.rowHeight,
       this.margin
     );
+    this.placeholder!.minWidth = item.minWidth;
+    this.placeholder!.maxWidth = item.maxWidth;
+    this.placeholder!.minHeight = item.minHeight;
+    this.placeholder!.maxHeight = item.maxHeight;
     //Take a copy of items
     let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
     //Remove the item being resized as the placeholder takes its place. Otherwise the item will snap while being resized.
@@ -682,7 +686,11 @@ export class Layout {
         x: itemToMove.x,
         y: itemToMove.y,
         width: itemToMove.width,
+        maxWidth: itemToMove.maxWidth,
+        minWidth: itemToMove.minWidth,
         height: itemToMove.height,
+        maxHeight: itemToMove.maxHeight,
+        minHeight: itemToMove.minHeight,
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
       if (!this.getFirstCollision(items, fakeItem)) {

@@ -12,6 +12,7 @@
         v-show="dragging || resizing"
         :y.sync="placeholderY"
         :height.sync="placeholderHeight"
+        :maxWidth.sync="placeholderMaxWidth"
       >
         <div class="placeholder"></div>
       </DashItem>
@@ -90,6 +91,7 @@ export default {
       placeholderId: "-1Placeholder",
       placeholderY: 0,
       placeholderHeight: 0,
+      placeholderMaxWidth: false,
       unWatch: null,
     };
   },

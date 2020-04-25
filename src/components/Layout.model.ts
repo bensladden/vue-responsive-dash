@@ -485,6 +485,10 @@ export class Layout {
   }
   itemResizing(item: Item) {
     this.itemBeingResized = true;
+    this.placeholder!.minWidth = item.minWidth;
+    this.placeholder!.maxWidth = item.maxWidth;
+    this.placeholder!.minHeight = item.minHeight;
+    this.placeholder!.maxHeight = item.maxHeight;
     this.placeholder!.x = DashItem.getXFromLeft(
       item.left!,
       this.colWidth as number,
@@ -505,10 +509,6 @@ export class Layout {
       this.rowHeight,
       this.margin
     );
-    this.placeholder!.minWidth = item.minWidth;
-    this.placeholder!.maxWidth = item.maxWidth;
-    this.placeholder!.minHeight = item.minHeight;
-    this.placeholder!.maxHeight = item.maxHeight;
     //Take a copy of items
     let itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
     //Remove the item being resized as the placeholder takes its place. Otherwise the item will snap while being resized.

@@ -9105,7 +9105,7 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=50c0ec91&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=3033275b&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.item)?_c('div',{ref:_vm.id,staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":_vm.id},on:{"mouseover":function($event){_vm.hover = true},"mouseleave":function($event){_vm.hover = false}}},[(_vm.draggable)?_c('div',{directives:[{name:"displace",rawName:"v-displace",value:({ customMove: _vm.onMove, ignoreFn: _vm.ignoreMove }),expression:"{ customMove: onMove, ignoreFn: ignoreMove }"}],ref:_vm.id + '-overlay',style:({
       top: 0 + 'px',
       left: 0 + 'px',
@@ -9181,7 +9181,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=50c0ec91&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=3033275b&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -9308,6 +9308,10 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
         y = _ref.y,
         width = _ref.width,
         height = _ref.height,
+        minWidth = _ref.minWidth,
+        maxWidth = _ref.maxWidth,
+        minHeight = _ref.minHeight,
+        maxHeight = _ref.maxHeight,
         colWidth = _ref.colWidth,
         rowHeight = _ref.rowHeight,
         margin = _ref.margin,
@@ -9374,13 +9378,35 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
 
     this._top = DashItem.getTopFromY(this._y, this._rowHeight, this._margin);
 
+    if (typeof minWidth !== "undefined") {
+      this._minWidth = minWidth;
+    } else {
+      this._minWidth = DashItem.defaults.minWidth;
+    }
+
+    if (typeof maxWidth !== "undefined") {
+      this._maxWidth = maxWidth;
+    } else {
+      this._maxWidth = DashItem.defaults.maxWidth;
+    }
+
     if (typeof width !== "undefined") {
       this._width = width;
     } else {
       this._width = DashItem.defaults.width;
     }
 
-    this._widthPx = DashItem.getWidthInPx(this._width, this._colWidth, this._margin);
+    if (typeof minHeight !== "undefined") {
+      this._minHeight = minHeight;
+    } else {
+      this._minHeight = DashItem.defaults.minHeight;
+    }
+
+    if (typeof maxHeight !== "undefined") {
+      this._maxHeight = maxHeight;
+    } else {
+      this._maxHeight = DashItem.defaults.maxHeight;
+    }
 
     if (typeof height !== "undefined") {
       this._height = height;
@@ -9388,6 +9414,7 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._height = DashItem.defaults.height;
     }
 
+    this._widthPx = DashItem.getWidthInPx(this._width, this._colWidth, this._margin);
     this._heightPx = DashItem.getHeightInPx(this._height, this._rowHeight, this._margin);
 
     if (typeof draggable !== "undefined") {
@@ -9416,6 +9443,33 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
   }
 
   _createClass(DashItem, [{
+    key: "checkSizeLimits",
+    value: function checkSizeLimits() {
+      if (typeof this.maxWidth == "number") {
+        if (this.width > this.maxWidth) {
+          this.width = this.maxWidth;
+        }
+      }
+
+      if (typeof this.minWidth == "number") {
+        if (this.width < this.minWidth) {
+          this.width = this.minWidth;
+        }
+      }
+
+      if (typeof this.maxHeight == "number") {
+        if (this.height > this.maxHeight) {
+          this.height = this.maxHeight;
+        }
+      }
+
+      if (typeof this.minHeight == "number") {
+        if (this.height < this.minHeight) {
+          this.height = this.minHeight;
+        }
+      }
+    }
+  }, {
     key: "updatePositionAndSize",
     value: function updatePositionAndSize() {
       this.left = DashItem.getLeftFromX(this.x, this.colWidth, this.margin);
@@ -9433,8 +9487,12 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
         top: this.top,
         left: this.left,
         width: this.width,
+        maxWidth: this.maxWidth,
+        minWidth: this.minWidth,
         widthPx: this.widthPx,
         height: this.height,
+        maxHeight: this.maxHeight,
+        minHeight: this.minHeight,
         heightPx: this.heightPx,
         draggable: this.draggable,
         resizable: this.resizable
@@ -9621,13 +9679,46 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._top = t;
     }
   }, {
+    key: "minWidth",
+    get: function get() {
+      return this._minWidth;
+    },
+    set: function set(mW) {
+      this._minWidth = mW;
+    }
+  }, {
+    key: "maxWidth",
+    get: function get() {
+      return this._maxWidth;
+    },
+    set: function set(mW) {
+      this._maxWidth = mW;
+    }
+  }, {
     key: "width",
     get: function get() {
       return this._width;
     },
     set: function set(w) {
       this._width = w;
+      this.checkSizeLimits();
       this.updatePositionAndSize();
+    }
+  }, {
+    key: "minHeight",
+    get: function get() {
+      return this._minHeight;
+    },
+    set: function set(mW) {
+      this._minHeight = mW;
+    }
+  }, {
+    key: "maxHeight",
+    get: function get() {
+      return this._maxHeight;
+    },
+    set: function set(mW) {
+      this._maxHeight = mW;
     }
   }, {
     key: "height",
@@ -9636,6 +9727,7 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
     },
     set: function set(h) {
       this._height = h;
+      this.checkSizeLimits();
       this.updatePositionAndSize();
     }
   }, {
@@ -9806,6 +9898,10 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
         y: 0,
         width: 1,
         height: 1,
+        minWidth: 1,
+        maxWidth: false,
+        minHeight: 1,
+        maxHeight: false,
         draggable: true,
         resizable: true
       };
@@ -10075,9 +10171,25 @@ var watchEmitProp = function watchEmitProp(key, deep) {
       type: Number,
       default: DashItem_model_DashItem.defaults.width
     },
+    maxWidth: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.maxWidth
+    },
+    minWidth: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.minWidth
+    },
     height: {
       type: Number,
       default: DashItem_model_DashItem.defaults.height
+    },
+    maxHeight: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.maxHeight
+    },
+    minHeight: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.minHeight
     },
     draggable: {
       type: Boolean,
@@ -10414,12 +10526,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var components_DashItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=c1ab4c20&
-var DashLayoutvue_type_template_id_c1ab4c20_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height, width: _vm.width })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" ")]):_vm._e()]):_vm._e()}
-var DashLayoutvue_type_template_id_c1ab4c20_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4d7d4161-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=8f3f2140&
+var DashLayoutvue_type_template_id_8f3f2140_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height, width: _vm.width })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight,"maxWidth":_vm.placeholderMaxWidth},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event},"update:maxWidth":function($event){_vm.placeholderMaxWidth=$event},"update:max-width":function($event){_vm.placeholderMaxWidth=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" ")]):_vm._e()]):_vm._e()}
+var DashLayoutvue_type_template_id_8f3f2140_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=c1ab4c20&
+// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=8f3f2140&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.description.js
 var es_symbol_description = __webpack_require__("e01a");
@@ -10835,6 +10947,10 @@ var Layout_model_Layout = /*#__PURE__*/function () {
       var _this4 = this;
 
       this.itemBeingResized = true;
+      this.placeholder.minWidth = item.minWidth;
+      this.placeholder.maxWidth = item.maxWidth;
+      this.placeholder.minHeight = item.minHeight;
+      this.placeholder.maxHeight = item.maxHeight;
       this.placeholder.x = DashItem_model_DashItem.getXFromLeft(item.left, this.colWidth, this.margin);
       this.placeholder.y = DashItem_model_DashItem.getYFromTop(item.top, this.rowHeight, this.margin);
       this.placeholder.width = DashItem_model_DashItem.getWidthFromPx(item.widthPx, this.colWidth, this.margin);
@@ -11099,7 +11215,11 @@ var Layout_model_Layout = /*#__PURE__*/function () {
           x: itemToMove.x,
           y: itemToMove.y,
           width: itemToMove.width,
-          height: itemToMove.height
+          maxWidth: itemToMove.maxWidth,
+          minWidth: itemToMove.minWidth,
+          height: itemToMove.height,
+          maxHeight: itemToMove.maxHeight,
+          minHeight: itemToMove.minHeight
         };
         fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
 
@@ -11389,6 +11509,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
 //
 //
 //
+//
 
  //Monitor the Props and update the item with the changed value
 
@@ -11474,6 +11595,7 @@ var DashLayoutvue_type_script_lang_js_watchProp = function watchProp(key, deep) 
       placeholderId: "-1Placeholder",
       placeholderY: 0,
       placeholderHeight: 0,
+      placeholderMaxWidth: false,
       unWatch: null
     };
   },
@@ -11593,8 +11715,8 @@ var DashLayoutvue_type_style_index_0_lang_css_ = __webpack_require__("f19a");
 
 var DashLayout_component = normalizeComponent(
   components_DashLayoutvue_type_script_lang_js_,
-  DashLayoutvue_type_template_id_c1ab4c20_render,
-  DashLayoutvue_type_template_id_c1ab4c20_staticRenderFns,
+  DashLayoutvue_type_template_id_8f3f2140_render,
+  DashLayoutvue_type_template_id_8f3f2140_staticRenderFns,
   false,
   null,
   null,

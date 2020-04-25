@@ -53,8 +53,12 @@ There are also slots around the item for custom drag icons (again see examples)
 | id |  `[Number, String]` |  true | | UUID for the item |
 | x |  `Number` |  false |  `0` | | X coordinate | 
 | y |  `Number` |  false |  `0` | | Y coordinate |
-| width |  `Number` |  false |  `1` | Width (in col units) | 
-| height |  `Number` |  false |  `1` | Height (in row units) | 
+| width |  `Number` |  false |  `1` | Width (in col units) |
+| maxWidth |  `[Number, Boolean]` |  false |  `false` | Max Width (in col units). When not a number it is ignored |
+| minWidth |  `[Number, Boolean]` |  false |  `1` | Min Width (in col units). When not a number it is ignored |  
+| height |  `Number` |  false |  `1` | Height (in row units) |
+| maxHeight |  `[Number, Boolean]` |  false |  `false` | Max Height (in row units). When not a number it is ignored |
+| minHeight |  `[Number, Boolean]` |  false |  `1` | Min Height (in row units). When not a number it is ignored | 
 | draggable |  `Boolean` |  false |  `true` | If the item can be dragged | 
 | resizable |  `Boolean` |  false |  `true` | If the item can be resized | 
 | resizeEdges |  `String` |  false |  `"bottom right"` | The edges it can be resized (experimental for all options apart from bottom right) | 

@@ -23,6 +23,7 @@
           :key="item.id"
           :resizable="resizable"
           :draggable="draggable"
+          :maxWidth="3"
         >
           <div class="content">{{ JSON.stringify(item, null, 2) }}</div>
         </Dash-Item>

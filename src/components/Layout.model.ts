@@ -485,6 +485,10 @@ export class Layout {
   }
   itemResizing(item: Item) {
     this.itemBeingResized = true;
+    this.placeholder!.minWidth = item.minWidth;
+    this.placeholder!.maxWidth = item.maxWidth;
+    this.placeholder!.minHeight = item.minHeight;
+    this.placeholder!.maxHeight = item.maxHeight;
     this.placeholder!.x = DashItem.getXFromLeft(
       item.left!,
       this.colWidth as number,
@@ -682,7 +686,11 @@ export class Layout {
         x: itemToMove.x,
         y: itemToMove.y,
         width: itemToMove.width,
+        maxWidth: itemToMove.maxWidth,
+        minWidth: itemToMove.minWidth,
         height: itemToMove.height,
+        maxHeight: itemToMove.maxHeight,
+        minHeight: itemToMove.minHeight,
       };
       fakeItem.y = Math.max(colllidesWith.y - itemToMove.height, 0);
       if (!this.getFirstCollision(items, fakeItem)) {

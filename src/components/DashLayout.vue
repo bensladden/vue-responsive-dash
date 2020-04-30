@@ -22,7 +22,8 @@
       Layout Number of Cols: {{ numberOfCols }} <br />
       placeholder: {{ JSON.stringify(placeholder) }} <br />
       Items: {{ JSON.stringify(itemsFromLayout) }} <br />
-      Height: {{ height }}
+      Height: {{ height }} <br />
+      Attrs: {{ $attrs }}
     </div>
   </div>
 </template>
@@ -154,7 +155,11 @@ export default {
     },
   },
   mounted() {
-    this.l = new Layout(this.$props);
+    let initialItems = [];
+    if (this.$attrs?.items) {
+      initialItems = this.$attrs.items;
+    }
+    this.l = new Layout({ ...this.$props, initialItems });
     //Check if dashboard exists and if not then start a watcher
     if (this.dashboard) {
       this.dashboard.addLayoutInstance(this.l);

@@ -16,6 +16,7 @@
         :minRowHeight="minRowHeight"
         :compact="compact"
         :margin="margin"
+        :debug="true"
       >
         <Dash-Item
           v-for="item in layout.items"
@@ -180,6 +181,17 @@ export default {
               height: 1,
             },
             { id: "2", x: 0, y: 1, width: 1, height: 1 },
+          ],
+        },
+      ],
+      dlayouts: [
+        {
+          breakpoint: "xl",
+          numberOfCols: 12,
+          items: [
+            { id: "1", x: 6, y: 3, width: 6, height: 3 },
+            { id: "2", x: 9, y: 0, width: 3, height: 3 },
+            { id: "3", x: 0, y: 0, width: 8, height: 3 },
           ],
         },
       ],

@@ -19,6 +19,7 @@ export class Layout {
   private _useCssTransforms: boolean;
   private _itemBeingDragged: boolean = false;
   private _itemBeingResized: boolean = false;
+  private _initalItemIds: Array<number | string> = [];
   private _dashItems: DashItem[] = [];
   private _dragStartListeners: Subscription[] = [];
   private _dragListeners: Subscription[] = [];
@@ -43,6 +44,7 @@ export class Layout {
     minColWidth,
     maxColWidth,
     compact,
+    initialItems,
   }: {
     breakpoint: string;
     numberOfCols: number;
@@ -59,6 +61,7 @@ export class Layout {
     minColWidth?: number | boolean;
     maxColWidth?: number | boolean;
     compact?: boolean;
+    initialItems?: Item[];
   }) {
     this._breakpoint = breakpoint;
     this._numberOfCols = numberOfCols;
@@ -136,6 +139,12 @@ export class Layout {
       this._compact = compact;
     } else {
       this._compact = Layout.defaults.compact;
+    }
+
+    if (typeof initialItems !== "undefined") {
+      this._initalItemIds = initialItems.map((item) => {
+        return item.id;
+      });
     }
   }
   get breakpoint() {
@@ -361,8 +370,11 @@ export class Layout {
     });
 
     //Check that the added item has not caused a collision and if so move the others.
-    let items = this.compactLayout(this.items);
-    this.syncItems(items);
+    //Only do this on items added after initialisation
+    if (!this._initalItemIds.includes(d.id)) {
+      let items = this.compactLayout(this.items);
+      this.syncItems(items);
+    }
   }
   removeDashItem(d: DashItem) {
     let index = this._dashItems.findIndex((item) => {

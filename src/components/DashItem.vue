@@ -26,6 +26,8 @@
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
       @onMouseDown="onMoveStart"
       @onMouseUp="onMoveEnd"
+      @onTouchStart="onMoveStart"
+      @onTouchStop="onMoveEnd"
     ></div>
     <div
       draggable

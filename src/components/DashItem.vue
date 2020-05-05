@@ -45,6 +45,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'top')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'top')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeTop"></slot>
     </div>
@@ -65,6 +67,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'bottom')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'bottom')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeBottom"></slot>
     </div>
@@ -85,6 +89,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'left')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'left')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeLeft"></slot>
     </div>
@@ -105,6 +111,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'right')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'right')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeRight"></slot>
     </div>
@@ -125,6 +133,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'top left')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'top left')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeTopLeft"></slot>
     </div>
@@ -145,6 +155,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'top right')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'top right')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeTopRight"></slot>
     </div>
@@ -165,6 +177,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'bottom left')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'bottom left')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeBottomLeft"></slot>
     </div>
@@ -185,6 +199,8 @@
       v-displace="{ customMove: onResize }"
       @onMouseDown="onResizeStart($event, 'bottom right')"
       @onMouseUp="onResizeEnd($event)"
+      @onTouchStart="onResizeStart($event, 'bottom right')"
+      @onTouchStop="onResizeEnd($event)"
     >
       <slot name="resizeBottomRight"></slot>
     </div>

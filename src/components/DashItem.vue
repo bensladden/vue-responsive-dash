@@ -1,15 +1,13 @@
 <template>
   <div
-    :id="id"
-    :ref="id"
-    v-if="item"
+    :id="'item' + id"
+    ref="item"
     class="item"
-    :class="classObj"
     :style="cssStyle"
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
-    <div
+    <!-- <div
       draggable
       :id="id + '-overlay'"
       :ref="id + '-overlay'"
@@ -26,163 +24,156 @@
       v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
       @onMouseDown="onMoveStart"
       @onMouseUp="onMoveEnd"
-    ></div>
+    ></div> -->
+    <!-- Resize Top Div -->
     <div
       draggable
       :id="id + '-resizeTop'"
       :ref="id + '-resizeTop'"
+      class="resize resize-top"
       :style="{
         height: resizeHandleSize + 'px',
+        top: -(resizeHandleSize / 2) + 'px',
         left: 0,
         right: 0,
         cursor: 'ns-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeTop && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'top')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeTop"
     >
       <slot name="resizeTop"></slot>
     </div>
+    <!-- Resize Bottom Div -->
     <div
       draggable
       :id="id + '-resizeBottom'"
       :ref="id + '-resizeBottom'"
+      class="resize resize-bottom"
       :style="{
         height: resizeHandleSize + 'px',
         left: 0 + 'px',
         right: 0 + 'px',
-        bottom: 0 + 'px',
+        bottom: -(resizeHandleSize / 2) + 'px',
         cursor: 'ns-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeBottom && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'bottom')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeBottom"
     >
       <slot name="resizeBottom"></slot>
     </div>
+    <!-- Resize Left Div -->
     <div
       draggable
       :id="id + '-resizeLeft'"
       :ref="id + '-resizeLeft'"
+      class="resize resize-left"
       :style="{
         width: resizeHandleSize + 'px',
         top: 0 + 'px',
         bottom: 0 + 'px',
-        left: 0 + 'px',
+        left: -(resizeHandleSize / 2) + 'px',
         cursor: 'ew-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeLeft && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'left')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeLeft"
     >
       <slot name="resizeLeft"></slot>
     </div>
+    <!-- Resize Right Div -->
     <div
       draggable
       :id="id + '-resizeRight'"
       :ref="id + '-resizeRight'"
+      class="resize resize-right"
       :style="{
         width: resizeHandleSize + 'px',
         top: 0 + 'px',
         bottom: 0 + 'px',
-        right: 0 + 'px',
+        right: -(resizeHandleSize / 2) + 'px',
         cursor: 'ew-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeRight && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'right')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeRight"
     >
       <slot name="resizeRight"></slot>
     </div>
+    <!-- Resize Top Left Div -->
     <div
       draggable
       :id="id + '-resizeTopLeft'"
       :ref="id + '-resizeTopLeft'"
+      class="resize resize-left resize-top"
       :style="{
         width: resizeHandleSize * 2 + 'px',
         height: resizeHandleSize * 2 + 'px',
-        top: resizeHandleSize / -2 + 'px',
-        left: resizeHandleSize / -2 + 'px',
+        top: -resizeHandleSize + 'px',
+        left: -resizeHandleSize + 'px',
         cursor: 'nw-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeTopLeft && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'top left')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeTopLeft"
     >
       <slot name="resizeTopLeft"></slot>
     </div>
+    <!-- Top Right Resize Div -->
     <div
       draggable
       :id="id + '-resizeTopRight'"
       :ref="id + '-resizeTopRight'"
+      class="resize resize-right resize-top"
       :style="{
         width: resizeHandleSize * 2 + 'px',
         height: resizeHandleSize * 2 + 'px',
-        top: resizeHandleSize / -2 + 'px',
-        right: resizeHandleSize / -2 + 'px',
+        top: -resizeHandleSize + 'px',
+        right: -resizeHandleSize + 'px',
         cursor: 'ne-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeTopRight && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'top right')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeTopRight"
     >
       <slot name="resizeTopRight"></slot>
     </div>
+    <!-- Bottom Left Resize Div -->
     <div
       draggable
       :id="id + '-resizeBottomLeft'"
       :ref="id + '-resizeBottomLeft'"
+      class="resize resize-left resize-bottom"
       :style="{
         width: resizeHandleSize * 2 + 'px',
         height: resizeHandleSize * 2 + 'px',
-        bottom: resizeHandleSize / -2 + 'px',
-        left: resizeHandleSize / -2 + 'px',
+        bottom: -resizeHandleSize + 'px',
+        left: -resizeHandleSize + 'px',
         cursor: 'ne-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeBottomLeft && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'bottom left')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeBottomLeft"
     >
       <slot name="resizeBottomLeft"></slot>
     </div>
+    <!-- Bottom Right Resize Div -->
     <div
       draggable
       :id="id + '-resizeBottomRight'"
       :ref="id + '-resizeBottomRight'"
+      class="resize resize-right resize-bottom"
       :style="{
         width: resizeHandleSize * 2 + 'px',
         height: resizeHandleSize * 2 + 'px',
-        bottom: resizeHandleSize / -2 + 'px',
-        right: resizeHandleSize / -2 + 'px',
+        bottom: -resizeHandleSize + 'px',
+        right: -resizeHandleSize + 'px',
         cursor: 'nw-resize',
         position: 'absolute',
         zIndex: resizableZIndex,
       }"
-      v-if="resizeBottomRight && !dragging"
-      v-displace="{ customMove: onResize }"
-      @onMouseDown="onResizeStart($event, 'bottom right')"
-      @onMouseUp="onResizeEnd($event)"
+      v-if="resizeBottomRight"
     >
       <slot name="resizeBottomRight"></slot>
     </div>
@@ -191,8 +182,11 @@
 </template>
 
 <script>
+import "@interactjs/actions";
+import "@interactjs/auto-start";
+import interact from "@interactjs/interact";
+
 import { DashItem } from "./DashItem.model";
-import { displace } from "vue-displace";
 
 //Monitor the Props and update the item with the changed value
 const watchProp = (key, deep) => ({
@@ -223,9 +217,6 @@ const watchEmitProp = (key, deep) => ({
 export default {
   name: "DashItem",
   inheritAttrs: false,
-  directives: {
-    displace,
-  },
   props: {
     id: { type: [Number, String], required: true },
     x: { type: Number, default: DashItem.defaults.x },
@@ -248,6 +239,8 @@ export default {
     resizeHandleSize: { type: Number, default: 8 },
     draggableZIndex: { type: Number, default: 1 },
     resizableZIndex: { type: Number, default: 1 },
+    resizeHold: { type: Number, default: 0 },
+    dragHold: { type: Number, default: 0 },
   },
   inject: { $layout: { default: null } },
   provide() {
@@ -257,6 +250,7 @@ export default {
   },
   data() {
     return {
+      interactInstance: null,
       item: null,
       dragging: false,
       resizing: false,
@@ -268,12 +262,12 @@ export default {
     resizingOrDragging() {
       return this.resizing || this.dragging;
     },
-    classObj() {
-      return {
-        dragging: this.resizingOrDragging,
-        cssTransforms: this.useCssTransforms,
-      };
-    },
+    // classObj() {
+    //   return {
+    //     dragging: this.resizingOrDragging,
+    //     cssTransforms: this.useCssTransforms,
+    //   };
+    // },
     layout() {
       if (this.$layout) {
         return this.$layout();
@@ -284,19 +278,31 @@ export default {
       if (this.layout) {
         return this.layout.useCssTransforms;
       }
-      return false;
+      return true;
     },
     left() {
-      return this.item.left;
+      if (this.item) {
+        return this.item.left;
+      }
+      return 0;
     },
     top() {
-      return this.item.top;
+      if (this.item) {
+        return this.item.top;
+      }
+      return 0;
     },
     widthPx() {
-      return this.item.widthPx;
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
     },
     heightPx() {
-      return this.item.heightPx;
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
     },
     cssStyle() {
       if (this.useCssTransforms) {
@@ -341,22 +347,67 @@ export default {
     },
   },
   methods: {
-    ignoreMove() {
-      return this.resizing;
+    setDraggable() {
+      if (this.draggable) {
+        this.interactInstance.draggable({
+          enabled: true,
+          hold: this.dragHold,
+          listeners: {
+            start: (event) => {
+              this.onMoveStart(event);
+            },
+            move: (event) => {
+              this.onMove(event);
+            },
+            end: (event) => {
+              this.onMoveEnd(event);
+            },
+          },
+        });
+      } else {
+        this.interactInstance.draggable(false);
+      }
+    },
+    setResizable() {
+      if (this.resizable) {
+        this.interactInstance.resizable({
+          enabled: true,
+          hold: this.resizeHold,
+          edges: {
+            top: ".resize-top",
+            left: ".resize-left",
+            bottom: ".resize-bottom",
+            right: ".resize-right",
+          },
+          listeners: {
+            start: (event) => {
+              this.onResizeStart(event);
+            },
+            move: (event) => {
+              this.onResize(event);
+            },
+            end: (event) => {
+              this.onResizeEnd(event);
+            },
+          },
+        });
+      } else {
+        this.interactInstance.resizable(false);
+      }
     },
     onMoveStart(e) {
       this.dragging = true;
-      this.item._onMoveStart(e.detail.event);
+      this.item._onMoveStart();
       this.$emit("moveStart", { ...this.item.toItem() });
     },
-    onMove(el, left, top) {
+    onMove(event) {
       if (this.dragging) {
-        this.item._onMove(left, top);
+        this.item._onMove(event.dx, event.dy);
         this.$emit("moving", { ...this.item.toItem() });
       }
     },
     onMoveEnd(e) {
-      this.item._onMoveEnd(e.detail.event);
+      this.item._onMoveEnd();
       this.dragging = false;
       this.$emit("moveEnd", { ...this.item.toItem() });
     },
@@ -398,10 +449,24 @@ export default {
         this.$emit("hovenEnd", this.item);
       }
     },
+    draggable() {
+      this.setDraggable();
+    },
+    resizable() {
+      this.setResizable();
+    },
+    dragHold() {
+      this.setDraggable();
+    },
+    resizeHold() {
+      this.setResizable();
+    },
   },
   mounted() {
     this.item = new DashItem(this.$props);
-
+    this.interactInstance = interact(this.$refs.item);
+    this.setDraggable();
+    this.setResizable();
     //Check if layout exists and if not then start a watcher
     if (this.layout) {
       this.layout.addDashItem(this.item);
@@ -423,6 +488,7 @@ export default {
     }
   },
   beforeDestroy() {
+    this.interactInstance.unset();
     if (this.layout) {
       this.layout.removeDashItem(this.item);
     }
@@ -431,23 +497,28 @@ export default {
 </script>
 
 <style>
-.invisible {
-  display: none;
-}
 .item {
   box-sizing: border-box;
   position: absolute;
   display: inline-block;
   transition: all 200ms ease;
   transition-property: left, top, right;
+  touch-action: none;
+  user-select: none;
 }
-.item.dragging {
+/* .item.dragging {
   transition: none;
   z-index: 3;
+} */
+
+.resize {
+  touch-action: none;
+  user-select: none;
 }
-.item.cssTransforms {
+
+/* .item.cssTransforms {
   transition-property: transform;
   left: 0;
   right: auto;
-}
+} */
 </style>

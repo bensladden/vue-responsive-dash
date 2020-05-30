@@ -24,6 +24,8 @@ export class DashItem {
   private _resizeHandleSize: number;
   private _moved: boolean = false;
   private _hover: boolean = false;
+  private _resizeHold: number;
+  private _dragHold: number;
 
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
@@ -57,6 +59,8 @@ export class DashItem {
     resizable,
     resizeEdges,
     resizeHandleSize,
+    dragHold,
+    resizeHold,
   }: {
     id: string | number;
     x?: number;
@@ -74,6 +78,8 @@ export class DashItem {
     resizable?: boolean;
     resizeEdges?: string;
     resizeHandleSize?: number;
+    dragHold?: number;
+    resizeHold?: number;
   }) {
     this._id = id;
 
@@ -164,6 +170,16 @@ export class DashItem {
       this._resizeHandleSize = resizeHandleSize;
     } else {
       this._resizeHandleSize = 8;
+    }
+    if (typeof dragHold !== "undefined") {
+      this._dragHold = dragHold;
+    } else {
+      this._dragHold = 0;
+    }
+    if (typeof resizeHold !== "undefined") {
+      this._resizeHold = resizeHold;
+    } else {
+      this._resizeHold = 0;
     }
   }
   get id() {
@@ -275,6 +291,18 @@ export class DashItem {
   }
   set hover(h: boolean) {
     this._hover = h;
+  }
+  get dragHold() {
+    return this._dragHold;
+  }
+  set dragHold(dh: number) {
+    this._dragHold = dh;
+  }
+  get resizeHold() {
+    return this._resizeHold;
+  }
+  set resizeHold(rh: number) {
+    this._resizeHold = rh;
   }
   checkSizeLimits() {
     if (typeof this.maxWidth == "number") {
@@ -406,18 +434,18 @@ export class DashItem {
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   _onMoveStart() {
-    this.onDragStartLeft = this.left;
-    this.onDragStartTop = this.top;
+    // this.onDragStartLeft = this.left;
+    // this.onDragStartTop = this.top;
     this._onDragStartEventDispatcher.dispatch(this.toItem());
   }
   _onMove(left: number, top: number) {
-    this.left = left + this.onDragStartLeft;
-    this.top = top + this.onDragStartTop;
+    this.left += left;
+    this.top += top;
     this._onDragEventDispatcher.dispatch(this.toItem());
   }
-  _onMoveEnd(event: DragEvent) {
-    this.onDragStartLeft = 0;
-    this.onDragStartTop = 0;
+  _onMoveEnd() {
+    // this.onDragStartLeft = 0;
+    // this.onDragStartTop = 0;
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   get onDragStart() {

@@ -724,7 +724,7 @@ export class Layout {
       margin: { x: 10, y: 10 } as Margin,
       autoHeight: true as boolean,
       keepSquare: true as boolean,
-      useCssTransforms: false as boolean,
+      useCssTransforms: true as boolean,
       width: 400 as number,
       height: 400 as number,
       rowHeight: false as number | boolean,

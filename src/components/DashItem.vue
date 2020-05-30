@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="'item' + id"
+    :id="'item_' + id"
     ref="item"
     class="item"
     :style="cssStyle"
@@ -27,7 +27,6 @@
     ></div> -->
     <!-- Resize Top Div -->
     <div
-      draggable
       :id="id + '-resizeTop'"
       :ref="id + '-resizeTop'"
       class="resize resize-top"
@@ -46,7 +45,6 @@
     </div>
     <!-- Resize Bottom Div -->
     <div
-      draggable
       :id="id + '-resizeBottom'"
       :ref="id + '-resizeBottom'"
       class="resize resize-bottom"
@@ -65,7 +63,6 @@
     </div>
     <!-- Resize Left Div -->
     <div
-      draggable
       :id="id + '-resizeLeft'"
       :ref="id + '-resizeLeft'"
       class="resize resize-left"
@@ -84,7 +81,6 @@
     </div>
     <!-- Resize Right Div -->
     <div
-      draggable
       :id="id + '-resizeRight'"
       :ref="id + '-resizeRight'"
       class="resize resize-right"
@@ -103,7 +99,6 @@
     </div>
     <!-- Resize Top Left Div -->
     <div
-      draggable
       :id="id + '-resizeTopLeft'"
       :ref="id + '-resizeTopLeft'"
       class="resize resize-left resize-top"
@@ -122,7 +117,6 @@
     </div>
     <!-- Top Right Resize Div -->
     <div
-      draggable
       :id="id + '-resizeTopRight'"
       :ref="id + '-resizeTopRight'"
       class="resize resize-right resize-top"
@@ -141,7 +135,6 @@
     </div>
     <!-- Bottom Left Resize Div -->
     <div
-      draggable
       :id="id + '-resizeBottomLeft'"
       :ref="id + '-resizeBottomLeft'"
       class="resize resize-left resize-bottom"
@@ -160,7 +153,6 @@
     </div>
     <!-- Bottom Right Resize Div -->
     <div
-      draggable
       :id="id + '-resizeBottomRight'"
       :ref="id + '-resizeBottomRight'"
       class="resize resize-right resize-bottom"
@@ -411,19 +403,19 @@ export default {
       this.dragging = false;
       this.$emit("moveEnd", { ...this.item.toItem() });
     },
-    onResizeStart(e, location) {
+    onResizeStart(e) {
       this.resizing = true;
-      this.item._onResizeStart(e.detail.event, location);
+      this.item._onResizeStart();
       this.$emit("resizeStart", { ...this.item.toItem() });
     },
-    onResize(el, left, top) {
+    onResize(e) {
       if (this.resizing) {
-        this.item._onResize(left, top);
+        this.item._onResize(e);
         this.$emit("resizing", { ...this.item.toItem() });
       }
     },
     onResizeEnd(e) {
-      this.item._onResizeEnd(e.detail.event);
+      this.item._onResizeEnd();
       this.resizing = false;
       this.$emit("resizeEnd", { ...this.item.toItem() });
     },
@@ -464,9 +456,11 @@ export default {
   },
   mounted() {
     this.item = new DashItem(this.$props);
+
     this.interactInstance = interact(this.$refs.item);
     this.setDraggable();
     this.setResizable();
+
     //Check if layout exists and if not then start a watcher
     if (this.layout) {
       this.layout.addDashItem(this.item);
@@ -488,7 +482,9 @@ export default {
     }
   },
   beforeDestroy() {
-    this.interactInstance.unset();
+    if (this.interactInstance) {
+      this.interactInstance.unset();
+    }
     if (this.layout) {
       this.layout.removeDashItem(this.item);
     }

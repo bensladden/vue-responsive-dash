@@ -1,6 +1,6 @@
 import { SimpleEventDispatcher } from "ste-simple-events";
 import { Margin, Item } from "../interfaces";
-
+//import ResizeEvent from "@interactjs/types";
 export class DashItem {
   private readonly _id: number | string;
   private _x: number;
@@ -30,6 +30,8 @@ export class DashItem {
   private onDragStartEvent = undefined as DragEvent | undefined;
   private onDragStartLeft = 0 as number;
   private onDragStartTop = 0 as number;
+  private onDragDisplacementLeft = 0 as number;
+  private onDragDisplacementTop = 0 as number;
   private _onDragStartEventDispatcher = new SimpleEventDispatcher<Item>();
   private _onDragEventDispatcher = new SimpleEventDispatcher<Item>();
   private _onDragEndEventDispatcher = new SimpleEventDispatcher<Item>();
@@ -434,18 +436,24 @@ export class DashItem {
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   _onMoveStart() {
-    // this.onDragStartLeft = this.left;
-    // this.onDragStartTop = this.top;
+    this.onDragStartLeft = this.left;
+    this.onDragStartTop = this.top;
+    this.onDragDisplacementLeft = 0;
+    this.onDragDisplacementTop = 0;
     this._onDragStartEventDispatcher.dispatch(this.toItem());
   }
   _onMove(left: number, top: number) {
-    this.left += left;
-    this.top += top;
+    this.onDragDisplacementLeft += left;
+    this.onDragDisplacementTop += top;
+    this.left = this.onDragStartLeft + this.onDragDisplacementLeft;
+    this.top = this.onDragStartTop + this.onDragDisplacementTop;
     this._onDragEventDispatcher.dispatch(this.toItem());
   }
   _onMoveEnd() {
-    // this.onDragStartLeft = 0;
-    // this.onDragStartTop = 0;
+    this.onDragStartLeft = 0;
+    this.onDragStartTop = 0;
+    this.onDragDisplacementLeft = 0;
+    this.onDragDisplacementTop = 0;
     this._onDragEndEventDispatcher.dispatch(this.toItem());
   }
   get onDragStart() {
@@ -458,23 +466,29 @@ export class DashItem {
     return this._onDragEndEventDispatcher.asEvent();
   }
   //ResizeEventManagement
-  _onResizeStart(event: DragEvent, location: string) {
+  _onResizeStart() {
     this.onResizeStartLeft = this.left;
     this.onResizeStartTop = this.top;
     this.onResizeStartingWidth = this.widthPx;
     this.onResizeStartingHeight = this.heightPx;
-    this._onResizeLocation = location;
+    // this._onResizeLocation = location;
     this._onResizeStartEventDispatcher.dispatch(this.toItem());
   }
-  _onResize(left: number, top: number) {
-    let location = this._onResizeLocation;
+  _onResize(event: any) {
+    //TODO ResizeEvent
+    //let location = this._onResizeLocation;
     //will fire
-    if (location.includes("right")) {
-      this.widthPx = left;
-    }
-    if (location.includes("bottom")) {
-      this.heightPx = top;
-    }
+    // if (location.includes("right")) {
+    //   this.widthPx = left;
+    // }
+    // if (location.includes("bottom")) {
+    //   this.heightPx = top;
+    // }
+    // this.left += event.deltaRect.left;
+    // this.top += event.deltaRect.top;
+    this.widthPx = event.rect.width;
+    this.heightPx = event.rect.height;
+
     this._onResizeEventDispatcher.dispatch(this.toItem());
   }
   _onResizeEnd(e: DragEvent) {

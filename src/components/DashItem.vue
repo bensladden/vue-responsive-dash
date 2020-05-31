@@ -8,24 +8,6 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
-    <!-- <div
-      draggable
-      :id="id + '-overlay'"
-      :ref="id + '-overlay'"
-      :style="{
-        top: 0 + 'px',
-        left: 0 + 'px',
-        bottom: 0 + 'px',
-        right: 0 + 'px',
-        position: 'absolute',
-        cursor: 'move',
-        zIndex: draggableZIndex,
-      }"
-      v-if="draggable"
-      v-displace="{ customMove: onMove, ignoreFn: ignoreMove }"
-      @onMouseDown="onMoveStart"
-      @onMouseUp="onMoveEnd"
-    ></div> -->
     <!-- Resize Top Div -->
     <div
       :id="id + '-resizeTop'"
@@ -231,10 +213,10 @@ export default {
     resizable: { type: Boolean, default: DashItem.defaults.resizable },
     resizeEdges: { type: String, default: "bottom right" },
     resizeHandleSize: { type: Number, default: 8 },
-    draggableZIndex: { type: Number, default: 1 },
-    resizableZIndex: { type: Number, default: 1 },
+    draggableZIndex: { type: Number, default: 1 }, //TODO remove
+    resizableZIndex: { type: Number, default: 1 }, //TODO consider removing
+    moveHold: { type: Number, default: 0 },
     resizeHold: { type: Number, default: 0 },
-    dragHold: { type: Number, default: 0 },
   },
   inject: { $layout: { default: null } },
   provide() {
@@ -345,7 +327,7 @@ export default {
       if (this.draggable) {
         this.interactInstance.draggable({
           enabled: true,
-          hold: this.dragHold,
+          hold: this.moveHold,
           listeners: {
             start: (event) => {
               this.onMoveStart(event);
@@ -449,7 +431,7 @@ export default {
     resizable() {
       this.setResizable();
     },
-    dragHold() {
+    moveHold() {
       this.setDraggable();
     },
     resizeHold() {

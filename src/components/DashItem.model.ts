@@ -25,7 +25,7 @@ export class DashItem {
   private _moved: boolean = false;
   private _hover: boolean = false;
   private _resizeHold: number;
-  private _dragHold: number;
+  private _moveHold: number;
 
   private _moving = false as boolean;
   private _resizing = false as boolean;
@@ -53,7 +53,7 @@ export class DashItem {
     resizable,
     resizeEdges,
     resizeHandleSize,
-    dragHold,
+    moveHold,
     resizeHold,
   }: {
     id: string | number;
@@ -72,7 +72,7 @@ export class DashItem {
     resizable?: boolean;
     resizeEdges?: string;
     resizeHandleSize?: number;
-    dragHold?: number;
+    moveHold?: number;
     resizeHold?: number;
   }) {
     this._id = id;
@@ -165,10 +165,10 @@ export class DashItem {
     } else {
       this._resizeHandleSize = 8;
     }
-    if (typeof dragHold !== "undefined") {
-      this._dragHold = dragHold;
+    if (typeof moveHold !== "undefined") {
+      this._moveHold = moveHold;
     } else {
-      this._dragHold = 0;
+      this._moveHold = 0;
     }
     if (typeof resizeHold !== "undefined") {
       this._resizeHold = resizeHold;
@@ -293,11 +293,11 @@ export class DashItem {
   set hover(h: boolean) {
     this._hover = h;
   }
-  get dragHold() {
-    return this._dragHold;
+  get moveHold() {
+    return this._moveHold;
   }
-  set dragHold(dh: number) {
-    this._dragHold = dh;
+  set moveHold(dh: number) {
+    this._moveHold = dh;
   }
   get resizeHold() {
     return this._resizeHold;

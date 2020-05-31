@@ -25,6 +25,7 @@
           :resizable="resizable"
           :draggable="draggable"
           :maxWidth="3"
+          :moveHold="moveHold"
         >
           <div class="content">{{ JSON.stringify(item, null, 2) }}</div>
         </Dash-Item>
@@ -53,6 +54,7 @@
     <button @click="enableRowHeightLimits = !enableRowHeightLimits">
       Toggle Row Height Limits ({{ enableRowHeightLimits }})
     </button>
+    <input type="number" min="0" max="5000" v-model.number="moveHold" />
   </div>
 </template>
 
@@ -73,6 +75,7 @@ export default {
       compact: true,
       draggable: true,
       resizable: true,
+      moveHold: 0,
       margin: { x: 20, y: 20 },
       layouts: [
         {

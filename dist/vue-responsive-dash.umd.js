@@ -2664,39 +2664,6 @@ $({ target: 'String', proto: true, forced: !correctIsRegExpLogic('includes') }, 
 
 /***/ }),
 
-/***/ "25f0":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var redefine = __webpack_require__("6eeb");
-var anObject = __webpack_require__("825a");
-var fails = __webpack_require__("d039");
-var flags = __webpack_require__("ad6d");
-
-var TO_STRING = 'toString';
-var RegExpPrototype = RegExp.prototype;
-var nativeToString = RegExpPrototype[TO_STRING];
-
-var NOT_GENERIC = fails(function () { return nativeToString.call({ source: 'a', flags: 'b' }) != '/a/b'; });
-// FF44- RegExp#toString has a wrong name
-var INCORRECT_NAME = nativeToString.name != TO_STRING;
-
-// `RegExp.prototype.toString` method
-// https://tc39.github.io/ecma262/#sec-regexp.prototype.tostring
-if (NOT_GENERIC || INCORRECT_NAME) {
-  redefine(RegExp.prototype, TO_STRING, function toString() {
-    var R = anObject(this);
-    var p = String(R.source);
-    var rf = R.flags;
-    var f = String(rf === undefined && R instanceof RegExp && !('flags' in RegExpPrototype) ? flags.call(R) : rf);
-    return '/' + p + '/' + f;
-  }, { unsafe: true });
-}
-
-
-/***/ }),
-
 /***/ "2d00":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3630,7 +3597,7 @@ module.exports = function (NAME) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".item{-webkit-box-sizing:border-box;box-sizing:border-box;position:absolute;display:inline-block;-webkit-transition:all .2s ease;transition:all .2s ease;-webkit-transition-property:left,top,right;transition-property:left,top,right}.item,.resize{-ms-touch-action:none;touch-action:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}", ""]);
+exports.push([module.i, ".item{-webkit-box-sizing:border-box;box-sizing:border-box;position:absolute;display:inline-block;-webkit-transition:all .2s ease;transition:all .2s ease;-webkit-transition-property:left,top,right;transition-property:left,top,right;-ms-touch-action:none;touch-action:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.item.dragging{-webkit-transition:none;transition:none;z-index:3}.resize{-ms-touch-action:none;touch-action:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.item.cssTransforms{-webkit-transition-property:-webkit-transform;transition-property:-webkit-transform;transition-property:transform;transition-property:transform,-webkit-transform;left:0;right:auto}", ""]);
 // Exports
 module.exports = exports;
 
@@ -4888,30 +4855,6 @@ module.exports = function (METHOD_NAME) {
       return '/./'[METHOD_NAME](regexp);
     } catch (f) { /* empty */ }
   } return false;
-};
-
-
-/***/ }),
-
-/***/ "ad6d":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var anObject = __webpack_require__("825a");
-
-// `RegExp.prototype.flags` getter implementation
-// https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
-module.exports = function () {
-  var that = anObject(this);
-  var result = '';
-  if (that.global) result += 'g';
-  if (that.ignoreCase) result += 'i';
-  if (that.multiline) result += 'm';
-  if (that.dotAll) result += 's';
-  if (that.unicode) result += 'u';
-  if (that.sticky) result += 'y';
-  return result;
 };
 
 
@@ -6251,8 +6194,8 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e267876-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=0a89adf2&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"item",style:(_vm.cssStyle),attrs:{"id":'item_' + _vm.id},on:{"mouseover":function($event){_vm.hover = true},"mouseleave":function($event){_vm.hover = false}}},[(_vm.resizeTop)?_c('div',{ref:_vm.id + '-resizeTop',staticClass:"resize resize-top",style:({
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a83f4b6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=406f292b&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":'item_' + _vm.id},on:{"mouseover":function($event){_vm.hover = true},"mouseleave":function($event){_vm.hover = false}}},[(_vm.resizeTop)?_c('div',{ref:_vm.id + '-resizeTop',staticClass:"resize resize-top",style:({
       height: _vm.resizeHandleSize + 'px',
       top: -(_vm.resizeHandleSize / 2) + 'px',
       left: 0,
@@ -6320,7 +6263,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=0a89adf2&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=406f292b&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");
@@ -12174,12 +12117,6 @@ if (( true) && !_interactjs_interact.__warnedUseImport) {
 
 _interactjs_interact.use(auto_start_plugin);
 //# sourceMappingURL=index.js.map
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
-var es_object_to_string = __webpack_require__("d3b7");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
-var es_regexp_to_string = __webpack_require__("25f0");
-
 // CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -12209,9 +12146,6 @@ var dist = __webpack_require__("eeef");
 
 
 
-
- //import ResizeEvent from "@interactjs/types";
-
 var DashItem_model_DashItem = /*#__PURE__*/function () {
   function DashItem(_ref) {
     var id = _ref.id,
@@ -12230,27 +12164,18 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
         resizable = _ref.resizable,
         resizeEdges = _ref.resizeEdges,
         resizeHandleSize = _ref.resizeHandleSize,
-        dragHold = _ref.dragHold,
+        moveHold = _ref.moveHold,
         resizeHold = _ref.resizeHold;
 
     _classCallCheck(this, DashItem);
 
     this._moved = false;
     this._hover = false;
-    this.onDragStartEvent = undefined;
-    this.onDragStartLeft = 0;
-    this.onDragStartTop = 0;
-    this.onDragDisplacementLeft = 0;
-    this.onDragDisplacementTop = 0;
-    this._onDragStartEventDispatcher = new dist["SimpleEventDispatcher"]();
-    this._onDragEventDispatcher = new dist["SimpleEventDispatcher"]();
-    this._onDragEndEventDispatcher = new dist["SimpleEventDispatcher"]();
-    this.onResizeStartEvent = undefined;
-    this.onResizeStartLeft = 0;
-    this.onResizeStartTop = 0;
-    this.onResizeStartingWidth = 0;
-    this.onResizeStartingHeight = 0;
-    this._onResizeLocation = "";
+    this._moving = false;
+    this._resizing = false;
+    this._onMoveStartEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onMoveEventDispatcher = new dist["SimpleEventDispatcher"]();
+    this._onMoveEndEventDispatcher = new dist["SimpleEventDispatcher"]();
     this._onResizeStartEventDispatcher = new dist["SimpleEventDispatcher"]();
     this._onResizeEventDispatcher = new dist["SimpleEventDispatcher"]();
     this._onResizeEndEventDispatcher = new dist["SimpleEventDispatcher"]();
@@ -12356,10 +12281,10 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._resizeHandleSize = 8;
     }
 
-    if (typeof dragHold !== "undefined") {
-      this._dragHold = dragHold;
+    if (typeof moveHold !== "undefined") {
+      this._moveHold = moveHold;
     } else {
-      this._dragHold = 0;
+      this._moveHold = 0;
     }
 
     if (typeof resizeHold !== "undefined") {
@@ -12437,114 +12362,49 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
     } //Drag Event Management
 
   }, {
-    key: "_onDragStart",
-    value: function _onDragStart(event) {
-      if (event && event.dataTransfer) {
-        this.onDragStartEvent = event;
-        event.dataTransfer.setData("text/plain", this.id.toString());
-      }
-
-      this.onDragStartLeft = this.left;
-      this.onDragStartTop = this.top;
-
-      this._onDragStartEventDispatcher.dispatch(this.toItem());
-    }
-  }, {
-    key: "_onDrag",
-    value: function _onDrag(event) {
-      if (typeof this.onDragStartEvent !== "undefined" && event.screenX > 0 && event.screenY > 0) {
-        var left = +this.onDragStartLeft - this.onDragStartEvent.screenX + event.screenX;
-        var top = +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
-        this.left = left;
-        this.top = top;
-
-        this._onDragEventDispatcher.dispatch(this.toItem());
-      }
-    }
-  }, {
-    key: "_onDragEnd",
-    value: function _onDragEnd(event) {
-      event.preventDefault();
-
-      this._onDrag(event);
-
-      this.onDragStartEvent = undefined;
-      this.onDragStartLeft = 0;
-      this.onDragStartTop = 0; // if (event.dataTransfer) {
-      //   event.dataTransfer.clearData();
-      // }
-
-      this._onDragEndEventDispatcher.dispatch(this.toItem());
-    }
-  }, {
     key: "_onMoveStart",
     value: function _onMoveStart() {
-      this.onDragStartLeft = this.left;
-      this.onDragStartTop = this.top;
-      this.onDragDisplacementLeft = 0;
-      this.onDragDisplacementTop = 0;
+      this._moving = true;
 
-      this._onDragStartEventDispatcher.dispatch(this.toItem());
+      this._onMoveStartEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onMove",
     value: function _onMove(left, top) {
-      this.onDragDisplacementLeft += left;
-      this.onDragDisplacementTop += top;
-      this.left = this.onDragStartLeft + this.onDragDisplacementLeft;
-      this.top = this.onDragStartTop + this.onDragDisplacementTop;
+      this._left += left;
+      this._top += top;
 
-      this._onDragEventDispatcher.dispatch(this.toItem());
+      this._onMoveEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onMoveEnd",
     value: function _onMoveEnd() {
-      this.onDragStartLeft = 0;
-      this.onDragStartTop = 0;
-      this.onDragDisplacementLeft = 0;
-      this.onDragDisplacementTop = 0;
+      this._moving = false;
 
-      this._onDragEndEventDispatcher.dispatch(this.toItem());
+      this._onMoveEndEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResizeStart",
     //ResizeEventManagement
     value: function _onResizeStart() {
-      this.onResizeStartLeft = this.left;
-      this.onResizeStartTop = this.top;
-      this.onResizeStartingWidth = this.widthPx;
-      this.onResizeStartingHeight = this.heightPx; // this._onResizeLocation = location;
+      this._resizing = true;
 
       this._onResizeStartEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResize",
     value: function _onResize(event) {
-      //TODO ResizeEvent
-      //let location = this._onResizeLocation;
-      //will fire
-      // if (location.includes("right")) {
-      //   this.widthPx = left;
-      // }
-      // if (location.includes("bottom")) {
-      //   this.heightPx = top;
-      // }
-      // this.left += event.deltaRect.left;
-      // this.top += event.deltaRect.top;
-      this.widthPx = event.rect.width;
-      this.heightPx = event.rect.height;
+      this._left += event.deltaRect.left;
+      this._top += event.deltaRect.top;
+      this._widthPx = event.rect.width;
+      this._heightPx = event.rect.height;
 
       this._onResizeEventDispatcher.dispatch(this.toItem());
     }
   }, {
     key: "_onResizeEnd",
-    value: function _onResizeEnd(e) {
-      this.onResizeStartEvent = undefined;
-      this.onResizeStartLeft = 0;
-      this.onResizeStartTop = 0;
-      this.onResizeStartingHeight = 0;
-      this.onResizeStartingWidth = 0;
-      this._onResizeLocation = "";
+    value: function _onResizeEnd() {
+      this._resizing = false;
 
       this._onResizeEndEventDispatcher.dispatch(this.toItem());
     }
@@ -12604,7 +12464,9 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       return this._left;
     },
     set: function set(l) {
-      this._left = l;
+      if (!this._moving && !this._resizing) {
+        this._left = l;
+      }
     }
   }, {
     key: "top",
@@ -12612,7 +12474,9 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       return this._top;
     },
     set: function set(t) {
-      this._top = t;
+      if (!this._moving && !this._resizing) {
+        this._top = t;
+      }
     }
   }, {
     key: "minWidth",
@@ -12672,7 +12536,9 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       return this._widthPx;
     },
     set: function set(w) {
-      this._widthPx = w;
+      if (!this._resizing) {
+        this._widthPx = w;
+      }
     }
   }, {
     key: "heightPx",
@@ -12680,7 +12546,9 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       return this._heightPx;
     },
     set: function set(h) {
-      this._heightPx = h;
+      if (!this._resizing) {
+        this._heightPx = h;
+      }
     }
   }, {
     key: "hover",
@@ -12691,12 +12559,12 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._hover = h;
     }
   }, {
-    key: "dragHold",
+    key: "moveHold",
     get: function get() {
-      return this._dragHold;
+      return this._moveHold;
     },
     set: function set(dh) {
-      this._dragHold = dh;
+      this._moveHold = dh;
     }
   }, {
     key: "resizeHold",
@@ -12705,6 +12573,16 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
     },
     set: function set(rh) {
       this._resizeHold = rh;
+    }
+  }, {
+    key: "moving",
+    get: function get() {
+      return this._moving;
+    }
+  }, {
+    key: "resizing",
+    get: function get() {
+      return this._resizing;
     }
   }, {
     key: "draggable",
@@ -12747,19 +12625,19 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
       this._moved = m;
     }
   }, {
-    key: "onDragStart",
+    key: "onMoveStart",
     get: function get() {
-      return this._onDragStartEventDispatcher.asEvent();
+      return this._onMoveStartEventDispatcher.asEvent();
     }
   }, {
-    key: "onDrag",
+    key: "onMove",
     get: function get() {
-      return this._onDragEventDispatcher.asEvent();
+      return this._onMoveEventDispatcher.asEvent();
     }
   }, {
-    key: "onDragEnd",
+    key: "onMoveEnd",
     get: function get() {
-      return this._onDragEndEventDispatcher.asEvent();
+      return this._onMoveEndEventDispatcher.asEvent();
     }
   }, {
     key: "onResizeStart",
@@ -12863,700 +12741,6 @@ var DashItem_model_DashItem = /*#__PURE__*/function () {
 
   return DashItem;
 }();
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=script&lang=js&
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
- //Monitor the Props and update the item with the changed value
-
-var watchProp = function watchProp(key, deep) {
-  return {
-    handler: function handler(newValue) {
-      //If the prop did not cause the update there is no updating
-      if (this.item[key] === newValue) {
-        return;
-      }
-
-      this.item[key] = newValue;
-    },
-    deep: deep
-  };
-}; //Props to change via interaction and need to be emitted for prop.sync usage
-
-
-var EMIT_PROPS = ["x", "y", "width", "height"]; //Monitor the item and emit an update to allow .sync usage
-
-var watchEmitProp = function watchEmitProp(key, deep) {
-  return {
-    handler: function handler(newValue) {
-      //If the prop caused the update there is no point emitting it back
-      if (this.$props[key] === newValue) {
-        return;
-      }
-
-      this.$emit("update:" + key, newValue);
-    },
-    deep: deep
-  };
-};
-
-/* harmony default export */ var DashItemvue_type_script_lang_js_ = ({
-  name: "DashItem",
-  inheritAttrs: false,
-  props: {
-    id: {
-      type: [Number, String],
-      required: true
-    },
-    x: {
-      type: Number,
-      default: DashItem_model_DashItem.defaults.x
-    },
-    y: {
-      type: Number,
-      default: DashItem_model_DashItem.defaults.y
-    },
-    width: {
-      type: Number,
-      default: DashItem_model_DashItem.defaults.width
-    },
-    maxWidth: {
-      type: [Number, Boolean],
-      default: DashItem_model_DashItem.defaults.maxWidth
-    },
-    minWidth: {
-      type: [Number, Boolean],
-      default: DashItem_model_DashItem.defaults.minWidth
-    },
-    height: {
-      type: Number,
-      default: DashItem_model_DashItem.defaults.height
-    },
-    maxHeight: {
-      type: [Number, Boolean],
-      default: DashItem_model_DashItem.defaults.maxHeight
-    },
-    minHeight: {
-      type: [Number, Boolean],
-      default: DashItem_model_DashItem.defaults.minHeight
-    },
-    draggable: {
-      type: Boolean,
-      default: DashItem_model_DashItem.defaults.draggable
-    },
-    resizable: {
-      type: Boolean,
-      default: DashItem_model_DashItem.defaults.resizable
-    },
-    resizeEdges: {
-      type: String,
-      default: "bottom right"
-    },
-    resizeHandleSize: {
-      type: Number,
-      default: 8
-    },
-    draggableZIndex: {
-      type: Number,
-      default: 1
-    },
-    resizableZIndex: {
-      type: Number,
-      default: 1
-    },
-    resizeHold: {
-      type: Number,
-      default: 0
-    },
-    dragHold: {
-      type: Number,
-      default: 0
-    }
-  },
-  inject: {
-    $layout: {
-      default: null
-    }
-  },
-  provide: function provide() {
-    var _this = this;
-
-    return {
-      $item: function $item() {
-        return _this.item;
-      }
-    };
-  },
-  data: function data() {
-    return {
-      interactInstance: null,
-      item: null,
-      dragging: false,
-      resizing: false,
-      unWatch: null,
-      hover: false
-    };
-  },
-  computed: {
-    resizingOrDragging: function resizingOrDragging() {
-      return this.resizing || this.dragging;
-    },
-    // classObj() {
-    //   return {
-    //     dragging: this.resizingOrDragging,
-    //     cssTransforms: this.useCssTransforms,
-    //   };
-    // },
-    layout: function layout() {
-      if (this.$layout) {
-        return this.$layout();
-      }
-
-      return null;
-    },
-    useCssTransforms: function useCssTransforms() {
-      if (this.layout) {
-        return this.layout.useCssTransforms;
-      }
-
-      return true;
-    },
-    left: function left() {
-      if (this.item) {
-        return this.item.left;
-      }
-
-      return 0;
-    },
-    top: function top() {
-      if (this.item) {
-        return this.item.top;
-      }
-
-      return 0;
-    },
-    widthPx: function widthPx() {
-      if (this.item) {
-        return this.item.widthPx;
-      }
-
-      return 0;
-    },
-    heightPx: function heightPx() {
-      if (this.item) {
-        return this.item.heightPx;
-      }
-
-      return 0;
-    },
-    cssStyle: function cssStyle() {
-      if (this.useCssTransforms) {
-        return DashItem_model_DashItem.cssTransform(this.top, this.left, this.widthPx, this.heightPx);
-      } else {
-        return DashItem_model_DashItem.cssTopLeft(this.top, this.left, this.widthPx, this.heightPx);
-      }
-    },
-    resizeTop: function resizeTop() {
-      return this.resizable && this.resizeEdges.includes("top");
-    },
-    resizeBottom: function resizeBottom() {
-      return this.resizable && this.resizeEdges.includes("bottom");
-    },
-    resizeLeft: function resizeLeft() {
-      return this.resizable && this.resizeEdges.includes("left");
-    },
-    resizeRight: function resizeRight() {
-      return this.resizable && this.resizeEdges.includes("right");
-    },
-    resizeTopLeft: function resizeTopLeft() {
-      return this.resizeTop && this.resizeLeft;
-    },
-    resizeBottomLeft: function resizeBottomLeft() {
-      return this.resizeBottom && this.resizeLeft;
-    },
-    resizeTopRight: function resizeTopRight() {
-      return this.resizeTop && this.resizeRight;
-    },
-    resizeBottomRight: function resizeBottomRight() {
-      return this.resizeBottom && this.resizeRight;
-    }
-  },
-  methods: {
-    setDraggable: function setDraggable() {
-      var _this2 = this;
-
-      if (this.draggable) {
-        this.interactInstance.draggable({
-          enabled: true,
-          hold: this.dragHold,
-          listeners: {
-            start: function start(event) {
-              _this2.onMoveStart(event);
-            },
-            move: function move(event) {
-              _this2.onMove(event);
-            },
-            end: function end(event) {
-              _this2.onMoveEnd(event);
-            }
-          }
-        });
-      } else {
-        this.interactInstance.draggable(false);
-      }
-    },
-    setResizable: function setResizable() {
-      var _this3 = this;
-
-      if (this.resizable) {
-        this.interactInstance.resizable({
-          enabled: true,
-          hold: this.resizeHold,
-          edges: {
-            top: ".resize-top",
-            left: ".resize-left",
-            bottom: ".resize-bottom",
-            right: ".resize-right"
-          },
-          listeners: {
-            start: function start(event) {
-              _this3.onResizeStart(event);
-            },
-            move: function move(event) {
-              _this3.onResize(event);
-            },
-            end: function end(event) {
-              _this3.onResizeEnd(event);
-            }
-          }
-        });
-      } else {
-        this.interactInstance.resizable(false);
-      }
-    },
-    onMoveStart: function onMoveStart(e) {
-      this.dragging = true;
-
-      this.item._onMoveStart();
-
-      this.$emit("moveStart", _objectSpread2({}, this.item.toItem()));
-    },
-    onMove: function onMove(event) {
-      if (this.dragging) {
-        this.item._onMove(event.dx, event.dy);
-
-        this.$emit("moving", _objectSpread2({}, this.item.toItem()));
-      }
-    },
-    onMoveEnd: function onMoveEnd(e) {
-      this.item._onMoveEnd();
-
-      this.dragging = false;
-      this.$emit("moveEnd", _objectSpread2({}, this.item.toItem()));
-    },
-    onResizeStart: function onResizeStart(e) {
-      this.resizing = true;
-
-      this.item._onResizeStart();
-
-      this.$emit("resizeStart", _objectSpread2({}, this.item.toItem()));
-    },
-    onResize: function onResize(e) {
-      if (this.resizing) {
-        this.item._onResize(e);
-
-        this.$emit("resizing", _objectSpread2({}, this.item.toItem()));
-      }
-    },
-    onResizeEnd: function onResizeEnd(e) {
-      this.item._onResizeEnd();
-
-      this.resizing = false;
-      this.$emit("resizeEnd", _objectSpread2({}, this.item.toItem()));
-    },
-    createPropWatchers: function createPropWatchers() {
-      var _this4 = this;
-
-      //Setup prop watches to sync with the Dash Item
-      Object.keys(this.$props).forEach(function (key) {
-        _this4.$watch(key, watchProp(key, true));
-      });
-    },
-    createDashItemWatchers: function createDashItemWatchers() {
-      var _this5 = this;
-
-      //Setup Watchers for emmit sync option
-      EMIT_PROPS.forEach(function (prop) {
-        _this5.$watch("item." + prop, watchEmitProp(prop, true));
-      });
-    }
-  },
-  watch: {
-    hover: function hover(newValue) {
-      this.item.hover = newValue;
-
-      if (newValue) {
-        this.$emit("hoverStart", this.item);
-      } else {
-        this.$emit("hovenEnd", this.item);
-      }
-    },
-    draggable: function draggable() {
-      this.setDraggable();
-    },
-    resizable: function resizable() {
-      this.setResizable();
-    },
-    dragHold: function dragHold() {
-      this.setDraggable();
-    },
-    resizeHold: function resizeHold() {
-      this.setResizable();
-    }
-  },
-  mounted: function mounted() {
-    this.item = new DashItem_model_DashItem(this.$props);
-    this.interactInstance = _interactjs_interact(this.$refs.item);
-    this.setDraggable();
-    this.setResizable(); //Check if layout exists and if not then start a watcher
-
-    if (this.layout) {
-      this.layout.addDashItem(this.item);
-      this.createPropWatchers();
-      this.createDashItemWatchers();
-    } else {
-      this.unWatch = this.$watch("layout", function (newValue) {
-        if (newValue) {
-          this.layout.addDashItem(this.item);
-          this.createPropWatchers();
-          this.createDashItemWatchers();
-          this.unWatch();
-        }
-      }, {
-        immediate: true
-      });
-    }
-  },
-  beforeDestroy: function beforeDestroy() {
-    if (this.interactInstance) {
-      this.interactInstance.unset();
-    }
-
-    if (this.layout) {
-      this.layout.removeDashItem(this.item);
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_DashItemvue_type_script_lang_js_ = (DashItemvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/DashItem.vue?vue&type=style&index=0&lang=css&
-var DashItemvue_type_style_index_0_lang_css_ = __webpack_require__("1831");
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/vue-loader/lib/runtime/componentNormalizer.js
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functional component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-// CONCATENATED MODULE: ./src/components/DashItem.vue
-
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  components_DashItemvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var components_DashItem = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e267876-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=fd4d601e&
-var DashLayoutvue_type_template_id_fd4d601e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height, width: _vm.width })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight,"maxWidth":_vm.placeholderMaxWidth},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event},"update:maxWidth":function($event){_vm.placeholderMaxWidth=$event},"update:max-width":function($event){_vm.placeholderMaxWidth=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" "),_c('br'),_vm._v(" Attrs: "+_vm._s(_vm.$attrs)+" ")]):_vm._e()]):_vm._e()}
-var DashLayoutvue_type_template_id_fd4d601e_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=fd4d601e&
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.description.js
 var es_symbol_description = __webpack_require__("e01a");
 
@@ -13566,11 +12750,17 @@ var es_symbol_iterator = __webpack_require__("d28b");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.find-index.js
 var es_array_find_index = __webpack_require__("c740");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.map.js
 var es_array_map = __webpack_require__("d81d");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.splice.js
 var es_array_splice = __webpack_require__("a434");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__("d3b7");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
 var es_string_iterator = __webpack_require__("3ca3");
@@ -13579,6 +12769,7 @@ var es_string_iterator = __webpack_require__("3ca3");
 var web_dom_collections_iterator = __webpack_require__("ddb0");
 
 // CONCATENATED MODULE: ./src/components/Layout.model.ts
+
 
 
 
@@ -13771,7 +12962,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
 
       this.updateDashItems(); //Drag Subscriptions
 
-      var unDragStart = d.onDragStart.subscribe(function (item) {
+      var unDragStart = d.onMoveStart.subscribe(function (item) {
         _this.itemDragging(item);
       });
 
@@ -13780,7 +12971,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         unsubscribe: unDragStart
       });
 
-      var unDrag = d.onDrag.subscribe(function (item) {
+      var unDrag = d.onMove.subscribe(function (item) {
         _this.itemDragging(item);
       });
 
@@ -13789,7 +12980,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         unsubscribe: unDrag
       });
 
-      var unDragEnd = d.onDragEnd.subscribe(function (item) {
+      var unDragEnd = d.onMoveEnd.subscribe(function (item) {
         _this.itemDraggingComplete(item);
       });
 
@@ -13904,6 +13095,15 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         this._resizeEndListeners[index].unsubscribe();
 
         this._resizeEndListeners.splice(index, 1);
+      } //Remove from initial Item Id check if it existed. This way the item can be added again and compacted
+
+
+      var initialItemIdIndex = this._initalItemIds.findIndex(function (id) {
+        id === d.id;
+      });
+
+      if (initialItemIdIndex > -1) {
+        this._initalItemIds.splice(initialItemIdIndex, 1);
       } //Compact layout after removal
 
 
@@ -14497,7 +13697,7 @@ var Layout_model_Layout = /*#__PURE__*/function () {
         },
         autoHeight: true,
         keepSquare: true,
-        useCssTransforms: true,
+        useCssTransforms: false,
         width: 400,
         height: 400,
         rowHeight: false,
@@ -14513,6 +13713,686 @@ var Layout_model_Layout = /*#__PURE__*/function () {
 
   return Layout;
 }();
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=script&lang=js&
+
+
+
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+ //Monitor the Props and update the item with the changed value
+
+var watchProp = function watchProp(key, deep) {
+  return {
+    handler: function handler(newValue) {
+      //If the prop did not cause the update there is no updating
+      if (this.item[key] === newValue) {
+        return;
+      }
+
+      this.item[key] = newValue;
+    },
+    deep: deep
+  };
+}; //Props to change via interaction and need to be emitted for prop.sync usage
+
+
+var EMIT_PROPS = ["x", "y", "width", "height"]; //Monitor the item and emit an update to allow .sync usage
+
+var watchEmitProp = function watchEmitProp(key, deep) {
+  return {
+    handler: function handler(newValue) {
+      //If the prop caused the update there is no point emitting it back
+      if (this.$props[key] === newValue) {
+        return;
+      }
+
+      this.$emit("update:" + key, newValue);
+    },
+    deep: deep
+  };
+};
+
+/* harmony default export */ var DashItemvue_type_script_lang_js_ = ({
+  name: "DashItem",
+  inheritAttrs: false,
+  props: {
+    id: {
+      type: [Number, String],
+      required: true
+    },
+    x: {
+      type: Number,
+      default: DashItem_model_DashItem.defaults.x
+    },
+    y: {
+      type: Number,
+      default: DashItem_model_DashItem.defaults.y
+    },
+    width: {
+      type: Number,
+      default: DashItem_model_DashItem.defaults.width
+    },
+    maxWidth: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.maxWidth
+    },
+    minWidth: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.minWidth
+    },
+    height: {
+      type: Number,
+      default: DashItem_model_DashItem.defaults.height
+    },
+    maxHeight: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.maxHeight
+    },
+    minHeight: {
+      type: [Number, Boolean],
+      default: DashItem_model_DashItem.defaults.minHeight
+    },
+    draggable: {
+      type: Boolean,
+      default: DashItem_model_DashItem.defaults.draggable
+    },
+    resizable: {
+      type: Boolean,
+      default: DashItem_model_DashItem.defaults.resizable
+    },
+    resizeEdges: {
+      type: String,
+      default: "bottom right"
+    },
+    resizeHandleSize: {
+      type: Number,
+      default: 8
+    },
+    draggableZIndex: {
+      type: Number,
+      default: 1
+    },
+    //TODO remove
+    resizableZIndex: {
+      type: Number,
+      default: 1
+    },
+    //TODO consider removing
+    moveHold: {
+      type: Number,
+      default: 0
+    },
+    resizeHold: {
+      type: Number,
+      default: 0
+    }
+  },
+  inject: {
+    $layout: {
+      default: null
+    }
+  },
+  provide: function provide() {
+    var _this = this;
+
+    return {
+      $item: function $item() {
+        return _this.item;
+      }
+    };
+  },
+  data: function data() {
+    return {
+      interactInstance: null,
+      item: null,
+      dragging: false,
+      resizing: false,
+      unWatch: null,
+      hover: false
+    };
+  },
+  computed: {
+    resizingOrDragging: function resizingOrDragging() {
+      return this.resizing || this.dragging;
+    },
+    classObj: function classObj() {
+      return {
+        dragging: this.resizingOrDragging,
+        cssTransforms: this.useCssTransforms
+      };
+    },
+    layout: function layout() {
+      if (this.$layout) {
+        return this.$layout();
+      }
+
+      return null;
+    },
+    useCssTransforms: function useCssTransforms() {
+      if (this.layout) {
+        return this.layout.useCssTransforms;
+      }
+
+      return Layout_model_Layout.default.useCssTransforms;
+    },
+    left: function left() {
+      if (this.item) {
+        return this.item.left;
+      }
+
+      return 0;
+    },
+    top: function top() {
+      if (this.item) {
+        return this.item.top;
+      }
+
+      return 0;
+    },
+    widthPx: function widthPx() {
+      if (this.item) {
+        return this.item.widthPx;
+      }
+
+      return 0;
+    },
+    heightPx: function heightPx() {
+      if (this.item) {
+        return this.item.heightPx;
+      }
+
+      return 0;
+    },
+    cssStyle: function cssStyle() {
+      if (this.useCssTransforms) {
+        return DashItem_model_DashItem.cssTransform(this.top, this.left, this.widthPx, this.heightPx);
+      } else {
+        return DashItem_model_DashItem.cssTopLeft(this.top, this.left, this.widthPx, this.heightPx);
+      }
+    },
+    resizeTop: function resizeTop() {
+      return this.resizable && this.resizeEdges.includes("top");
+    },
+    resizeBottom: function resizeBottom() {
+      return this.resizable && this.resizeEdges.includes("bottom");
+    },
+    resizeLeft: function resizeLeft() {
+      return this.resizable && this.resizeEdges.includes("left");
+    },
+    resizeRight: function resizeRight() {
+      return this.resizable && this.resizeEdges.includes("right");
+    },
+    resizeTopLeft: function resizeTopLeft() {
+      return this.resizeTop && this.resizeLeft;
+    },
+    resizeBottomLeft: function resizeBottomLeft() {
+      return this.resizeBottom && this.resizeLeft;
+    },
+    resizeTopRight: function resizeTopRight() {
+      return this.resizeTop && this.resizeRight;
+    },
+    resizeBottomRight: function resizeBottomRight() {
+      return this.resizeBottom && this.resizeRight;
+    }
+  },
+  methods: {
+    setDraggable: function setDraggable() {
+      var _this2 = this;
+
+      if (this.draggable) {
+        this.interactInstance.draggable({
+          enabled: true,
+          hold: this.moveHold,
+          listeners: {
+            start: function start(event) {
+              _this2.onMoveStart(event);
+            },
+            move: function move(event) {
+              _this2.onMove(event);
+            },
+            end: function end(event) {
+              _this2.onMoveEnd(event);
+            }
+          }
+        });
+      } else {
+        this.interactInstance.draggable(false);
+      }
+    },
+    setResizable: function setResizable() {
+      var _this3 = this;
+
+      if (this.resizable) {
+        this.interactInstance.resizable({
+          enabled: true,
+          hold: this.resizeHold,
+          edges: {
+            top: ".resize-top",
+            left: ".resize-left",
+            bottom: ".resize-bottom",
+            right: ".resize-right"
+          },
+          listeners: {
+            start: function start(event) {
+              _this3.onResizeStart(event);
+            },
+            move: function move(event) {
+              _this3.onResize(event);
+            },
+            end: function end(event) {
+              _this3.onResizeEnd(event);
+            }
+          }
+        });
+      } else {
+        this.interactInstance.resizable(false);
+      }
+    },
+    onMoveStart: function onMoveStart(e) {
+      this.dragging = true;
+
+      this.item._onMoveStart();
+
+      this.$emit("moveStart", _objectSpread2({}, this.item.toItem()));
+    },
+    onMove: function onMove(event) {
+      if (this.dragging) {
+        this.item._onMove(event.dx, event.dy);
+
+        this.$emit("moving", _objectSpread2({}, this.item.toItem()));
+      }
+    },
+    onMoveEnd: function onMoveEnd(e) {
+      this.item._onMoveEnd();
+
+      this.dragging = false;
+      this.$emit("moveEnd", _objectSpread2({}, this.item.toItem()));
+    },
+    onResizeStart: function onResizeStart(e) {
+      this.resizing = true;
+
+      this.item._onResizeStart();
+
+      this.$emit("resizeStart", _objectSpread2({}, this.item.toItem()));
+    },
+    onResize: function onResize(e) {
+      if (this.resizing) {
+        this.item._onResize(e);
+
+        this.$emit("resizing", _objectSpread2({}, this.item.toItem()));
+      }
+    },
+    onResizeEnd: function onResizeEnd(e) {
+      this.item._onResizeEnd();
+
+      this.resizing = false;
+      this.$emit("resizeEnd", _objectSpread2({}, this.item.toItem()));
+    },
+    createPropWatchers: function createPropWatchers() {
+      var _this4 = this;
+
+      //Setup prop watches to sync with the Dash Item
+      Object.keys(this.$props).forEach(function (key) {
+        _this4.$watch(key, watchProp(key, true));
+      });
+    },
+    createDashItemWatchers: function createDashItemWatchers() {
+      var _this5 = this;
+
+      //Setup Watchers for emmit sync option
+      EMIT_PROPS.forEach(function (prop) {
+        _this5.$watch("item." + prop, watchEmitProp(prop, true));
+      });
+    }
+  },
+  watch: {
+    hover: function hover(newValue) {
+      this.item.hover = newValue;
+
+      if (newValue) {
+        this.$emit("hoverStart", this.item);
+      } else {
+        this.$emit("hovenEnd", this.item);
+      }
+    },
+    draggable: function draggable() {
+      this.setDraggable();
+    },
+    resizable: function resizable() {
+      this.setResizable();
+    },
+    moveHold: function moveHold() {
+      this.setDraggable();
+    },
+    resizeHold: function resizeHold() {
+      this.setResizable();
+    }
+  },
+  mounted: function mounted() {
+    this.item = new DashItem_model_DashItem(this.$props);
+    this.interactInstance = _interactjs_interact(this.$refs.item);
+    this.setDraggable();
+    this.setResizable(); //Check if layout exists and if not then start a watcher
+
+    if (this.layout) {
+      this.layout.addDashItem(this.item);
+      this.createPropWatchers();
+      this.createDashItemWatchers();
+    } else {
+      this.unWatch = this.$watch("layout", function (newValue) {
+        if (newValue) {
+          this.layout.addDashItem(this.item);
+          this.createPropWatchers();
+          this.createDashItemWatchers();
+          this.unWatch();
+        }
+      }, {
+        immediate: true
+      });
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    if (this.interactInstance) {
+      this.interactInstance.unset();
+    }
+
+    if (this.layout) {
+      this.layout.removeDashItem(this.item);
+    }
+  }
+});
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_DashItemvue_type_script_lang_js_ = (DashItemvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./src/components/DashItem.vue?vue&type=style&index=0&lang=css&
+var DashItemvue_type_style_index_0_lang_css_ = __webpack_require__("1831");
+
+// CONCATENATED MODULE: ./node_modules/@vue/cli-service/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functional component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+// CONCATENATED MODULE: ./src/components/DashItem.vue
+
+
+
+
+
+
+/* normalize component */
+
+var component = normalizeComponent(
+  components_DashItemvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var components_DashItem = (component.exports);
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a83f4b6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=template&id=fd4d601e&
+var DashLayoutvue_type_template_id_fd4d601e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.currentBreakpoint === _vm.breakpoint)?_c('div',[(_vm.l)?_c('div',{style:({ position: 'relative', height: _vm.height, width: _vm.width })},[_vm._t("default"),_c('DashItem',{directives:[{name:"show",rawName:"v-show",value:(_vm.dragging || _vm.resizing),expression:"dragging || resizing"}],attrs:{"id":_vm.placeholderId,"draggable":false,"resizable":false,"y":_vm.placeholderY,"height":_vm.placeholderHeight,"maxWidth":_vm.placeholderMaxWidth},on:{"update:y":function($event){_vm.placeholderY=$event},"update:height":function($event){_vm.placeholderHeight=$event},"update:maxWidth":function($event){_vm.placeholderMaxWidth=$event},"update:max-width":function($event){_vm.placeholderMaxWidth=$event}}},[_c('div',{staticClass:"placeholder"})])],2):_vm._e(),(_vm.debug)?_c('div',[_vm._v(" Layout Breakpoint: "+_vm._s(_vm.breakpoint)+" "),_c('br'),_vm._v(" Layout Number of Cols: "+_vm._s(_vm.numberOfCols)+" "),_c('br'),_vm._v(" placeholder: "+_vm._s(JSON.stringify(_vm.placeholder))+" "),_c('br'),_vm._v(" Items: "+_vm._s(JSON.stringify(_vm.itemsFromLayout))+" "),_c('br'),_vm._v(" Height: "+_vm._s(_vm.height)+" "),_c('br'),_vm._v(" Attrs: "+_vm._s(_vm.$attrs)+" ")]):_vm._e()]):_vm._e()}
+var DashLayoutvue_type_template_id_fd4d601e_staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/DashLayout.vue?vue&type=template&id=fd4d601e&
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/@vue/cli-plugin-babel/node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashLayout.vue?vue&type=script&lang=js&
 
 
@@ -14774,7 +14654,7 @@ var DashLayout_component = normalizeComponent(
 )
 
 /* harmony default export */ var DashLayout = (DashLayout_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e267876-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/Dashboard.vue?vue&type=template&id=4892049d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a83f4b6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/Dashboard.vue?vue&type=template&id=4892049d&
 var Dashboardvue_type_template_id_4892049d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.d)?_c('div',{directives:[{name:"rlocal",rawName:"v-rlocal"}],ref:_vm.id,attrs:{"id":_vm.id},on:{"resize":_vm.onResize}},[_vm._t("default")],2):_vm._e()}
 var Dashboardvue_type_template_id_4892049d_staticRenderFns = []
 
@@ -14783,9 +14663,6 @@ var Dashboardvue_type_template_id_4892049d_staticRenderFns = []
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
-var es_array_iterator = __webpack_require__("e260");
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/@babel/runtime/helpers/esm/typeof.js
 
@@ -14811,6 +14688,7 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 // CONCATENATED MODULE: ./src/components/Dashboard.model.ts
+
 
 
 

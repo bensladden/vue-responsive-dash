@@ -44,7 +44,7 @@ export default {
           { id: "4", x: 3, y: 0, width: 2, height: 2 },
           { id: "5", x: 5, y: 0, width: 1, height: 2 },
           { id: "6", x: 6, y: 0, width: 2, height: 1 },
-          { id: "7", x: 7, y: 1, width: 2, height: 2 },
+          { id: "7", x: 6, y: 1, width: 2, height: 2 },
           { id: "8", x: 0, y: 3, width: 2, height: 2 },
           { id: "9", x: 2, y: 3, width: 2, height: 2 }
         ]

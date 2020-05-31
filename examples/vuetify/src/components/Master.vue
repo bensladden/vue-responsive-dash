@@ -12,10 +12,16 @@ export default {
       return this.$item();
     },
     width() {
-      return this.item.widthPx;
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
     },
     height() {
-      return this.item.heightPx;
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
     }
   }
 };

@@ -6194,7 +6194,7 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
 var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a83f4b6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=406f292b&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a83f4b6-vue-loader-template"}!./node_modules/@vue/cli-service/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader/lib??vue-loader-options!./src/components/DashItem.vue?vue&type=template&id=218afaf7&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"item",staticClass:"item",class:_vm.classObj,style:(_vm.cssStyle),attrs:{"id":'item_' + _vm.id},on:{"mouseover":function($event){_vm.hover = true},"mouseleave":function($event){_vm.hover = false}}},[(_vm.resizeTop)?_c('div',{ref:_vm.id + '-resizeTop',staticClass:"resize resize-top",style:({
       height: _vm.resizeHandleSize + 'px',
       top: -(_vm.resizeHandleSize / 2) + 'px',
@@ -6263,7 +6263,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=406f292b&
+// CONCATENATED MODULE: ./src/components/DashItem.vue?vue&type=template&id=218afaf7&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.includes.js
 var es_array_includes = __webpack_require__("caad");

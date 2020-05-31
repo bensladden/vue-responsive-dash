@@ -328,21 +328,21 @@ export class Layout {
     this._dashItems.push(d);
     this.updateDashItems();
     //Drag Subscriptions
-    let unDragStart = d.onDragStart.subscribe((item) => {
+    let unDragStart = d.onMoveStart.subscribe((item) => {
       this.itemDragging(item);
     });
     this._dragStartListeners.push({
       id: d.id,
       unsubscribe: unDragStart,
     });
-    let unDrag = d.onDrag.subscribe((item) => {
+    let unDrag = d.onMove.subscribe((item) => {
       this.itemDragging(item);
     });
     this._dragListeners.push({
       id: d.id,
       unsubscribe: unDrag,
     });
-    let unDragEnd = d.onDragEnd.subscribe((item) => {
+    let unDragEnd = d.onMoveEnd.subscribe((item) => {
       this.itemDraggingComplete(item);
     });
     this._dragEndListeners.push({ id: d.id, unsubscribe: unDragEnd });
@@ -427,6 +427,14 @@ export class Layout {
       this._resizeEndListeners[index].unsubscribe();
       this._resizeEndListeners.splice(index, 1);
     }
+    //Remove from initial Item Id check if it existed. This way the item can be added again and compacted
+    let initialItemIdIndex = this._initalItemIds.findIndex((id) => {
+      id === d.id;
+    });
+    if (initialItemIdIndex > -1) {
+      this._initalItemIds.splice(initialItemIdIndex, 1);
+    }
+
     //Compact layout after removal
     let items = this.compactLayout(this.items);
     this.syncItems(items);
@@ -724,7 +732,7 @@ export class Layout {
       margin: { x: 10, y: 10 } as Margin,
       autoHeight: true as boolean,
       keepSquare: true as boolean,
-      useCssTransforms: true as boolean,
+      useCssTransforms: false as boolean,
       width: 400 as number,
       height: 400 as number,
       rowHeight: false as number | boolean,

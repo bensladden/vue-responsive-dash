@@ -4,6 +4,7 @@
     ref="item"
     class="item"
     :style="cssStyle"
+    :class="classObj"
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
@@ -179,6 +180,7 @@ import "@interactjs/auto-start";
 import interact from "@interactjs/interact";
 
 import { DashItem } from "./DashItem.model";
+import { Layout as layoutModel } from "./Layout.model";
 
 //Monitor the Props and update the item with the changed value
 const watchProp = (key, deep) => ({
@@ -254,12 +256,12 @@ export default {
     resizingOrDragging() {
       return this.resizing || this.dragging;
     },
-    // classObj() {
-    //   return {
-    //     dragging: this.resizingOrDragging,
-    //     cssTransforms: this.useCssTransforms,
-    //   };
-    // },
+    classObj() {
+      return {
+        dragging: this.resizingOrDragging,
+        cssTransforms: this.useCssTransforms,
+      };
+    },
     layout() {
       if (this.$layout) {
         return this.$layout();
@@ -270,7 +272,7 @@ export default {
       if (this.layout) {
         return this.layout.useCssTransforms;
       }
-      return true;
+      return layoutModel.default.useCssTransforms;
     },
     left() {
       if (this.item) {
@@ -502,19 +504,19 @@ export default {
   touch-action: none;
   user-select: none;
 }
-/* .item.dragging {
+.item.dragging {
   transition: none;
   z-index: 3;
-} */
+}
 
 .resize {
   touch-action: none;
   user-select: none;
 }
 
-/* .item.cssTransforms {
+.item.cssTransforms {
   transition-property: transform;
   left: 0;
   right: auto;
-} */
+}
 </style>

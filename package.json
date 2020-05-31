@@ -38,6 +38,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@interactjs/types": "^1.9.14",
     "@types/jest": "^25.2.1",
     "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
@@ -68,7 +69,6 @@
     "@interactjs/auto-start": "^1.9.14",
     "@interactjs/interact": "^1.9.14",
     "ste-simple-events": "^1.6.11",
-    "vue-displace": "^0.2.7",
     "vue-element-resize-detector": "^1.0.6"
   }
 }

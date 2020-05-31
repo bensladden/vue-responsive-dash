@@ -1,6 +1,6 @@
 import { SimpleEventDispatcher } from "ste-simple-events";
 import { Margin, Item } from "../interfaces";
-//import ResizeEvent from "@interactjs/types";
+import { ResizeEvent } from "@interactjs/types";
 export class DashItem {
   private readonly _id: number | string;
   private _x: number;
@@ -432,10 +432,9 @@ export class DashItem {
     this._resizing = true;
     this._onResizeStartEventDispatcher.dispatch(this.toItem());
   }
-  _onResize(event: any) {
-    //TODO ResizeEvent type istead of any
-    this._left += event.deltaRect.left;
-    this._top += event.deltaRect.top;
+  _onResize(event: ResizeEvent) {
+    this._left += event.deltaRect!.left;
+    this._top += event.deltaRect!.top;
     this._widthPx = event.rect.width;
     this._heightPx = event.rect.height;
     this._onResizeEventDispatcher.dispatch(this.toItem());

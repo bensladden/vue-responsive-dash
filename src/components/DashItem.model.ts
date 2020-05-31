@@ -1,6 +1,6 @@
 import { SimpleEventDispatcher } from "ste-simple-events";
 import { Margin, Item } from "../interfaces";
-
+import { ResizeEvent } from "@interactjs/types";
 export class DashItem {
   private readonly _id: number | string;
   private _x: number;
@@ -24,22 +24,18 @@ export class DashItem {
   private _resizeHandleSize: number;
   private _moved: boolean = false;
   private _hover: boolean = false;
+  private _resizeHold: number;
+  private _moveHold: number;
 
-  private onDragStartEvent = undefined as DragEvent | undefined;
-  private onDragStartLeft = 0 as number;
-  private onDragStartTop = 0 as number;
-  private _onDragStartEventDispatcher = new SimpleEventDispatcher<Item>();
-  private _onDragEventDispatcher = new SimpleEventDispatcher<Item>();
-  private _onDragEndEventDispatcher = new SimpleEventDispatcher<Item>();
-  private onResizeStartEvent = undefined as DragEvent | undefined;
-  private onResizeStartLeft = 0 as number;
-  private onResizeStartTop = 0 as number;
-  private onResizeStartingWidth = 0 as number;
-  private onResizeStartingHeight = 0 as number;
-  private _onResizeLocation = "" as string;
+  private _moving = false as boolean;
+  private _resizing = false as boolean;
+  private _onMoveStartEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onMoveEventDispatcher = new SimpleEventDispatcher<Item>();
+  private _onMoveEndEventDispatcher = new SimpleEventDispatcher<Item>();
   private _onResizeStartEventDispatcher = new SimpleEventDispatcher<Item>();
   private _onResizeEventDispatcher = new SimpleEventDispatcher<Item>();
   private _onResizeEndEventDispatcher = new SimpleEventDispatcher<Item>();
+
   constructor({
     id,
     x,
@@ -57,6 +53,8 @@ export class DashItem {
     resizable,
     resizeEdges,
     resizeHandleSize,
+    moveHold,
+    resizeHold,
   }: {
     id: string | number;
     x?: number;
@@ -74,6 +72,8 @@ export class DashItem {
     resizable?: boolean;
     resizeEdges?: string;
     resizeHandleSize?: number;
+    moveHold?: number;
+    resizeHold?: number;
   }) {
     this._id = id;
 
@@ -165,6 +165,16 @@ export class DashItem {
     } else {
       this._resizeHandleSize = 8;
     }
+    if (typeof moveHold !== "undefined") {
+      this._moveHold = moveHold;
+    } else {
+      this._moveHold = 0;
+    }
+    if (typeof resizeHold !== "undefined") {
+      this._resizeHold = resizeHold;
+    } else {
+      this._resizeHold = 0;
+    }
   }
   get id() {
     return this._id;
@@ -208,15 +218,18 @@ export class DashItem {
     return this._left;
   }
   set left(l: number) {
-    this._left = l;
+    if (!this._moving && !this._resizing) {
+      this._left = l;
+    }
   }
   get top() {
     return this._top;
   }
   set top(t: number) {
-    this._top = t;
+    if (!this._moving && !this._resizing) {
+      this._top = t;
+    }
   }
-
   get minWidth() {
     return this._minWidth;
   }
@@ -262,19 +275,41 @@ export class DashItem {
     return this._widthPx;
   }
   set widthPx(w: number) {
-    this._widthPx = w;
+    if (!this._resizing) {
+      this._widthPx = w;
+    }
   }
   get heightPx() {
     return this._heightPx;
   }
   set heightPx(h: number) {
-    this._heightPx = h;
+    if (!this._resizing) {
+      this._heightPx = h;
+    }
   }
   get hover() {
     return this._hover;
   }
   set hover(h: boolean) {
     this._hover = h;
+  }
+  get moveHold() {
+    return this._moveHold;
+  }
+  set moveHold(dh: number) {
+    this._moveHold = dh;
+  }
+  get resizeHold() {
+    return this._resizeHold;
+  }
+  set resizeHold(rh: number) {
+    this._resizeHold = rh;
+  }
+  get moving() {
+    return this._moving;
+  }
+  get resizing() {
+    return this._resizing;
   }
   checkSizeLimits() {
     if (typeof this.maxWidth == "number") {
@@ -370,92 +405,42 @@ export class DashItem {
     this.updatePositionAndSize();
   }
   //Drag Event Management
-  _onDragStart(event: DragEvent) {
-    if (event && event.dataTransfer) {
-      this.onDragStartEvent = event;
-      event.dataTransfer.setData("text/plain", this.id.toString());
-    }
-    this.onDragStartLeft = this.left;
-    this.onDragStartTop = this.top;
-    this._onDragStartEventDispatcher.dispatch(this.toItem());
-  }
-  _onDrag(event: DragEvent) {
-    if (
-      typeof this.onDragStartEvent !== "undefined" &&
-      event.screenX > 0 &&
-      event.screenY > 0
-    ) {
-      let left =
-        +this.onDragStartLeft - this.onDragStartEvent.screenX + event.screenX;
-      let top =
-        +this.onDragStartTop - this.onDragStartEvent.screenY + event.screenY;
-      this.left = left;
-      this.top = top;
-      this._onDragEventDispatcher.dispatch(this.toItem());
-    }
-  }
-  _onDragEnd(event: DragEvent) {
-    event.preventDefault();
-    this._onDrag(event);
-    this.onDragStartEvent = undefined;
-    this.onDragStartLeft = 0;
-    this.onDragStartTop = 0;
-    // if (event.dataTransfer) {
-    //   event.dataTransfer.clearData();
-    // }
-    this._onDragEndEventDispatcher.dispatch(this.toItem());
-  }
   _onMoveStart() {
-    this.onDragStartLeft = this.left;
-    this.onDragStartTop = this.top;
-    this._onDragStartEventDispatcher.dispatch(this.toItem());
+    this._moving = true;
+    this._onMoveStartEventDispatcher.dispatch(this.toItem());
   }
   _onMove(left: number, top: number) {
-    this.left = left + this.onDragStartLeft;
-    this.top = top + this.onDragStartTop;
-    this._onDragEventDispatcher.dispatch(this.toItem());
+    this._left += left;
+    this._top += top;
+    this._onMoveEventDispatcher.dispatch(this.toItem());
   }
-  _onMoveEnd(event: DragEvent) {
-    this.onDragStartLeft = 0;
-    this.onDragStartTop = 0;
-    this._onDragEndEventDispatcher.dispatch(this.toItem());
+  _onMoveEnd() {
+    this._moving = false;
+    this._onMoveEndEventDispatcher.dispatch(this.toItem());
   }
-  get onDragStart() {
-    return this._onDragStartEventDispatcher.asEvent();
+  get onMoveStart() {
+    return this._onMoveStartEventDispatcher.asEvent();
   }
-  get onDrag() {
-    return this._onDragEventDispatcher.asEvent();
+  get onMove() {
+    return this._onMoveEventDispatcher.asEvent();
   }
-  get onDragEnd() {
-    return this._onDragEndEventDispatcher.asEvent();
+  get onMoveEnd() {
+    return this._onMoveEndEventDispatcher.asEvent();
   }
   //ResizeEventManagement
-  _onResizeStart(event: DragEvent, location: string) {
-    this.onResizeStartLeft = this.left;
-    this.onResizeStartTop = this.top;
-    this.onResizeStartingWidth = this.widthPx;
-    this.onResizeStartingHeight = this.heightPx;
-    this._onResizeLocation = location;
+  _onResizeStart() {
+    this._resizing = true;
     this._onResizeStartEventDispatcher.dispatch(this.toItem());
   }
-  _onResize(left: number, top: number) {
-    let location = this._onResizeLocation;
-    //will fire
-    if (location.includes("right")) {
-      this.widthPx = left;
-    }
-    if (location.includes("bottom")) {
-      this.heightPx = top;
-    }
+  _onResize(event: ResizeEvent) {
+    this._left += event.deltaRect!.left;
+    this._top += event.deltaRect!.top;
+    this._widthPx = event.rect.width;
+    this._heightPx = event.rect.height;
     this._onResizeEventDispatcher.dispatch(this.toItem());
   }
-  _onResizeEnd(e: DragEvent) {
-    this.onResizeStartEvent = undefined;
-    this.onResizeStartLeft = 0;
-    this.onResizeStartTop = 0;
-    this.onResizeStartingHeight = 0;
-    this.onResizeStartingWidth = 0;
-    this._onResizeLocation = "";
+  _onResizeEnd() {
+    this._resizing = false;
     this._onResizeEndEventDispatcher.dispatch(this.toItem());
   }
   get onResizeStart() {

@@ -65,6 +65,8 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizeHandleSize | `Number` |  false |  `8` | The area where resize can be selected on the item |
 | draggableZIndex | `Number` | false | `1` | The zIndex applied to the draggable area to make sure it is above the items in the slot |
 | resizableZIndex | `Number` | false | `1` | The zIndex applied to each resizeable area to make sure it is above the items in the main slot |
+| moveHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be moved |
+| resizeHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be resized |
 
 ### Events
 | Name | Description |

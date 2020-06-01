@@ -26,8 +26,12 @@
           :draggable="draggable"
           :maxWidth="3"
           :moveHold="moveHold"
+          :dragAllowFrom="allowFrom"
         >
-          <div class="content">{{ JSON.stringify(item, null, 2) }}</div>
+          <div class="content">
+            {{ JSON.stringify(item, null, 2) }}
+            <div class="dragHandle"></div>
+          </div>
         </Dash-Item>
       </Dash-Layout>
     </dashboard>
@@ -54,6 +58,7 @@
     <button @click="enableRowHeightLimits = !enableRowHeightLimits">
       Toggle Row Height Limits ({{ enableRowHeightLimits }})
     </button>
+    <button @click="toggleAllowFrom">Toggle AllowFrom ({{ allowFrom }})</button>
     <input type="number" min="0" max="5000" v-model.number="moveHold" />
   </div>
 </template>
@@ -75,6 +80,7 @@ export default {
       compact: true,
       draggable: true,
       resizable: true,
+      allowFrom: null,
       moveHold: 0,
       margin: { x: 20, y: 20 },
       layouts: [
@@ -252,6 +258,13 @@ export default {
     },
   },
   methods: {
+    toggleAllowFrom() {
+      if (this.allowFrom) {
+        this.allowFrom = null;
+      } else {
+        this.allowFrom = ".dragHandle";
+      }
+    },
     addItem() {
       for (let layout of this.layouts) {
         layout.items.push({
@@ -282,5 +295,12 @@ export default {
   border: 2px solid #42b983;
   border-radius: 5px;
   background-color: #42b9833d;
+}
+.dragHandle {
+  height: 20px;
+  width: 20px;
+  border: 2px solid #b9a342;
+  border-radius: 5px;
+  background-color: #b9a3423d;
 }
 </style>

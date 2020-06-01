@@ -217,6 +217,7 @@ export default {
     resizableZIndex: { type: Number, default: 1 }, //TODO consider removing
     moveHold: { type: Number, default: 0 },
     resizeHold: { type: Number, default: 0 },
+    dragAllowFrom: { type: String, default: null },
   },
   inject: { $layout: { default: null } },
   provide() {
@@ -328,6 +329,7 @@ export default {
         this.interactInstance.draggable({
           enabled: true,
           hold: this.moveHold,
+          allowFrom: this.dragAllowFrom,
           listeners: {
             start: (event) => {
               this.onMoveStart(event);
@@ -436,6 +438,9 @@ export default {
     },
     resizeHold() {
       this.setResizable();
+    },
+    dragAllowFrom() {
+      this.setDraggable();
     },
   },
   mounted() {

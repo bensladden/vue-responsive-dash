@@ -38,7 +38,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@interactjs/types": "^1.9.14",
+    "@interactjs/types": "^1.9.19",
     "@types/jest": "^25.2.3",
     "@vue/cli-plugin-babel": "^4.4.4",
     "@vue/cli-plugin-eslint": "^4.4.4",

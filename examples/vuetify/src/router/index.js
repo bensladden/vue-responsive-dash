@@ -20,6 +20,11 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
+    path: "/apexcharts",
+    name: "ApexCharts",
+    component: () => import("../views/ApexCharts.vue")
+  },
+  {
     path: "/chartjs",
     name: "Chartjs",
     component: () => import("../views/Chartjs.vue")

@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <b-navbar type="dark" variant="dark">
+      <b-navbar-brand>Vue Responsive Dash - BootstrapVue</b-navbar-brand>
+      <b-navbar-nav class="ml-auto">
+      <b-nav-item href="#">Basic</b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
     <Dashboard :id="'dashExample'">
       <DashLayout
         v-for="layout in layouts"
@@ -11,7 +17,15 @@
           :key="item.id"
           v-bind.sync="item"
         >
-          <Master></Master>
+          <Master>
+            <TextCentered>
+              Item ID: {{ item.id }}<br />
+              Item X: {{ item.x }}<br />
+              Item Y: {{ item.y }}<br />
+              Item Width: {{ item.width }}<br />
+              Item Height: {{ item.height }}<br />
+            </TextCentered>
+            </Master>
           <template v-slot:resizeBottomRight> </template>
         </DashItem>
       </DashLayout>
@@ -22,14 +36,15 @@
 <script>
 import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
 import Master from "./components/Master";
-
+import TextCentered from "./components/TextCentered";
 export default {
   name: "App",
   components: {
     Dashboard,
     DashLayout,
     DashItem,
-    Master
+    Master,
+    TextCentered
   },
   data() {
     return {
@@ -155,6 +170,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background: #b4c1cc !important;
 }
 </style>

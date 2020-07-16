@@ -11,7 +11,7 @@
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19"
+    "vue-responsive-dash": "^0.4.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

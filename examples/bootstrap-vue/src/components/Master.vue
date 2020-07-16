@@ -1,5 +1,5 @@
 <template>
-  <b-card :style="{ width: widthPx + 'px', height: heightPx + 'px' }">
+  <b-card :style="{ width: width + 'px', height: height + 'px' }">
     <slot></slot>
   </b-card>
 </template>
@@ -11,11 +11,17 @@ export default {
     item() {
       return this.$item();
     },
-    widthPx() {
-      return this.item.widthPx;
+    width() {
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
     },
-    heightPx() {
-      return this.item.heightPx;
+    height() {
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
     }
   }
 };

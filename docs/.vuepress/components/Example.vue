@@ -1,6 +1,6 @@
 <template>
 <div v-if="Dashboard && DashLayout && DashItem">
-    <dashboard :id="'dashExample'">
+    <Dashboard :id="'dashExample'">
       <Dash-Layout
         v-for="l in dlayouts"
         v-bind="l"
@@ -18,12 +18,12 @@
           </template>
         </Dash-Item>
       </Dash-Layout>
-    </dashboard>
+    </Dashboard>
 </div>
 </template>
 
 <script>
-
+import Vue from 'vue'
 export default {
   data() {
     return {
@@ -143,10 +143,10 @@ export default {
     };
   },
   mounted() {
-    import("../../../src/components").then(mod => {
-      this.Dashboard = mod.Dashboard;
-      this.DashLayout = mod.DashLayout;
-      this.DashItem = mod.DashItem;
+    import("../../../src/components/").then(mod => {
+      this.Dashboard = Vue.component("Dashboard",mod.Dashboard);
+      this.DashLayout = Vue.component("DashLayout",mod.DashLayout);
+      this.DashItem = Vue.component("DashItem",mod.DashItem);
     });
   },
   beforeDestroy() {

@@ -38,7 +38,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@interactjs/types": "^1.9.19",
+    "@interactjs/types": "^1.9.20",
     "@types/jest": "^26.0.4",
     "@vue/cli-plugin-babel": "^4.4.6",
     "@vue/cli-plugin-eslint": "^4.4.6",
@@ -66,10 +66,10 @@
     "vue": "^2.6.11"
   },
   "dependencies": {
-    "@interactjs/actions": "^1.9.19",
-    "@interactjs/auto-start": "^1.9.19",
-    "@interactjs/interact": "^1.9.19",
-    "ste-simple-events": "^1.6.12",
+    "@interactjs/actions": "^1.9.20",
+    "@interactjs/auto-start": "^1.9.20",
+    "@interactjs/interact": "^1.9.20",
+    "ste-simple-events": "^1.6.13",
     "vue-element-resize-detector": "^1.0.6"
   }
 }

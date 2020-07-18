@@ -36,7 +36,7 @@
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19",
+    "vue-responsive-dash": "^0.4.3",
     "vue-template-compiler": "^2.6.11"
   }
 }

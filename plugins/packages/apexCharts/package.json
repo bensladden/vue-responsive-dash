@@ -21,23 +21,23 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue-apexcharts": "^1.5.3"
+    "vue-apexcharts": "^1.6.0"
   },
   "peerDependencies": {
-    "apexcharts": "^3.19.2"
+    "apexcharts": "^3.19.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "apexcharts": "^3.19.2",
+    "apexcharts": "^3.19.3",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.1.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.11",
-    "vue-responsive-dash": "^0.3.19",
+    "vue-responsive-dash": "^0.4.3",
     "vue-template-compiler": "^2.6.11"
   }
 }

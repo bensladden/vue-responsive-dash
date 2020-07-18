@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["echarts"] = factory(require("vue"));
+		exports["echarts"] = factory();
 	else
-		root["echarts"] = factory(root["Vue"]);
-})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__) {
+		root["echarts"] = factory();
+})((typeof self !== 'undefined' ? self : this), function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4600,6 +4600,7 @@ var _default = echarts.extendChartView({
     var roundCap = seriesModel.get('roundCap', true);
     var drawBackground = seriesModel.get('showBackground', true);
     var backgroundModel = seriesModel.getModel('backgroundStyle');
+    var barBorderRadius = backgroundModel.get('barBorderRadius') || 0;
     var bgEls = [];
     var oldBgEls = this._backgroundEls || [];
     data.diff(oldData).add(function (dataIndex) {
@@ -4607,8 +4608,14 @@ var _default = echarts.extendChartView({
       var layout = getLayout[coord.type](data, dataIndex, itemModel);
 
       if (drawBackground) {
-        var bgEl = createBackgroundEl(coord, isHorizontalOrRadial, layout);
-        bgEl.useStyle(backgroundModel.getBarItemStyle());
+        var bgLayout = getLayout[coord.type](data, dataIndex);
+        var bgEl = createBackgroundEl(coord, isHorizontalOrRadial, bgLayout);
+        bgEl.useStyle(backgroundModel.getBarItemStyle()); // Only cartesian2d support borderRadius.
+
+        if (coord.type === 'cartesian2d') {
+          bgEl.setShape('r', barBorderRadius);
+        }
+
         bgEls[dataIndex] = bgEl;
       } // If dataZoom in filteMode: 'empty', the baseValue can be set as NaN in "axisProxy".
 
@@ -4638,9 +4645,15 @@ var _default = echarts.extendChartView({
 
       if (drawBackground) {
         var bgEl = oldBgEls[oldIndex];
-        bgEl.useStyle(backgroundModel.getBarItemStyle());
+        bgEl.useStyle(backgroundModel.getBarItemStyle()); // Only cartesian2d support borderRadius.
+
+        if (coord.type === 'cartesian2d') {
+          bgEl.setShape('r', barBorderRadius);
+        }
+
         bgEls[newIndex] = bgEl;
-        var shape = createBackgroundShape(isHorizontalOrRadial, layout, coord);
+        var bgLayout = getLayout[coord.type](data, newIndex);
+        var shape = createBackgroundShape(isHorizontalOrRadial, bgLayout, coord);
         graphic.updateProps(bgEl, {
           shape: shape
         }, animationModel, newIndex);
@@ -4862,9 +4875,11 @@ function removeSector(dataIndex, animationModel, el) {
 }
 
 var getLayout = {
+  // itemModel is only used to get borderWidth, which is not needed
+  // when calculating bar background layout.
   cartesian2d: function (data, dataIndex, itemModel) {
     var layout = data.getItemLayout(dataIndex);
-    var fixedLineWidth = getLineWidth(itemModel, layout); // fix layout with lineWidth
+    var fixedLineWidth = itemModel ? getLineWidth(itemModel, layout) : 0; // fix layout with lineWidth
 
     var signX = layout.width > 0 ? 1 : -1;
     var signY = layout.height > 0 ? 1 : -1;
@@ -6441,9 +6456,10 @@ var _default = {
   /**
    * @param {string} mapName
    * @param {Object} mapRecord {specialAreas, geoJSON}
+   * @param {string} nameProperty
    * @return {Object} {regions, boundingRect}
    */
-  load: function (mapName, mapRecord) {
+  load: function (mapName, mapRecord, nameProperty) {
     var parsed = inner(mapRecord).parsed;
 
     if (parsed) {
@@ -6455,7 +6471,7 @@ var _default = {
     var regions; // https://jsperf.com/try-catch-performance-overhead
 
     try {
-      regions = geoJSON ? parseGeoJson(geoJSON) : [];
+      regions = geoJSON ? parseGeoJson(geoJSON, nameProperty) : [];
     } catch (e) {
       throw new Error('Invalid geoJson format\n' + e.message);
     }
@@ -7991,7 +8007,7 @@ Radar.prototype.update = function (ecModel, api) {
 
 
   zrUtil.each(indicatorAxes, function (indicatorAxis, idx) {
-    var rawExtent = getScaleExtent(indicatorAxis.scale, indicatorAxis.model);
+    var rawExtent = getScaleExtent(indicatorAxis.scale, indicatorAxis.model).extent;
     niceScaleExtent(indicatorAxis.scale, indicatorAxis.model);
     var axisModel = indicatorAxis.model;
     var scale = indicatorAxis.scale;
@@ -8076,13 +8092,14 @@ module.exports = _default;
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
-__webpack_require__.d(__webpack_exports__, "BarChart", function() { return /* reexport */ BarChart; });
-__webpack_require__.d(__webpack_exports__, "EffectScatterChart", function() { return /* reexport */ EffectScatterChart; });
-__webpack_require__.d(__webpack_exports__, "LineChart", function() { return /* reexport */ LineChart; });
-__webpack_require__.d(__webpack_exports__, "MapChart", function() { return /* reexport */ MapChart; });
-__webpack_require__.d(__webpack_exports__, "PieChart", function() { return /* reexport */ PieChart; });
-__webpack_require__.d(__webpack_exports__, "RadarChart", function() { return /* reexport */ RadarChart; });
-__webpack_require__.d(__webpack_exports__, "ScatterChart", function() { return /* reexport */ ScatterChart; });
+__webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ components["i" /* install */]; });
+__webpack_require__.d(__webpack_exports__, "BarChart", function() { return /* reexport */ components["a" /* BarChart */]; });
+__webpack_require__.d(__webpack_exports__, "EffectScatterChart", function() { return /* reexport */ components["b" /* EffectScatterChart */]; });
+__webpack_require__.d(__webpack_exports__, "LineChart", function() { return /* reexport */ components["c" /* LineChart */]; });
+__webpack_require__.d(__webpack_exports__, "MapChart", function() { return /* reexport */ components["d" /* MapChart */]; });
+__webpack_require__.d(__webpack_exports__, "PieChart", function() { return /* reexport */ components["e" /* PieChart */]; });
+__webpack_require__.d(__webpack_exports__, "RadarChart", function() { return /* reexport */ components["f" /* RadarChart */]; });
+__webpack_require__.d(__webpack_exports__, "ScatterChart", function() { return /* reexport */ components["g" /* ScatterChart */]; });
 
 // CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 // This file is imported into lib/wc client bundles.
@@ -8101,1151 +8118,13 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
-var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
-var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=template&id=0dcdf558&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=template&id=0dcdf558&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/bar.js
-var bar = __webpack_require__("eee9");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=template&id=36c2f65c&
-var EChartsvue_type_template_id_36c2f65c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"echarts"})}
-var EChartsvue_type_template_id_36c2f65c_staticRenderFns = []
-
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=template&id=36c2f65c&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/echarts.js
-var echarts = __webpack_require__("9db1");
-var echarts_default = /*#__PURE__*/__webpack_require__.n(echarts);
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/lodash/debounce.js
-var debounce = __webpack_require__("44db");
-var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce);
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/resize-detector/esm/index.js
-let raf = null;
-function requestAnimationFrame (callback) {
-  if (!raf) {
-    raf = (
-      window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      function (callback) {
-        return setTimeout(callback, 16)
-      }
-    ).bind(window);
-  }
-  return raf(callback)
-}
-
-let caf = null;
-function cancelAnimationFrame (id) {
-  if (!caf) {
-    caf = (
-      window.cancelAnimationFrame ||
-      window.webkitCancelAnimationFrame ||
-      window.mozCancelAnimationFrame ||
-      function (id) {
-        clearTimeout(id);
-      }
-    ).bind(window);
-  }
-
-  caf(id);
-}
-
-function createStyles (styleText) {
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = styleText;
-  } else {
-    style.appendChild(document.createTextNode(styleText));
-  }
-  (document.querySelector('head') || document.body).appendChild(style);
-  return style
-}
-
-function createElement (tagName, props = {}) {
-  let elem = document.createElement(tagName);
-  Object.keys(props).forEach(key => {
-    elem[key] = props[key];
-  });
-  return elem
-}
-
-function getComputedStyle (elem, prop, pseudo) {
-  // for older versions of Firefox, `getComputedStyle` required
-  // the second argument and may return `null` for some elements
-  // when `display: none`
-  let computedStyle = window.getComputedStyle(elem, pseudo || null) || {
-    display: 'none'
-  };
-
-  return computedStyle[prop]
-}
-
-function getRenderInfo (elem) {
-  if (!document.documentElement.contains(elem)) {
-    return {
-      detached: true,
-      rendered: false
-    }
-  }
-
-  let current = elem;
-  while (current !== document) {
-    if (getComputedStyle(current, 'display') === 'none') {
-      return {
-        detached: false,
-        rendered: false
-      }
-    }
-    current = current.parentNode;
-  }
-
-  return {
-    detached: false,
-    rendered: true
-  }
-}
-
-var css = ".resize-triggers{visibility:hidden;opacity:0}.resize-contract-trigger,.resize-contract-trigger:before,.resize-expand-trigger,.resize-triggers{content:\"\";position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden}.resize-contract-trigger,.resize-expand-trigger{background:#eee;overflow:auto}.resize-contract-trigger:before{width:200%;height:200%}";
-
-let total = 0;
-let style = null;
-
-function addListener (elem, callback) {
-  if (!elem.__resize_mutation_handler__) {
-    elem.__resize_mutation_handler__ = handleMutation.bind(elem);
-  }
-
-  let listeners = elem.__resize_listeners__;
-
-  if (!listeners) {
-    elem.__resize_listeners__ = [];
-    if (window.ResizeObserver) {
-      let { offsetWidth, offsetHeight } = elem;
-      let ro = new ResizeObserver(() => {
-        if (!elem.__resize_observer_triggered__) {
-          elem.__resize_observer_triggered__ = true;
-          if (elem.offsetWidth === offsetWidth && elem.offsetHeight === offsetHeight) {
-            return
-          }
-        }
-        runCallbacks(elem);
-      });
-
-      // initially display none won't trigger ResizeObserver callback
-      let { detached, rendered } = getRenderInfo(elem);
-      elem.__resize_observer_triggered__ = detached === false && rendered === false;
-      elem.__resize_observer__ = ro;
-      ro.observe(elem);
-    } else if (elem.attachEvent && elem.addEventListener) {
-      // targeting IE9/10
-      elem.__resize_legacy_resize_handler__ = function handleLegacyResize () {
-        runCallbacks(elem);
-      };
-      elem.attachEvent('onresize', elem.__resize_legacy_resize_handler__);
-      document.addEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
-    } else {
-      if (!total) {
-        style = createStyles(css);
-      }
-      initTriggers(elem);
-
-      elem.__resize_rendered__ = getRenderInfo(elem).rendered;
-      if (window.MutationObserver) {
-        let mo = new MutationObserver(elem.__resize_mutation_handler__);
-        mo.observe(document, {
-          attributes: true,
-          childList: true,
-          characterData: true,
-          subtree: true
-        });
-        elem.__resize_mutation_observer__ = mo;
-      }
-    }
-  }
-
-  elem.__resize_listeners__.push(callback);
-  total++;
-}
-
-function removeListener (elem, callback) {
-  // targeting IE9/10
-  if (elem.detachEvent && elem.removeEventListener) {
-    elem.detachEvent('onresize', elem.__resize_legacy_resize_handler__);
-    document.removeEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
-    return
-  }
-
-  let listeners = elem.__resize_listeners__;
-  if (!listeners) {
-    return
-  }
-  listeners.splice(listeners.indexOf(callback), 1);
-
-  if (!listeners.length) {
-    if (elem.__resize_observer__) {
-      elem.__resize_observer__.unobserve(elem);
-      elem.__resize_observer__.disconnect();
-      elem.__resize_observer__ = null;
-    } else {
-      if (elem.__resize_mutation_observer__) {
-        elem.__resize_mutation_observer__.disconnect();
-        elem.__resize_mutation_observer__ = null;
-      }
-      elem.removeEventListener('scroll', handleScroll);
-      elem.removeChild(elem.__resize_triggers__.triggers);
-      elem.__resize_triggers__ = null;
-    }
-    elem.__resize_listeners__ = null;
-  }
-
-  if (!--total && style) {
-    style.parentNode.removeChild(style);
-  }
-}
-
-function getUpdatedSize (elem) {
-  let { width, height } = elem.__resize_last__;
-  let { offsetWidth, offsetHeight } = elem;
-  if (offsetWidth !== width || offsetHeight !== height) {
-    return {
-      width: offsetWidth,
-      height: offsetHeight
-    }
-  }
-  return null
-}
-
-function handleMutation () {
-  // `this` denotes the scrolling element
-  let { rendered, detached } = getRenderInfo(this);
-  if (rendered !== this.__resize_rendered__) {
-    if (!detached && this.__resize_triggers__) {
-      resetTriggers(this);
-      this.addEventListener('scroll', handleScroll, true);
-    }
-    this.__resize_rendered__ = rendered;
-    runCallbacks(this);
-  }
-}
-
-function handleScroll () {
-  // `this` denotes the scrolling element
-  resetTriggers(this);
-  if (this.__resize_raf__) {
-    cancelAnimationFrame(this.__resize_raf__);
-  }
-  this.__resize_raf__ = requestAnimationFrame(() => {
-    let updated = getUpdatedSize(this);
-    if (updated) {
-      this.__resize_last__ = updated;
-      runCallbacks(this);
-    }
-  });
-}
-
-function runCallbacks (elem) {
-  if (!elem || !elem.__resize_listeners__) {
-    return
-  }
-  elem.__resize_listeners__.forEach(callback => {
-    callback.call(elem);
-  });
-}
-
-function initTriggers (elem) {
-  let position = getComputedStyle(elem, 'position');
-  if (!position || position === 'static') {
-    elem.style.position = 'relative';
-  }
-
-  elem.__resize_old_position__ = position;
-  elem.__resize_last__ = {};
-
-  let triggers = createElement('div', {
-    className: 'resize-triggers'
-  });
-  let expand = createElement('div', {
-    className: 'resize-expand-trigger'
-  });
-  let expandChild = createElement('div');
-  let contract = createElement('div', {
-    className: 'resize-contract-trigger'
-  });
-  expand.appendChild(expandChild);
-  triggers.appendChild(expand);
-  triggers.appendChild(contract);
-  elem.appendChild(triggers);
-
-  elem.__resize_triggers__ = {
-    triggers,
-    expand,
-    expandChild,
-    contract
-  };
-
-  resetTriggers(elem);
-  elem.addEventListener('scroll', handleScroll, true);
-
-  elem.__resize_last__ = {
-    width: elem.offsetWidth,
-    height: elem.offsetHeight
-  };
-}
-
-function resetTriggers (elem) {
-  let { expand, expandChild, contract } = elem.__resize_triggers__;
-
-  // batch read
-  let { scrollWidth: csw, scrollHeight: csh } = contract;
-  let { offsetWidth: eow, offsetHeight: eoh, scrollWidth: esw, scrollHeight: esh } = expand;
-
-  // batch write
-  contract.scrollLeft = csw;
-  contract.scrollTop = csh;
-  expandChild.style.width = eow + 1 + 'px';
-  expandChild.style.height = eoh + 1 + 'px';
-  expand.scrollLeft = esw;
-  expand.scrollTop = esh;
-}
-
-
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-const INIT_TRIGGERS = ['theme', 'initOptions', 'autoresize']
-const REWATCH_TRIGGERS = ['manualUpdate', 'watchShallow']
-
-/* harmony default export */ var EChartsvue_type_script_lang_js_ = ({
-  props: {
-    options: Object,
-    theme: [String, Object],
-    initOptions: Object,
-    group: String,
-    autoresize: Boolean,
-    watchShallow: Boolean,
-    manualUpdate: Boolean
-  },
-  data () {
-    return {
-      lastArea: 0
-    }
-  },
-  watch: {
-    group (group) {
-      this.chart.group = group
-    }
-  },
-  methods: {
-    // provide an explicit merge option method
-    mergeOptions (options, notMerge, lazyUpdate) {
-      if (this.manualUpdate) {
-        this.manualOptions = options
-      }
-
-      if (!this.chart) {
-        this.init(options)
-      } else {
-        this.delegateMethod('setOption', options, notMerge, lazyUpdate)
-      }
-    },
-    // just delegates ECharts methods to Vue component
-    // use explicit params to reduce transpiled size for now
-    appendData (params) {
-      this.delegateMethod('appendData', params)
-    },
-    resize (options) {
-      this.delegateMethod('resize', options)
-    },
-    dispatchAction (payload) {
-      this.delegateMethod('dispatchAction', payload)
-    },
-    convertToPixel (finder, value) {
-      return this.delegateMethod('convertToPixel', finder, value)
-    },
-    convertFromPixel (finder, value) {
-      return this.delegateMethod('convertFromPixel', finder, value)
-    },
-    containPixel (finder, value) {
-      return this.delegateMethod('containPixel', finder, value)
-    },
-    showLoading (type, options) {
-      this.delegateMethod('showLoading', type, options)
-    },
-    hideLoading () {
-      this.delegateMethod('hideLoading')
-    },
-    getDataURL (options) {
-      return this.delegateMethod('getDataURL', options)
-    },
-    getConnectedDataURL (options) {
-      return this.delegateMethod('getConnectedDataURL', options)
-    },
-    clear () {
-      this.delegateMethod('clear')
-    },
-    dispose () {
-      this.delegateMethod('dispose')
-    },
-    delegateMethod (name, ...args) {
-      if (!this.chart) {
-        this.init()
-      }
-      return this.chart[name](...args)
-    },
-    delegateGet (methodName) {
-      if (!this.chart) {
-        this.init()
-      }
-      return this.chart[methodName]()
-    },
-    getArea () {
-      return this.$el.offsetWidth * this.$el.offsetHeight
-    },
-    init (options) {
-      if (this.chart) {
-        return
-      }
-
-      const chart = echarts_default.a.init(this.$el, this.theme, this.initOptions)
-
-      if (this.group) {
-        chart.group = this.group
-      }
-
-      chart.setOption(options || this.manualOptions || this.options || {}, true)
-
-      Object.keys(this.$listeners).forEach(event => {
-        const handler = this.$listeners[event]
-
-        if (event.indexOf('zr:') === 0) {
-          chart.getZr().on(event.slice(3), handler)
-        } else {
-          chart.on(event, handler)
-        }
-      })
-
-      if (this.autoresize) {
-        this.lastArea = this.getArea()
-        this.__resizeHandler = debounce_default()(
-          () => {
-            if (this.lastArea === 0) {
-              // emulate initial render for initially hidden charts
-              this.mergeOptions({}, true)
-              this.resize()
-              this.mergeOptions(this.options || this.manualOptions || {}, true)
-            } else {
-              this.resize()
-            }
-            this.lastArea = this.getArea()
-          },
-          100,
-          { leading: true }
-        )
-        addListener(this.$el, this.__resizeHandler)
-      }
-
-      Object.defineProperties(this, {
-        // Only recalculated when accessed from JavaScript.
-        // Won't update DOM on value change because getters
-        // don't depend on reactive values
-        width: {
-          configurable: true,
-          get: () => {
-            return this.delegateGet('getWidth')
-          }
-        },
-        height: {
-          configurable: true,
-          get: () => {
-            return this.delegateGet('getHeight')
-          }
-        },
-        isDisposed: {
-          configurable: true,
-          get: () => {
-            return !!this.delegateGet('isDisposed')
-          }
-        },
-        computedOptions: {
-          configurable: true,
-          get: () => {
-            return this.delegateGet('getOption')
-          }
-        }
-      })
-
-      this.chart = chart
-    },
-    initOptionsWatcher () {
-      if (this.__unwatchOptions) {
-        this.__unwatchOptions()
-        this.__unwatchOptions = null
-      }
-
-      if (!this.manualUpdate) {
-        this.__unwatchOptions = this.$watch(
-          'options',
-          (val, oldVal) => {
-            if (!this.chart && val) {
-              this.init()
-            } else {
-              // mutating `options` will lead to merging
-              // replacing it with new reference will lead to not merging
-              // eg.
-              // `this.options = Object.assign({}, this.options, { ... })`
-              // will trigger `this.chart.setOption(val, true)
-              // `this.options.title.text = 'Trends'`
-              // will trigger `this.chart.setOption(val, false)`
-              this.chart.setOption(val, val !== oldVal)
-            }
-          },
-          { deep: !this.watchShallow }
-        )
-      }
-    },
-    destroy () {
-      if (this.autoresize) {
-        removeListener(this.$el, this.__resizeHandler)
-      }
-      this.dispose()
-      this.chart = null
-    },
-    refresh () {
-      if (this.chart) {
-        this.destroy()
-        this.init()
-      }
-    }
-  },
-  created () {
-    this.initOptionsWatcher()
-
-    INIT_TRIGGERS.forEach(prop => {
-      this.$watch(
-        prop,
-        () => {
-          this.refresh()
-        },
-        { deep: true }
-      )
-    })
-
-    REWATCH_TRIGGERS.forEach(prop => {
-      this.$watch(prop, () => {
-        this.initOptionsWatcher()
-        this.refresh()
-      })
-    })
-  },
-  mounted () {
-    // auto init if `options` is already provided
-    if (this.options) {
-      this.init()
-    }
-  },
-  activated () {
-    if (this.autoresize) {
-      this.chart && this.chart.resize()
-    }
-  },
-  destroyed () {
-    if (this.chart) {
-      this.destroy()
-    }
-  },
-  connect (group) {
-    if (typeof group !== 'string') {
-      group = group.map(chart => chart.chart)
-    }
-    echarts_default.a.connect(group)
-  },
-  disconnect (group) {
-    echarts_default.a.disConnect(group)
-  },
-  registerMap (mapName, geoJSON, specialAreas) {
-    echarts_default.a.registerMap(mapName, geoJSON, specialAreas)
-  },
-  registerTheme (name, theme) {
-    echarts_default.a.registerTheme(name, theme)
-  },
-  graphic: echarts_default.a.graphic
-});
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_EChartsvue_type_script_lang_js_ = (EChartsvue_type_script_lang_js_); 
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=style&index=0&lang=css&
-var EChartsvue_type_style_index_0_lang_css_ = __webpack_require__("c250");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functional component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue
-
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  components_EChartsvue_type_script_lang_js_,
-  EChartsvue_type_template_id_36c2f65c_render,
-  EChartsvue_type_template_id_36c2f65c_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ECharts = (component.exports);
-// CONCATENATED MODULE: ./src/components/chartMixin.js
-
-/* harmony default export */ var chartMixin = ({
-  components: { "v-chart": ECharts },
-  props: {
-    initOptions: Object,
-    options: Object,
-    theme: [String, Object],
-    group: String,
-    watchShallow: Boolean,
-    manualUpdate: Boolean
-  },
-  inject: ["$item"],
-  computed: {
-    item() {
-      return this.$item();
-    },
-    width() {
-      if (this.item) {
-        return this.item.widthPx;
-      }
-      return 0;
-    },
-    height() {
-      if (this.item) {
-        return this.item.heightPx;
-      }
-      return 0;
-    }
-  }
-});
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var BarChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_BarChartvue_type_script_lang_js_ = (BarChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/BarChart.vue
-
-
-
-
-
-/* normalize component */
-
-var BarChart_component = normalizeComponent(
-  components_BarChartvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var BarChart = (BarChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/EffectScatterChart.vue?vue&type=template&id=31e70cc0&
-var EffectScatterChartvue_type_template_id_31e70cc0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var EffectScatterChartvue_type_template_id_31e70cc0_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue?vue&type=template&id=31e70cc0&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/effectScatter.js
-var effectScatter = __webpack_require__("c9cb");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/EffectScatterChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var EffectScatterChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_EffectScatterChartvue_type_script_lang_js_ = (EffectScatterChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue
-
-
-
-
-
-/* normalize component */
-
-var EffectScatterChart_component = normalizeComponent(
-  components_EffectScatterChartvue_type_script_lang_js_,
-  EffectScatterChartvue_type_template_id_31e70cc0_render,
-  EffectScatterChartvue_type_template_id_31e70cc0_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var EffectScatterChart = (EffectScatterChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=31982a9c&
-var LineChartvue_type_template_id_31982a9c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var LineChartvue_type_template_id_31982a9c_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=31982a9c&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/line.js
-var line = __webpack_require__("175a");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var LineChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_LineChartvue_type_script_lang_js_ = (LineChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/LineChart.vue
-
-
-
-
-
-/* normalize component */
-
-var LineChart_component = normalizeComponent(
-  components_LineChartvue_type_script_lang_js_,
-  LineChartvue_type_template_id_31982a9c_render,
-  LineChartvue_type_template_id_31982a9c_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var LineChart = (LineChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/MapChart.vue?vue&type=template&id=7d17e902&
-var MapChartvue_type_template_id_7d17e902_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var MapChartvue_type_template_id_7d17e902_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/MapChart.vue?vue&type=template&id=7d17e902&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/map.js
-var map = __webpack_require__("24b7");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/MapChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var MapChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/MapChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_MapChartvue_type_script_lang_js_ = (MapChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/MapChart.vue
-
-
-
-
-
-/* normalize component */
-
-var MapChart_component = normalizeComponent(
-  components_MapChartvue_type_script_lang_js_,
-  MapChartvue_type_template_id_7d17e902_render,
-  MapChartvue_type_template_id_7d17e902_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var MapChart = (MapChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=template&id=64c0c6bc&
-var PieChartvue_type_template_id_64c0c6bc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var PieChartvue_type_template_id_64c0c6bc_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=template&id=64c0c6bc&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/pie.js
-var pie = __webpack_require__("6dc0");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var PieChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_PieChartvue_type_script_lang_js_ = (PieChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/PieChart.vue
-
-
-
-
-
-/* normalize component */
-
-var PieChart_component = normalizeComponent(
-  components_PieChartvue_type_script_lang_js_,
-  PieChartvue_type_template_id_64c0c6bc_render,
-  PieChartvue_type_template_id_64c0c6bc_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var PieChart = (PieChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=template&id=231bcc24&
-var RadarChartvue_type_template_id_231bcc24_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var RadarChartvue_type_template_id_231bcc24_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=template&id=231bcc24&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/radar.js
-var radar = __webpack_require__("2971");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var RadarChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_RadarChartvue_type_script_lang_js_ = (RadarChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/RadarChart.vue
-
-
-
-
-
-/* normalize component */
-
-var RadarChart_component = normalizeComponent(
-  components_RadarChartvue_type_script_lang_js_,
-  RadarChartvue_type_template_id_231bcc24_render,
-  RadarChartvue_type_template_id_231bcc24_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var RadarChart = (RadarChart_component.exports);
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"402cb09f-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=template&id=7b8ea63e&
-var ScatterChartvue_type_template_id_7b8ea63e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
-var ScatterChartvue_type_template_id_7b8ea63e_staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=template&id=7b8ea63e&
-
-// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/scatter.js
-var scatter = __webpack_require__("e12c");
-
-// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ var ScatterChartvue_type_script_lang_js_ = ({
-  mixins: [chartMixin]
-});
-
-// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_ScatterChartvue_type_script_lang_js_ = (ScatterChartvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/components/ScatterChart.vue
-
-
-
-
-
-/* normalize component */
-
-var ScatterChart_component = normalizeComponent(
-  components_ScatterChartvue_type_script_lang_js_,
-  ScatterChartvue_type_template_id_7b8ea63e_render,
-  ScatterChartvue_type_template_id_7b8ea63e_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* harmony default export */ var ScatterChart = (ScatterChart_component.exports);
-// CONCATENATED MODULE: ./src/components/index.js
-
-
-
-
-
-
-
-
-
-
-const VueResponsiveDashECharts = {
-  BarChart: BarChart,
-  EffectScatterChart: EffectScatterChart,
-  LineChart: LineChart,
-  MapChart: MapChart,
-  PieChart: PieChart,
-  RadarChart: RadarChart,
-  ScatterChart: ScatterChart
-};
-
-Object.keys(VueResponsiveDashECharts).forEach(name => {
-  external_commonjs_vue_commonjs2_vue_root_Vue_default.a.component(name, VueResponsiveDashECharts[name]);
-});
-
-/* harmony default export */ var components = (VueResponsiveDashECharts);
-
+// EXTERNAL MODULE: ./src/components/index.js
+var components = __webpack_require__("2af9");
 
 // CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
 
 
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components);
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components["h" /* default */]);
 
 
 
@@ -10756,6 +9635,188 @@ echarts.registerVisual(visualSymbol('radar', 'circle'));
 echarts.registerLayout(radarLayout);
 echarts.registerProcessor(dataFilter('radar'));
 echarts.registerPreprocessor(backwardCompat);
+
+/***/ }),
+
+/***/ "2af9":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return install; });
+/* harmony import */ var _BarChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("3fdc");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _BarChart_vue__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+
+/* harmony import */ var _EffectScatterChart_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("9cf2");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _EffectScatterChart_vue__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+
+/* harmony import */ var _LineChart_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("4bd8");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _LineChart_vue__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
+/* harmony import */ var _MapChart_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("df6d");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _MapChart_vue__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+
+/* harmony import */ var _PieChart_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("748a");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _PieChart_vue__WEBPACK_IMPORTED_MODULE_4__["a"]; });
+
+/* harmony import */ var _RadarChart_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("93f3");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _RadarChart_vue__WEBPACK_IMPORTED_MODULE_5__["a"]; });
+
+/* harmony import */ var _ScatterChart_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("6085");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _ScatterChart_vue__WEBPACK_IMPORTED_MODULE_6__["a"]; });
+
+
+
+
+
+
+
+
+
+const VueResponsiveDashECharts = {
+  BarChart: _BarChart_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"],
+  EffectScatterChart: _EffectScatterChart_vue__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"],
+  LineChart: _LineChart_vue__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"],
+  MapChart: _MapChart_vue__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"],
+  PieChart: _PieChart_vue__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"],
+  RadarChart: _RadarChart_vue__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"],
+  ScatterChart: _ScatterChart_vue__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"],
+};
+// Declare install function executed by Vue.use()
+function install(Vue) {
+  if (install.installed) return;
+  install.installed = true;
+  Object.keys(VueResponsiveDashECharts).forEach((name) => {
+    Vue.component(name, VueResponsiveDashECharts[name]);
+  });
+}
+
+// Create module definition for Vue.use()
+const plugin = {
+  install,
+};
+
+// Auto-install when vue is found (eg. in browser via <script> tag)
+let GlobalVue = null;
+if (typeof window !== "undefined") {
+  GlobalVue = window.Vue;
+} else if (typeof global !== "undefined") {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["h"] = (VueResponsiveDashECharts);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("7d15")))
+
+/***/ }),
+
+/***/ "2be6":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () {
+        injectStyles.call(
+          this,
+          (options.functional ? this.parent : this).$root.$options.shadowRoot
+        )
+      }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functional component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
 
 /***/ }),
 
@@ -13518,6 +12579,73 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "3fdc":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=template&id=0dcdf558&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=template&id=0dcdf558&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/bar.js
+var bar = __webpack_require__("eee9");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/BarChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var BarChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/BarChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_BarChartvue_type_script_lang_js_ = (BarChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/BarChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_BarChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var BarChart = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+
 /***/ "4141":
 /***/ (function(module, exports) {
 
@@ -14356,7 +13484,8 @@ effectSymbolProto.updateData = function (data, idx) {
     pos[1] = parsePercent(symbolOffset[1], symbolSize[1]);
   }
 
-  rippleGroup.rotation = (itemModel.getShallow('symbolRotate') || 0) * Math.PI / 180 || 0;
+  var symbolRotate = data.getItemVisual(idx, 'symbolRotate');
+  rippleGroup.rotation = (symbolRotate || 0) * Math.PI / 180 || 0;
   var effectCfg = {};
   effectCfg.showEffectOn = seriesModel.get('showEffectOn');
   effectCfg.rippleScale = itemModel.get('rippleEffect.scale');
@@ -16279,6 +15408,8 @@ var _component = __webpack_require__("a3c8");
 
 var getUID = _component.getUID;
 
+var Transformable = __webpack_require__("016a");
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -16449,10 +15580,27 @@ MapDraw.prototype = {
 
     var regionsGroup = this._regionsGroup;
     var group = this.group;
-    var transformInfo = geo.getTransformInfo();
-    group.transform = transformInfo.roamTransform;
-    group.decomposeTransform();
-    group.dirty();
+    var transformInfo = geo.getTransformInfo(); // No animation when first draw or in action
+
+    var isFirstDraw = !regionsGroup.childAt(0) || payload;
+    var targetScale;
+
+    if (isFirstDraw) {
+      group.transform = transformInfo.roamTransform;
+      group.decomposeTransform();
+      group.dirty();
+    } else {
+      var target = new Transformable();
+      target.transform = transformInfo.roamTransform;
+      target.decomposeTransform();
+      var props = {
+        scale: target.scale,
+        position: target.position
+      };
+      targetScale = target.scale;
+      graphic.updateProps(group, props, mapOrGeoModel);
+    }
+
     var scale = transformInfo.rawScale;
     var position = transformInfo.rawPosition;
     regionsGroup.removeAll();
@@ -16574,6 +15722,15 @@ MapDraw.prototype = {
           textAlign: 'center',
           textVerticalAlign: 'middle'
         });
+
+        if (!isFirstDraw) {
+          // Text animation
+          var textScale = [1 / targetScale[0], 1 / targetScale[1]];
+          graphic.updateProps(textEl, {
+            scale: textScale
+          }, mapOrGeoModel);
+        }
+
         regionGroup.add(textEl);
       } // setItemGraphicEl, setHoverStyle after all polygons and labels
       // are added to the rigionGroup
@@ -17429,7 +16586,7 @@ var MapSeries = SeriesModel.extend({
       });
     }
 
-    var geoSource = geoSourceManager.load(this.getMapType(), this.option.nameMap);
+    var geoSource = geoSourceManager.load(this.getMapType(), this.option.nameMap, this.option.nameProperty);
     zrUtil.each(geoSource.regions, function (region) {
       var name = region.name;
 
@@ -17590,12 +16747,80 @@ var MapSeries = SeriesModel.extend({
       itemStyle: {
         areaColor: 'rgba(255,215,0,0.8)'
       }
-    }
+    },
+    nameProperty: 'name'
   }
 });
 zrUtil.mixin(MapSeries, dataSelectableMixin);
 var _default = MapSeries;
 module.exports = _default;
+
+/***/ }),
+
+/***/ "4bd8":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=template&id=31982a9c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=template&id=31982a9c&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/line.js
+var line = __webpack_require__("175a");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/LineChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var LineChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/LineChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_LineChartvue_type_script_lang_js_ = (LineChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/LineChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_LineChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var LineChart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -19540,7 +18765,6 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
 
   var itemStyle = seriesScope && seriesScope.itemStyle;
   var hoverItemStyle = seriesScope && seriesScope.hoverItemStyle;
-  var symbolRotate = seriesScope && seriesScope.symbolRotate;
   var symbolOffset = seriesScope && seriesScope.symbolOffset;
   var labelModel = seriesScope && seriesScope.labelModel;
   var hoverLabelModel = seriesScope && seriesScope.hoverLabelModel;
@@ -19553,7 +18777,6 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
 
     itemStyle = itemModel.getModel(normalStyleAccessPath).getItemStyle(['color']);
     hoverItemStyle = itemModel.getModel(emphasisStyleAccessPath).getItemStyle();
-    symbolRotate = itemModel.getShallow('symbolRotate');
     symbolOffset = itemModel.getShallow('symbolOffset');
     labelModel = itemModel.getModel(normalLabelAccessPath);
     hoverLabelModel = itemModel.getModel(emphasisLabelAccessPath);
@@ -19564,6 +18787,7 @@ symbolProto._updateCommon = function (data, idx, symbolSize, seriesScope) {
   }
 
   var elStyle = symbolPath.style;
+  var symbolRotate = data.getItemVisual(idx, 'symbolRotate');
   symbolPath.attr('rotation', (symbolRotate || 0) * Math.PI / 180 || 0);
 
   if (symbolOffset) {
@@ -19722,7 +18946,10 @@ function createGridClipPath(cartesian, hasAnimation, seriesModel) {
   x -= lineWidth / 2;
   y -= lineWidth / 2;
   width += lineWidth;
-  height += lineWidth;
+  height += lineWidth; // fix: https://github.com/apache/incubator-echarts/issues/11369
+
+  x = Math.floor(x);
+  width = Math.round(width);
   var clipPath = new graphic.Rect({
     shape: {
       x: x,
@@ -19999,16 +19226,17 @@ var _default = {
   /**
    * @param {string} mapName
    * @param {Object} nameMap
+   * @param {string} nameProperty
    * @return {Object} source {regions, regionsMap, nameCoordMap, boundingRect}
    */
-  load: function (mapName, nameMap) {
+  load: function (mapName, nameMap, nameProperty) {
     var regions = [];
     var regionsMap = createHashMap();
     var nameCoordMap = createHashMap();
     var boundingRect;
     var mapRecords = retrieveMap(mapName);
     each(mapRecords, function (record) {
-      var singleSource = loaders[record.type].load(mapName, record);
+      var singleSource = loaders[record.type].load(mapName, record, nameProperty);
       each(singleSource.regions, function (region) {
         var regionName = region.name; // Try use the alias in geoNameMap
 
@@ -20069,6 +19297,73 @@ function retrieveMap(mapName) {
 }
 
 module.exports = _default;
+
+/***/ }),
+
+/***/ "6085":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=template&id=7b8ea63e&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=template&id=7b8ea63e&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/scatter.js
+var scatter = __webpack_require__("e12c");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ScatterChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var ScatterChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ScatterChartvue_type_script_lang_js_ = (ScatterChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/ScatterChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_ScatterChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ScatterChart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -20185,11 +19480,12 @@ function decodePolygon(coordinate, encodeOffsets, encodeScale) {
 /**
  * @alias module:echarts/coord/geo/parseGeoJson
  * @param {Object} geoJson
+ * @param {string} nameProperty
  * @return {module:zrender/container/Group}
  */
 
 
-function _default(geoJson) {
+function _default(geoJson, nameProperty) {
   decode(geoJson);
   return zrUtil.map(zrUtil.filter(geoJson.features, function (featureObj) {
     // Output of mapshaper may have geometry null
@@ -20222,7 +19518,7 @@ function _default(geoJson) {
       });
     }
 
-    var region = new Region(properties.name, geometries, properties.cp);
+    var region = new Region(properties[nameProperty || 'name'], geometries, properties.cp);
     region.properties = properties;
     return region;
   });
@@ -23102,6 +22398,8 @@ var zrUtil = __webpack_require__("eb62");
 
 var graphic = __webpack_require__("d47b");
 
+var textContain = __webpack_require__("9f7e");
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -23134,11 +22432,16 @@ function _default(api, opts) {
   opts = opts || {};
   zrUtil.defaults(opts, {
     text: 'loading',
-    color: '#c23531',
     textColor: '#000',
+    fontSize: '12px',
     maskColor: 'rgba(255, 255, 255, 0.8)',
+    showSpinner: true,
+    color: '#c23531',
+    spinnerRadius: 10,
+    lineWidth: 5,
     zlevel: 0
   });
+  var group = new graphic.Group();
   var mask = new graphic.Rect({
     style: {
       fill: opts.maskColor
@@ -23146,24 +22449,13 @@ function _default(api, opts) {
     zlevel: opts.zlevel,
     z: 10000
   });
-  var arc = new graphic.Arc({
-    shape: {
-      startAngle: -PI / 2,
-      endAngle: -PI / 2 + 0.1,
-      r: 10
-    },
-    style: {
-      stroke: opts.color,
-      lineCap: 'round',
-      lineWidth: 5
-    },
-    zlevel: opts.zlevel,
-    z: 10001
-  });
+  group.add(mask);
+  var font = opts.fontSize + ' sans-serif';
   var labelRect = new graphic.Rect({
     style: {
       fill: 'none',
       text: opts.text,
+      font: font,
       textPosition: 'right',
       textDistance: 10,
       textFill: opts.textColor
@@ -23171,25 +22463,45 @@ function _default(api, opts) {
     zlevel: opts.zlevel,
     z: 10001
   });
-  arc.animateShape(true).when(1000, {
-    endAngle: PI * 3 / 2
-  }).start('circularInOut');
-  arc.animateShape(true).when(1000, {
-    startAngle: PI * 3 / 2
-  }).delay(300).start('circularInOut');
-  var group = new graphic.Group();
-  group.add(arc);
   group.add(labelRect);
-  group.add(mask); // Inject resize
+
+  if (opts.showSpinner) {
+    var arc = new graphic.Arc({
+      shape: {
+        startAngle: -PI / 2,
+        endAngle: -PI / 2 + 0.1,
+        r: opts.spinnerRadius
+      },
+      style: {
+        stroke: opts.color,
+        lineCap: 'round',
+        lineWidth: opts.lineWidth
+      },
+      zlevel: opts.zlevel,
+      z: 10001
+    });
+    arc.animateShape(true).when(1000, {
+      endAngle: PI * 3 / 2
+    }).start('circularInOut');
+    arc.animateShape(true).when(1000, {
+      startAngle: PI * 3 / 2
+    }).delay(300).start('circularInOut');
+    group.add(arc);
+  } // Inject resize
+
 
   group.resize = function () {
-    var cx = api.getWidth() / 2;
+    var textWidth = textContain.getWidth(opts.text, font);
+    var r = opts.showSpinner ? opts.spinnerRadius : 0; // cx = (containerWidth - arcDiameter - textDistance - textWidth) / 2
+    // textDistance needs to be calculated when both animation and text exist
+
+    var cx = (api.getWidth() - r * 2 - (opts.showSpinner && textWidth ? 10 : 0) - textWidth) / 2 // only show the text
+    - (opts.showSpinner ? 0 : textWidth / 2);
     var cy = api.getHeight() / 2;
-    arc.setShape({
+    opts.showSpinner && arc.setShape({
       cx: cx,
       cy: cy
     });
-    var r = arc.shape.r;
     labelRect.setShape({
       x: cx - r,
       y: cy - r,
@@ -24694,7 +24006,7 @@ var instances = {}; // ZRender实例map索引
  * @type {string}
  */
 
-var version = '4.3.0';
+var version = '4.3.1';
 /**
  * Initializing a zrender instance
  * @param {HTMLElement} dom
@@ -25339,6 +24651,73 @@ var _default = {
   }
 };
 module.exports = _default;
+
+/***/ }),
+
+/***/ "748a":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=template&id=64c0c6bc&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=template&id=64c0c6bc&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/pie.js
+var pie = __webpack_require__("6dc0");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/PieChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var PieChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/PieChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_PieChartvue_type_script_lang_js_ = (PieChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/PieChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_PieChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var PieChart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -26580,6 +25959,10 @@ var __DEV__ = _config.__DEV__;
 
 var zrUtil = __webpack_require__("eb62");
 
+var _bbox = __webpack_require__("be67");
+
+var fromPoints = _bbox.fromPoints;
+
 var SymbolDraw = __webpack_require__("4364");
 
 var SymbolClz = __webpack_require__("5b8e");
@@ -26641,6 +26024,17 @@ function isPointsSame(points1, points2) {
   }
 
   return true;
+}
+
+function getBoundingDiff(points1, points2) {
+  var min1 = [];
+  var max1 = [];
+  var min2 = [];
+  var max2 = [];
+  fromPoints(points1, min1, max1);
+  fromPoints(points2, min2, max2); // Get a max value from each corner of two boundings.
+
+  return Math.max(Math.abs(min1[0] - min2[0]), Math.abs(min1[1] - min2[1]), Math.abs(max1[0] - max2[0]), Math.abs(max1[1] - max2[1]));
 }
 
 function getSmooth(smooth) {
@@ -27186,6 +26580,24 @@ var _default = ChartView.extend({
       stackedOnCurrent = turnPointsIntoStep(diff.stackedOnCurrent, coordSys, step);
       next = turnPointsIntoStep(diff.next, coordSys, step);
       stackedOnNext = turnPointsIntoStep(diff.stackedOnNext, coordSys, step);
+    } // Don't apply animation if diff is large.
+    // For better result and avoid memory explosion problems like
+    // https://github.com/apache/incubator-echarts/issues/12229
+
+
+    if (getBoundingDiff(current, next) > 3000 || polygon && getBoundingDiff(stackedOnCurrent, stackedOnNext) > 3000) {
+      polyline.setShape({
+        points: next
+      });
+
+      if (polygon) {
+        polygon.setShape({
+          points: next,
+          stackedOnPoints: stackedOnNext
+        });
+      }
+
+      return;
     } // `diff.current` is subset of `current` (which should be ensured by
     // turnPointsIntoStep), so points in `__points` can be updated when
     // points in `current` are update during animation.
@@ -30845,13 +30257,6 @@ module.exports = _default;
 
 /***/ }),
 
-/***/ "8bbf":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
-
-/***/ }),
-
 /***/ "902d":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31019,6 +30424,73 @@ var _default = {
   colorLayer: [['#37A2DA', '#ffd85c', '#fd7b5f'], ['#37A2DA', '#67E0E3', '#FFDB5C', '#ff9f7f', '#E062AE', '#9d96f5'], ['#37A2DA', '#32C5E9', '#9FE6B8', '#FFDB5C', '#ff9f7f', '#fb7293', '#e7bcf3', '#8378EA', '#96BFFF'], colorAll]
 };
 module.exports = _default;
+
+/***/ }),
+
+/***/ "93f3":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=template&id=231bcc24&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=template&id=231bcc24&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/radar.js
+var radar = __webpack_require__("2971");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/RadarChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var RadarChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/RadarChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RadarChartvue_type_script_lang_js_ = (RadarChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/RadarChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_RadarChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var RadarChart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -33065,6 +32537,73 @@ module.exports = _default;
 
 /***/ }),
 
+/***/ "9cf2":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/EffectScatterChart.vue?vue&type=template&id=31e70cc0&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue?vue&type=template&id=31e70cc0&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/effectScatter.js
+var effectScatter = __webpack_require__("c9cb");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/EffectScatterChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var EffectScatterChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_EffectScatterChartvue_type_script_lang_js_ = (EffectScatterChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/EffectScatterChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_EffectScatterChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var EffectScatterChart = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+
 /***/ "9db1":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33171,9 +32710,9 @@ var each = zrUtil.each;
 var isFunction = zrUtil.isFunction;
 var isObject = zrUtil.isObject;
 var parseClassType = ComponentModel.parseClassType;
-var version = '4.7.0';
+var version = '4.8.0';
 var dependencies = {
-  zrender: '4.3.0'
+  zrender: '4.3.1'
 };
 var TEST_FRAME_REMAIN_TIME = 1;
 var PRIORITY_PROCESSOR_FILTER = 1000;
@@ -33568,7 +33107,7 @@ echartsProto.getRenderedCanvas = function (opts) {
  */
 
 
-echartsProto.getSvgDataUrl = function () {
+echartsProto.getSvgDataURL = function () {
   if (!env.svgSupported) {
     return;
   }
@@ -33579,7 +33118,7 @@ echartsProto.getSvgDataUrl = function () {
   zrUtil.each(list, function (el) {
     el.stopAnimation(true);
   });
-  return zr.painter.pathToDataUrl();
+  return zr.painter.toDataURL();
 };
 /**
  * @return {string}
@@ -33614,7 +33153,7 @@ echartsProto.getDataURL = function (opts) {
       }
     });
   });
-  var url = this._zr.painter.getType() === 'svg' ? this.getSvgDataUrl() : this.getRenderedCanvas(opts).toDataURL('image/' + (opts && opts.type || 'png'));
+  var url = this._zr.painter.getType() === 'svg' ? this.getSvgDataURL() : this.getRenderedCanvas(opts).toDataURL('image/' + (opts && opts.type || 'png'));
   each(excludesComponentViews, function (view) {
     view.group.ignore = false;
   });
@@ -33639,6 +33178,7 @@ echartsProto.getConnectedDataURL = function (opts) {
     return;
   }
 
+  var isSvg = opts.type === 'svg';
   var groupId = this.group;
   var mathMin = Math.min;
   var mathMax = Math.max;
@@ -33653,7 +33193,7 @@ echartsProto.getConnectedDataURL = function (opts) {
     var dpr = opts && opts.pixelRatio || 1;
     zrUtil.each(instances, function (chart, id) {
       if (chart.group === groupId) {
-        var canvas = chart.getRenderedCanvas(zrUtil.clone(opts));
+        var canvas = isSvg ? chart.getZr().painter.getSvgDom().innerHTML : chart.getRenderedCanvas(zrUtil.clone(opts));
         var boundingRect = chart.getDom().getBoundingClientRect();
         left = mathMin(boundingRect.left, left);
         top = mathMin(boundingRect.top, top);
@@ -33673,36 +33213,58 @@ echartsProto.getConnectedDataURL = function (opts) {
     var width = right - left;
     var height = bottom - top;
     var targetCanvas = zrUtil.createCanvas();
-    targetCanvas.width = width;
-    targetCanvas.height = height;
-    var zr = zrender.init(targetCanvas); // Background between the charts
-
-    if (opts.connectedBackgroundColor) {
-      zr.add(new graphic.Rect({
-        shape: {
-          x: 0,
-          y: 0,
-          width: width,
-          height: height
-        },
-        style: {
-          fill: opts.connectedBackgroundColor
-        }
-      }));
-    }
-
-    each(canvasList, function (item) {
-      var img = new graphic.Image({
-        style: {
-          x: item.left * dpr - left,
-          y: item.top * dpr - top,
-          image: item.dom
-        }
-      });
-      zr.add(img);
+    var zr = zrender.init(targetCanvas, {
+      renderer: isSvg ? 'svg' : 'canvas'
     });
-    zr.refreshImmediately();
-    return targetCanvas.toDataURL('image/' + (opts && opts.type || 'png'));
+    zr.resize({
+      width: width,
+      height: height
+    });
+
+    if (isSvg) {
+      var content = '';
+      each(canvasList, function (item) {
+        var x = item.left - left;
+        var y = item.top - top;
+        content += '<g transform="translate(' + x + ',' + y + ')">' + item.dom + '</g>';
+      });
+      zr.painter.getSvgRoot().innerHTML = content;
+
+      if (opts.connectedBackgroundColor) {
+        zr.painter.setBackgroundColor(opts.connectedBackgroundColor);
+      }
+
+      zr.refreshImmediately();
+      return zr.painter.toDataURL();
+    } else {
+      // Background between the charts
+      if (opts.connectedBackgroundColor) {
+        zr.add(new graphic.Rect({
+          shape: {
+            x: 0,
+            y: 0,
+            width: width,
+            height: height
+          },
+          style: {
+            fill: opts.connectedBackgroundColor
+          }
+        }));
+      }
+
+      each(canvasList, function (item) {
+        var img = new graphic.Image({
+          style: {
+            x: item.left * dpr - left,
+            y: item.top * dpr - top,
+            image: item.dom
+          }
+        });
+        zr.add(img);
+      });
+      zr.refreshImmediately();
+      return targetCanvas.toDataURL('image/' + (opts && opts.type || 'png'));
+    }
   } else {
     return this.getDataURL(opts);
   }
@@ -38857,7 +38419,7 @@ function dataTaskReset(context) {
 
 function dataTaskProgress(param, context) {
   // Avoid repead cloneShallow when data just created in reset.
-  if (param.end > context.outputData.count()) {
+  if (context.outputData && param.end > context.outputData.count()) {
     context.model.getRawData().cloneShallow(context.outputData);
   }
 } // TODO refactor
@@ -43524,11 +43086,14 @@ function _default(seriesType, defaultSymbolType, legendSymbol) {
       var symbolType = seriesModel.get('symbol');
       var symbolSize = seriesModel.get('symbolSize');
       var keepAspect = seriesModel.get('symbolKeepAspect');
+      var symbolRotate = seriesModel.get('symbolRotate');
       var hasSymbolTypeCallback = isFunction(symbolType);
       var hasSymbolSizeCallback = isFunction(symbolSize);
-      var hasCallback = hasSymbolTypeCallback || hasSymbolSizeCallback;
+      var hasSymbolRotateCallback = isFunction(symbolRotate);
+      var hasCallback = hasSymbolTypeCallback || hasSymbolSizeCallback || hasSymbolRotateCallback;
       var seriesSymbol = !hasSymbolTypeCallback && symbolType ? symbolType : defaultSymbolType;
       var seriesSymbolSize = !hasSymbolSizeCallback ? symbolSize : null;
+      var seriesSymbolRotate = !hasSymbolRotateCallback ? seriesSymbolRotate : null;
       data.setVisual({
         legendSymbol: legendSymbol || seriesSymbol,
         // If seting callback functions on `symbol` or `symbolSize`, for simplicity and avoiding
@@ -43537,7 +43102,8 @@ function _default(seriesType, defaultSymbolType, legendSymbol) {
         // some cases but generally it is not recommanded.
         symbol: seriesSymbol,
         symbolSize: seriesSymbolSize,
-        symbolKeepAspect: keepAspect
+        symbolKeepAspect: keepAspect,
+        symbolRotate: symbolRotate
       }); // Only visible series has each data be visual encoded
 
       if (ecModel.isSeriesFiltered(seriesModel)) {
@@ -43550,12 +43116,14 @@ function _default(seriesType, defaultSymbolType, legendSymbol) {
           var params = seriesModel.getDataParams(idx);
           hasSymbolTypeCallback && data.setItemVisual(idx, 'symbol', symbolType(rawValue, params));
           hasSymbolSizeCallback && data.setItemVisual(idx, 'symbolSize', symbolSize(rawValue, params));
+          hasSymbolRotateCallback && data.setItemVisual(idx, 'symbolRotate', symbolRotate(rawValue, params));
         }
 
         if (data.hasItemOption) {
           var itemModel = data.getItemModel(idx);
           var itemSymbolType = itemModel.getShallow('symbol', true);
           var itemSymbolSize = itemModel.getShallow('symbolSize', true);
+          var itemSymbolRotate = itemModel.getShallow('symbolRotate', true);
           var itemSymbolKeepAspect = itemModel.getShallow('symbolKeepAspect', true); // If has item symbol
 
           if (itemSymbolType != null) {
@@ -43565,6 +43133,10 @@ function _default(seriesType, defaultSymbolType, legendSymbol) {
           if (itemSymbolSize != null) {
             // PENDING Transform symbolSize ?
             data.setItemVisual(idx, 'symbolSize', itemSymbolSize);
+          }
+
+          if (itemSymbolRotate != null) {
+            data.setItemVisual(idx, 'symbolRotate', itemSymbolRotate);
           }
 
           if (itemSymbolKeepAspect != null) {
@@ -44265,8 +43837,6 @@ function getScaleExtent(scale, model) {
   var scaleType = scale.type;
   var min = model.getMin();
   var max = model.getMax();
-  var fixMin = min != null;
-  var fixMax = max != null;
   var originalExtent = scale.getExtent();
   var axisDataLen;
   var boundaryGap;
@@ -44303,14 +43873,6 @@ function getScaleExtent(scale, model) {
   // that the results processed by boundaryGap are positive/negative?
 
 
-  if (min == null) {
-    min = scaleType === 'ordinal' ? axisDataLen ? 0 : NaN : originalExtent[0] - boundaryGap[0] * span;
-  }
-
-  if (max == null) {
-    max = scaleType === 'ordinal' ? axisDataLen ? axisDataLen - 1 : NaN : originalExtent[1] + boundaryGap[1] * span;
-  }
-
   if (min === 'dataMin') {
     min = originalExtent[0];
   } else if (typeof min === 'function') {
@@ -44327,6 +43889,17 @@ function getScaleExtent(scale, model) {
       min: originalExtent[0],
       max: originalExtent[1]
     });
+  }
+
+  var fixMin = min != null;
+  var fixMax = max != null;
+
+  if (min == null) {
+    min = scaleType === 'ordinal' ? axisDataLen ? 0 : NaN : originalExtent[0] - boundaryGap[0] * span;
+  }
+
+  if (max == null) {
+    max = scaleType === 'ordinal' ? axisDataLen ? axisDataLen - 1 : NaN : originalExtent[1] + boundaryGap[1] * span;
   }
 
   (min == null || !isFinite(min)) && (min = NaN);
@@ -44375,7 +43948,13 @@ function getScaleExtent(scale, model) {
     }
   }
 
-  return [min, max];
+  return {
+    extent: [min, max],
+    // "fix" means "fixed", the value should not be
+    // changed in the subsequent steps.
+    fixMin: fixMin,
+    fixMax: fixMax
+  };
 }
 
 function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
@@ -44416,9 +43995,8 @@ function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
 }
 
 function niceScaleExtent(scale, model) {
-  var extent = getScaleExtent(scale, model);
-  var fixMin = model.getMin() != null;
-  var fixMax = model.getMax() != null;
+  var extentInfo = getScaleExtent(scale, model);
+  var extent = extentInfo.extent;
   var splitNumber = model.get('splitNumber');
 
   if (scale.type === 'log') {
@@ -44429,8 +44007,8 @@ function niceScaleExtent(scale, model) {
   scale.setExtent(extent[0], extent[1]);
   scale.niceExtent({
     splitNumber: splitNumber,
-    fixMin: fixMin,
-    fixMax: fixMax,
+    fixMin: extentInfo.fixMin,
+    fixMax: extentInfo.fixMax,
     minInterval: scaleType === 'interval' || scaleType === 'time' ? model.get('minInterval') : null,
     maxInterval: scaleType === 'interval' || scaleType === 'time' ? model.get('maxInterval') : null
   }); // If some one specified the min, max. And the default calculated interval
@@ -45256,7 +44834,7 @@ var numberUtil = __webpack_require__("143e");
 // import Text from 'zrender/src/graphic/Text';
 
 /**
- * 每三位默认加,格式化
+ * add commas after every three numbers
  * @param {string|number} x
  * @return {string}
  */
@@ -45472,6 +45050,22 @@ function getTextBoundingRect(opt) {
 function getTextRect(text, font, textAlign, textVerticalAlign, textPadding, rich, truncate, textLineHeight) {
   return textContain.getBoundingRect(text, font, textAlign, textVerticalAlign, textPadding, textLineHeight, rich, truncate);
 }
+/**
+ * open new tab
+ * @param {string} link url
+ * @param {string} target blank or self
+ */
+
+
+function windowOpen(link, target) {
+  if (target === '_blank' || target === 'blank') {
+    var blank = window.open();
+    blank.opener = null;
+    blank.location = link;
+  } else {
+    window.open(link, target);
+  }
+}
 
 exports.addCommas = addCommas;
 exports.toCamelCase = toCamelCase;
@@ -45485,6 +45079,7 @@ exports.capitalFirst = capitalFirst;
 exports.truncateText = truncateText;
 exports.getTextBoundingRect = getTextBoundingRect;
 exports.getTextRect = getTextRect;
+exports.windowOpen = windowOpen;
 
 /***/ }),
 
@@ -47781,7 +47376,10 @@ Painter.prototype = {
 
       if (this._layerConfig[zlevel]) {
         util.merge(layer, this._layerConfig[zlevel], true);
-      }
+      } // TODO Remove EL_AFTER_INCREMENTAL_INC magic number
+      else if (this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC]) {
+          util.merge(layer, this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC], true);
+        }
 
       if (virtual) {
         layer.virtual = virtual;
@@ -47926,12 +47524,25 @@ Painter.prototype = {
 
     var prevLayer = null;
     var incrementalLayerCount = 0;
+    var prevZlevel;
 
     for (var i = 0; i < list.length; i++) {
       var el = list[i];
       var zlevel = el.zlevel;
-      var layer; // PENDING If change one incremental element style ?
-      // TODO Where there are non-incremental elements between incremental elements.
+      var layer;
+
+      if (prevZlevel !== zlevel) {
+        prevZlevel = zlevel;
+        incrementalLayerCount = 0;
+      } // TODO Not use magic number on zlevel.
+      // Each layer with increment element can be separated to 3 layers.
+      //          (Other Element drawn after incremental element)
+      // -----------------zlevel + EL_AFTER_INCREMENTAL_INC--------------------
+      //                      (Incremental element)
+      // ----------------------zlevel + INCREMENTAL_INC------------------------
+      //              (Element drawn before incremental element)
+      // --------------------------------zlevel--------------------------------
+
 
       if (el.incremental) {
         layer = this.getLayer(zlevel + INCREMENTAL_INC, this._needsManuallyCompositing);
@@ -48025,7 +47636,7 @@ Painter.prototype = {
       }
 
       for (var i = 0; i < this._zlevelList.length; i++) {
-        var _zlevel = this._zlevelList[i];
+        var _zlevel = this._zlevelList[i]; // TODO Remove EL_AFTER_INCREMENTAL_INC magic number
 
         if (_zlevel === zlevel || _zlevel === zlevel + EL_AFTER_INCREMENTAL_INC) {
           var layer = this._layers[_zlevel];
@@ -48257,6 +47868,660 @@ Painter.prototype = {
 };
 var _default = Painter;
 module.exports = _default;
+
+/***/ }),
+
+/***/ "cfce":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=template&id=36c2f65c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"echarts"})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=template&id=36c2f65c&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/echarts.js
+var echarts = __webpack_require__("9db1");
+var echarts_default = /*#__PURE__*/__webpack_require__.n(echarts);
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/lodash/debounce.js
+var debounce = __webpack_require__("44db");
+var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce);
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/resize-detector/esm/index.js
+let raf = null;
+function requestAnimationFrame (callback) {
+  if (!raf) {
+    raf = (
+      window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      function (callback) {
+        return setTimeout(callback, 16)
+      }
+    ).bind(window);
+  }
+  return raf(callback)
+}
+
+let caf = null;
+function cancelAnimationFrame (id) {
+  if (!caf) {
+    caf = (
+      window.cancelAnimationFrame ||
+      window.webkitCancelAnimationFrame ||
+      window.mozCancelAnimationFrame ||
+      function (id) {
+        clearTimeout(id);
+      }
+    ).bind(window);
+  }
+
+  caf(id);
+}
+
+function createStyles (styleText) {
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = styleText;
+  } else {
+    style.appendChild(document.createTextNode(styleText));
+  }
+  (document.querySelector('head') || document.body).appendChild(style);
+  return style
+}
+
+function createElement (tagName, props = {}) {
+  let elem = document.createElement(tagName);
+  Object.keys(props).forEach(key => {
+    elem[key] = props[key];
+  });
+  return elem
+}
+
+function getComputedStyle (elem, prop, pseudo) {
+  // for older versions of Firefox, `getComputedStyle` required
+  // the second argument and may return `null` for some elements
+  // when `display: none`
+  let computedStyle = window.getComputedStyle(elem, pseudo || null) || {
+    display: 'none'
+  };
+
+  return computedStyle[prop]
+}
+
+function getRenderInfo (elem) {
+  if (!document.documentElement.contains(elem)) {
+    return {
+      detached: true,
+      rendered: false
+    }
+  }
+
+  let current = elem;
+  while (current !== document) {
+    if (getComputedStyle(current, 'display') === 'none') {
+      return {
+        detached: false,
+        rendered: false
+      }
+    }
+    current = current.parentNode;
+  }
+
+  return {
+    detached: false,
+    rendered: true
+  }
+}
+
+var css = ".resize-triggers{visibility:hidden;opacity:0}.resize-contract-trigger,.resize-contract-trigger:before,.resize-expand-trigger,.resize-triggers{content:\"\";position:absolute;top:0;left:0;height:100%;width:100%;overflow:hidden}.resize-contract-trigger,.resize-expand-trigger{background:#eee;overflow:auto}.resize-contract-trigger:before{width:200%;height:200%}";
+
+let total = 0;
+let style = null;
+
+function addListener (elem, callback) {
+  if (!elem.__resize_mutation_handler__) {
+    elem.__resize_mutation_handler__ = handleMutation.bind(elem);
+  }
+
+  let listeners = elem.__resize_listeners__;
+
+  if (!listeners) {
+    elem.__resize_listeners__ = [];
+    if (window.ResizeObserver) {
+      let { offsetWidth, offsetHeight } = elem;
+      let ro = new ResizeObserver(() => {
+        if (!elem.__resize_observer_triggered__) {
+          elem.__resize_observer_triggered__ = true;
+          if (elem.offsetWidth === offsetWidth && elem.offsetHeight === offsetHeight) {
+            return
+          }
+        }
+        runCallbacks(elem);
+      });
+
+      // initially display none won't trigger ResizeObserver callback
+      let { detached, rendered } = getRenderInfo(elem);
+      elem.__resize_observer_triggered__ = detached === false && rendered === false;
+      elem.__resize_observer__ = ro;
+      ro.observe(elem);
+    } else if (elem.attachEvent && elem.addEventListener) {
+      // targeting IE9/10
+      elem.__resize_legacy_resize_handler__ = function handleLegacyResize () {
+        runCallbacks(elem);
+      };
+      elem.attachEvent('onresize', elem.__resize_legacy_resize_handler__);
+      document.addEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
+    } else {
+      if (!total) {
+        style = createStyles(css);
+      }
+      initTriggers(elem);
+
+      elem.__resize_rendered__ = getRenderInfo(elem).rendered;
+      if (window.MutationObserver) {
+        let mo = new MutationObserver(elem.__resize_mutation_handler__);
+        mo.observe(document, {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
+        elem.__resize_mutation_observer__ = mo;
+      }
+    }
+  }
+
+  elem.__resize_listeners__.push(callback);
+  total++;
+}
+
+function removeListener (elem, callback) {
+  // targeting IE9/10
+  if (elem.detachEvent && elem.removeEventListener) {
+    elem.detachEvent('onresize', elem.__resize_legacy_resize_handler__);
+    document.removeEventListener('DOMSubtreeModified', elem.__resize_mutation_handler__);
+    return
+  }
+
+  let listeners = elem.__resize_listeners__;
+  if (!listeners) {
+    return
+  }
+  listeners.splice(listeners.indexOf(callback), 1);
+
+  if (!listeners.length) {
+    if (elem.__resize_observer__) {
+      elem.__resize_observer__.unobserve(elem);
+      elem.__resize_observer__.disconnect();
+      elem.__resize_observer__ = null;
+    } else {
+      if (elem.__resize_mutation_observer__) {
+        elem.__resize_mutation_observer__.disconnect();
+        elem.__resize_mutation_observer__ = null;
+      }
+      elem.removeEventListener('scroll', handleScroll);
+      elem.removeChild(elem.__resize_triggers__.triggers);
+      elem.__resize_triggers__ = null;
+    }
+    elem.__resize_listeners__ = null;
+  }
+
+  if (!--total && style) {
+    style.parentNode.removeChild(style);
+  }
+}
+
+function getUpdatedSize (elem) {
+  let { width, height } = elem.__resize_last__;
+  let { offsetWidth, offsetHeight } = elem;
+  if (offsetWidth !== width || offsetHeight !== height) {
+    return {
+      width: offsetWidth,
+      height: offsetHeight
+    }
+  }
+  return null
+}
+
+function handleMutation () {
+  // `this` denotes the scrolling element
+  let { rendered, detached } = getRenderInfo(this);
+  if (rendered !== this.__resize_rendered__) {
+    if (!detached && this.__resize_triggers__) {
+      resetTriggers(this);
+      this.addEventListener('scroll', handleScroll, true);
+    }
+    this.__resize_rendered__ = rendered;
+    runCallbacks(this);
+  }
+}
+
+function handleScroll () {
+  // `this` denotes the scrolling element
+  resetTriggers(this);
+  if (this.__resize_raf__) {
+    cancelAnimationFrame(this.__resize_raf__);
+  }
+  this.__resize_raf__ = requestAnimationFrame(() => {
+    let updated = getUpdatedSize(this);
+    if (updated) {
+      this.__resize_last__ = updated;
+      runCallbacks(this);
+    }
+  });
+}
+
+function runCallbacks (elem) {
+  if (!elem || !elem.__resize_listeners__) {
+    return
+  }
+  elem.__resize_listeners__.forEach(callback => {
+    callback.call(elem);
+  });
+}
+
+function initTriggers (elem) {
+  let position = getComputedStyle(elem, 'position');
+  if (!position || position === 'static') {
+    elem.style.position = 'relative';
+  }
+
+  elem.__resize_old_position__ = position;
+  elem.__resize_last__ = {};
+
+  let triggers = createElement('div', {
+    className: 'resize-triggers'
+  });
+  let expand = createElement('div', {
+    className: 'resize-expand-trigger'
+  });
+  let expandChild = createElement('div');
+  let contract = createElement('div', {
+    className: 'resize-contract-trigger'
+  });
+  expand.appendChild(expandChild);
+  triggers.appendChild(expand);
+  triggers.appendChild(contract);
+  elem.appendChild(triggers);
+
+  elem.__resize_triggers__ = {
+    triggers,
+    expand,
+    expandChild,
+    contract
+  };
+
+  resetTriggers(elem);
+  elem.addEventListener('scroll', handleScroll, true);
+
+  elem.__resize_last__ = {
+    width: elem.offsetWidth,
+    height: elem.offsetHeight
+  };
+}
+
+function resetTriggers (elem) {
+  let { expand, expandChild, contract } = elem.__resize_triggers__;
+
+  // batch read
+  let { scrollWidth: csw, scrollHeight: csh } = contract;
+  let { offsetWidth: eow, offsetHeight: eoh, scrollWidth: esw, scrollHeight: esh } = expand;
+
+  // batch write
+  contract.scrollLeft = csw;
+  contract.scrollTop = csh;
+  expandChild.style.width = eow + 1 + 'px';
+  expandChild.style.height = eoh + 1 + 'px';
+  expand.scrollLeft = esw;
+  expand.scrollTop = esh;
+}
+
+
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+const INIT_TRIGGERS = ['theme', 'initOptions', 'autoresize']
+const REWATCH_TRIGGERS = ['manualUpdate', 'watchShallow']
+
+/* harmony default export */ var EChartsvue_type_script_lang_js_ = ({
+  props: {
+    options: Object,
+    theme: [String, Object],
+    initOptions: Object,
+    group: String,
+    autoresize: Boolean,
+    watchShallow: Boolean,
+    manualUpdate: Boolean
+  },
+  data () {
+    return {
+      lastArea: 0
+    }
+  },
+  watch: {
+    group (group) {
+      this.chart.group = group
+    }
+  },
+  methods: {
+    // provide an explicit merge option method
+    mergeOptions (options, notMerge, lazyUpdate) {
+      if (this.manualUpdate) {
+        this.manualOptions = options
+      }
+
+      if (!this.chart) {
+        this.init(options)
+      } else {
+        this.delegateMethod('setOption', options, notMerge, lazyUpdate)
+      }
+    },
+    // just delegates ECharts methods to Vue component
+    // use explicit params to reduce transpiled size for now
+    appendData (params) {
+      this.delegateMethod('appendData', params)
+    },
+    resize (options) {
+      this.delegateMethod('resize', options)
+    },
+    dispatchAction (payload) {
+      this.delegateMethod('dispatchAction', payload)
+    },
+    convertToPixel (finder, value) {
+      return this.delegateMethod('convertToPixel', finder, value)
+    },
+    convertFromPixel (finder, value) {
+      return this.delegateMethod('convertFromPixel', finder, value)
+    },
+    containPixel (finder, value) {
+      return this.delegateMethod('containPixel', finder, value)
+    },
+    showLoading (type, options) {
+      this.delegateMethod('showLoading', type, options)
+    },
+    hideLoading () {
+      this.delegateMethod('hideLoading')
+    },
+    getDataURL (options) {
+      return this.delegateMethod('getDataURL', options)
+    },
+    getConnectedDataURL (options) {
+      return this.delegateMethod('getConnectedDataURL', options)
+    },
+    clear () {
+      this.delegateMethod('clear')
+    },
+    dispose () {
+      this.delegateMethod('dispose')
+    },
+    delegateMethod (name, ...args) {
+      if (!this.chart) {
+        this.init()
+      }
+      return this.chart[name](...args)
+    },
+    delegateGet (methodName) {
+      if (!this.chart) {
+        this.init()
+      }
+      return this.chart[methodName]()
+    },
+    getArea () {
+      return this.$el.offsetWidth * this.$el.offsetHeight
+    },
+    init (options) {
+      if (this.chart) {
+        return
+      }
+
+      const chart = echarts_default.a.init(this.$el, this.theme, this.initOptions)
+
+      if (this.group) {
+        chart.group = this.group
+      }
+
+      chart.setOption(options || this.manualOptions || this.options || {}, true)
+
+      Object.keys(this.$listeners).forEach(event => {
+        const handler = this.$listeners[event]
+
+        if (event.indexOf('zr:') === 0) {
+          chart.getZr().on(event.slice(3), handler)
+        } else {
+          chart.on(event, handler)
+        }
+      })
+
+      if (this.autoresize) {
+        this.lastArea = this.getArea()
+        this.__resizeHandler = debounce_default()(
+          () => {
+            if (this.lastArea === 0) {
+              // emulate initial render for initially hidden charts
+              this.mergeOptions({}, true)
+              this.resize()
+              this.mergeOptions(this.options || this.manualOptions || {}, true)
+            } else {
+              this.resize()
+            }
+            this.lastArea = this.getArea()
+          },
+          100,
+          { leading: true }
+        )
+        addListener(this.$el, this.__resizeHandler)
+      }
+
+      Object.defineProperties(this, {
+        // Only recalculated when accessed from JavaScript.
+        // Won't update DOM on value change because getters
+        // don't depend on reactive values
+        width: {
+          configurable: true,
+          get: () => {
+            return this.delegateGet('getWidth')
+          }
+        },
+        height: {
+          configurable: true,
+          get: () => {
+            return this.delegateGet('getHeight')
+          }
+        },
+        isDisposed: {
+          configurable: true,
+          get: () => {
+            return !!this.delegateGet('isDisposed')
+          }
+        },
+        computedOptions: {
+          configurable: true,
+          get: () => {
+            return this.delegateGet('getOption')
+          }
+        }
+      })
+
+      this.chart = chart
+    },
+    initOptionsWatcher () {
+      if (this.__unwatchOptions) {
+        this.__unwatchOptions()
+        this.__unwatchOptions = null
+      }
+
+      if (!this.manualUpdate) {
+        this.__unwatchOptions = this.$watch(
+          'options',
+          (val, oldVal) => {
+            if (!this.chart && val) {
+              this.init()
+            } else {
+              // mutating `options` will lead to merging
+              // replacing it with new reference will lead to not merging
+              // eg.
+              // `this.options = Object.assign({}, this.options, { ... })`
+              // will trigger `this.chart.setOption(val, true)
+              // `this.options.title.text = 'Trends'`
+              // will trigger `this.chart.setOption(val, false)`
+              this.chart.setOption(val, val !== oldVal)
+            }
+          },
+          { deep: !this.watchShallow }
+        )
+      }
+    },
+    destroy () {
+      if (this.autoresize) {
+        removeListener(this.$el, this.__resizeHandler)
+      }
+      this.dispose()
+      this.chart = null
+    },
+    refresh () {
+      if (this.chart) {
+        this.destroy()
+        this.init()
+      }
+    }
+  },
+  created () {
+    this.initOptionsWatcher()
+
+    INIT_TRIGGERS.forEach(prop => {
+      this.$watch(
+        prop,
+        () => {
+          this.refresh()
+        },
+        { deep: true }
+      )
+    })
+
+    REWATCH_TRIGGERS.forEach(prop => {
+      this.$watch(prop, () => {
+        this.initOptionsWatcher()
+        this.refresh()
+      })
+    })
+  },
+  mounted () {
+    // auto init if `options` is already provided
+    if (this.options) {
+      this.init()
+    }
+  },
+  activated () {
+    if (this.autoresize) {
+      this.chart && this.chart.resize()
+    }
+  },
+  destroyed () {
+    if (this.chart) {
+      this.destroy()
+    }
+  },
+  connect (group) {
+    if (typeof group !== 'string') {
+      group = group.map(chart => chart.chart)
+    }
+    echarts_default.a.connect(group)
+  },
+  disconnect (group) {
+    echarts_default.a.disConnect(group)
+  },
+  registerMap (mapName, geoJSON, specialAreas) {
+    echarts_default.a.registerMap(mapName, geoJSON, specialAreas)
+  },
+  registerTheme (name, theme) {
+    echarts_default.a.registerTheme(name, theme)
+  },
+  graphic: echarts_default.a.graphic
+});
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_EChartsvue_type_script_lang_js_ = (EChartsvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue?vue&type=style&index=0&lang=css&
+var EChartsvue_type_style_index_0_lang_css_ = __webpack_require__("c250");
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-echarts/components/ECharts.vue
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_EChartsvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var ECharts = (component.exports);
+// CONCATENATED MODULE: ./src/components/chartMixin.js
+
+/* harmony default export */ var chartMixin = __webpack_exports__["a"] = ({
+  components: { "v-chart": ECharts },
+  props: {
+    initOptions: Object,
+    options: Object,
+    theme: [String, Object],
+    group: String,
+    watchShallow: Boolean,
+    manualUpdate: Boolean
+  },
+  inject: ["$item"],
+  computed: {
+    item() {
+      return this.$item();
+    },
+    width() {
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
+    },
+    height() {
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
+    }
+  }
+});
+
 
 /***/ }),
 
@@ -49830,11 +50095,13 @@ function getHighlightDigit(highlightKey) {
  * @param {Object} opt Check `opt` of `setTextStyleCommon` to find other props.
  * @param {string|Function} [opt.defaultText]
  * @param {module:echarts/model/Model} [opt.labelFetcher] Fetch text by
- *      `opt.labelFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
- * @param {module:echarts/model/Model} [opt.labelDataIndex] Fetch text by
- *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
- * @param {module:echarts/model/Model} [opt.labelDimIndex] Fetch text by
- *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
+ *      `opt.labelFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
+ * @param {number} [opt.labelDataIndex] Fetch text by
+ *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
+ * @param {number} [opt.labelDimIndex] Fetch text by
+ *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
+ * @param {string} [opt.labelProp] Fetch text by
+ *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
  * @param {Object} [normalSpecified]
  * @param {Object} [emphasisSpecified]
  */
@@ -49844,7 +50111,8 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
   opt = opt || EMPTY_OBJ;
   var labelFetcher = opt.labelFetcher;
   var labelDataIndex = opt.labelDataIndex;
-  var labelDimIndex = opt.labelDimIndex; // This scenario, `label.normal.show = true; label.emphasis.show = false`,
+  var labelDimIndex = opt.labelDimIndex;
+  var labelProp = opt.labelProp; // This scenario, `label.normal.show = true; label.emphasis.show = false`,
   // is not supported util someone requests.
 
   var showNormal = normalModel.getShallow('show');
@@ -49856,7 +50124,7 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
 
   if (showNormal || showEmphasis) {
     if (labelFetcher) {
-      baseText = labelFetcher.getFormattedLabel(labelDataIndex, 'normal', null, labelDimIndex);
+      baseText = labelFetcher.getFormattedLabel(labelDataIndex, 'normal', null, labelDimIndex, labelProp);
     }
 
     if (baseText == null) {
@@ -49865,7 +50133,7 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
   }
 
   var normalStyleText = showNormal ? baseText : null;
-  var emphasisStyleText = showEmphasis ? zrUtil.retrieve2(labelFetcher ? labelFetcher.getFormattedLabel(labelDataIndex, 'emphasis', null, labelDimIndex) : null, baseText) : null; // Optimize: If style.text is null, text will not be drawn.
+  var emphasisStyleText = showEmphasis ? zrUtil.retrieve2(labelFetcher ? labelFetcher.getFormattedLabel(labelDataIndex, 'emphasis', null, labelDimIndex, labelProp) : null, baseText) : null; // Optimize: If style.text is null, text will not be drawn.
 
   if (normalStyleText != null || emphasisStyleText != null) {
     // Always set `textStyle` even if `normalStyle.text` is null, because default
@@ -51588,6 +51856,73 @@ function _default(path, m) {
 }
 
 module.exports = _default;
+
+/***/ }),
+
+/***/ "df6d":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7c92d2a2-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/MapChart.vue?vue&type=template&id=7d17e902&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-chart',{style:({ width: _vm.width + 'px', height: _vm.height + 'px' }),attrs:{"initOptions":_vm.initOptions,"options":_vm.options,"theme":_vm.theme,"group":_vm.group,"watchShallow":_vm.watchShallow,"manualUpdate":_vm.manualUpdate,"autoresize":""}})}
+var staticRenderFns = []
+
+
+// CONCATENATED MODULE: ./src/components/MapChart.vue?vue&type=template&id=7d17e902&
+
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/echarts/lib/chart/map.js
+var map = __webpack_require__("24b7");
+
+// EXTERNAL MODULE: ./src/components/chartMixin.js + 6 modules
+var chartMixin = __webpack_require__("cfce");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/MapChart.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var MapChartvue_type_script_lang_js_ = ({
+  mixins: [chartMixin["a" /* default */]]
+});
+
+// CONCATENATED MODULE: ./src/components/MapChart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_MapChartvue_type_script_lang_js_ = (MapChartvue_type_script_lang_js_); 
+// EXTERNAL MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__("2be6");
+
+// CONCATENATED MODULE: ./src/components/MapChart.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_MapChartvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ var MapChart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 
@@ -54085,27 +54420,34 @@ piePieceProto.updateData = function (data, idx, firstCreate) {
 
   this._updateLabel(data, idx, withAnimation);
 
-  this.highDownOnUpdate = itemModel.get('hoverAnimation') && seriesModel.isAnimationEnabled() ? function (fromState, toState) {
+  this.highDownOnUpdate = !seriesModel.get('silent') ? function (fromState, toState) {
+    var hasAnimation = seriesModel.isAnimationEnabled() && itemModel.get('hoverAnimation');
+
     if (toState === 'emphasis') {
       labelLine.ignore = labelLine.hoverIgnore;
       labelText.ignore = labelText.hoverIgnore; // Sector may has animation of updating data. Force to move to the last frame
       // Or it may stopped on the wrong shape
 
-      sector.stopAnimation(true);
-      sector.animateTo({
-        shape: {
-          r: layout.r + seriesModel.get('hoverOffset')
-        }
-      }, 300, 'elasticOut');
+      if (hasAnimation) {
+        sector.stopAnimation(true);
+        sector.animateTo({
+          shape: {
+            r: layout.r + seriesModel.get('hoverOffset')
+          }
+        }, 300, 'elasticOut');
+      }
     } else {
       labelLine.ignore = labelLine.normalIgnore;
       labelText.ignore = labelText.normalIgnore;
-      sector.stopAnimation(true);
-      sector.animateTo({
-        shape: {
-          r: layout.r
-        }
-      }, 300, 'elasticOut');
+
+      if (hasAnimation) {
+        sector.stopAnimation(true);
+        sector.animateTo({
+          shape: {
+            r: layout.r
+          }
+        }, 300, 'elasticOut');
+      }
     }
   } : null;
   graphic.setHoverStyle(this);

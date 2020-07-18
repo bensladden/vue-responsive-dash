@@ -25,7 +25,7 @@
 
 <script>
 import { Dashboard, DashLayout, DashItem } from "vue-responsive-dash";
-import fusionChart from "./components/fusionChart.vue";
+import FusionChart from "./components/FusionChart.vue";
 import { layouts } from "../../common/dataItems";
 
 export default {
@@ -34,7 +34,7 @@ export default {
     Dashboard,
     DashLayout,
     DashItem,
-    fusionChart
+    FusionChart,
   },
   data() {
     return {
@@ -46,34 +46,34 @@ export default {
           showPercentInTooltip: "0",
           numberPrefix: "$",
           enableMultiSlicing: "1",
-          theme: "fusion"
+          theme: "fusion",
         },
         data: [
           {
             label: "Equity",
-            value: "300000"
+            value: "300000",
           },
           {
             label: "Debt",
-            value: "230000"
+            value: "230000",
           },
           {
             label: "Bullion",
-            value: "180000"
+            value: "180000",
           },
           {
             label: "Real-estate",
-            value: "270000"
+            value: "270000",
           },
           {
             label: "Insurance",
-            value: "20000"
-          }
-        ]
+            value: "20000",
+          },
+        ],
       },
-      layouts: layouts
+      layouts: layouts,
     };
-  }
+  },
 };
 </script>
 

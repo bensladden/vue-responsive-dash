@@ -1,6 +1,6 @@
 {
   "name": "@vue-responsive-dash/basic-items",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "homepage": "https://vue-responsive-dash.netlify.com",
   "author": "Ben Sladden",
   "main": "dist/basic-items.common.js",

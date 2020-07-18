@@ -82,19 +82,96 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "fb15");
+/******/ 	return __webpack_require__(__webpack_require__.s = "1c25");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "8bbf":
-/***/ (function(module, exports) {
+/***/ "1c25":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = require("vue");
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "install", function() { return /* reexport */ components["c" /* install */]; });
+__webpack_require__.d(__webpack_exports__, "ApexChart", function() { return /* reexport */ components["a" /* ApexChart */]; });
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
+// This file is imported into lib/wc client bundles.
+
+if (typeof window !== 'undefined') {
+  if (true) {
+    __webpack_require__("4141")
+  }
+
+  var i
+  if ((i = window.document.currentScript) && (i = i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
+    __webpack_require__.p = i[1] // eslint-disable-line
+  }
+}
+
+// Indicate to webpack that this file can be concatenated
+/* harmony default export */ var setPublicPath = (null);
+
+// EXTERNAL MODULE: ./src/components/index.js
+var components = __webpack_require__("2af9");
+
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
+
+
+/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components["b" /* default */]);
+
+
 
 /***/ }),
 
-/***/ "f6fd":
+/***/ "2af9":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return install; });
+/* harmony import */ var _ApexChartDashItem_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("a30d");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _ApexChartDashItem_vue__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+
+
+
+const VueResponsiveDashApexcharts = {
+  ApexChart: _ApexChartDashItem_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"],
+};
+// Declare install function executed by Vue.use()
+function install(Vue) {
+  if (install.installed) return;
+  Object.keys(VueResponsiveDashApexcharts).forEach((name) => {
+    Vue.component(name, VueResponsiveDashApexcharts[name]);
+  });
+}
+
+// Create module definition for Vue.use()
+const plugin = {
+  install,
+};
+
+// Auto-install when vue is found (eg. in browser via <script> tag)
+let GlobalVue = null;
+if (typeof window !== "undefined") {
+  GlobalVue = window.Vue;
+} else if (typeof global !== "undefined") {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* harmony default export */ __webpack_exports__["b"] = (VueResponsiveDashApexcharts);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("7d15")))
+
+/***/ }),
+
+/***/ "4141":
 /***/ (function(module, exports) {
 
 // document.currentScript polyfill by Adam Miller
@@ -137,45 +214,46 @@ module.exports = require("vue");
 
 /***/ }),
 
-/***/ "fb15":
+/***/ "7d15":
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ "a30d":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
 
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "ApexChart", function() { return /* reexport */ ApexChartDashItem; });
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
-// This file is imported into lib/wc client bundles.
-
-if (typeof window !== 'undefined') {
-  if (true) {
-    __webpack_require__("f6fd")
-  }
-
-  var i
-  if ((i = window.document.currentScript) && (i = i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
-    __webpack_require__.p = i[1] // eslint-disable-line
-  }
-}
-
-// Indicate to webpack that this file can be concatenated
-/* harmony default export */ var setPublicPath = (null);
-
-// EXTERNAL MODULE: external {"commonjs":"vue","commonjs2":"vue","root":"Vue"}
-var external_commonjs_vue_commonjs2_vue_root_Vue_ = __webpack_require__("8bbf");
-var external_commonjs_vue_commonjs2_vue_root_Vue_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_vue_commonjs2_vue_root_Vue_);
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6e74ed42-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApexChartDashItem.vue?vue&type=template&id=2d336341&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b639f68-vue-loader-template"}!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ApexChartDashItem.vue?vue&type=template&id=e56ed9ca&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('apexchart',{attrs:{"width":_vm.width,"height":_vm.height,"type":_vm.type,"options":_vm.chartOptions,"series":_vm.series}})}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/ApexChartDashItem.vue?vue&type=template&id=2d336341&
+// CONCATENATED MODULE: ./src/components/ApexChartDashItem.vue?vue&type=template&id=e56ed9ca&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ApexChartDashItem.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/cache-loader/dist/cjs.js??ref--0-0!C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib??vue-loader-options!./src/components/ApexChartDashItem.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -195,17 +273,23 @@ var staticRenderFns = []
       return this.$item();
     },
     width() {
-      return this.item.widthPx;
+      if (this.item) {
+        return this.item.widthPx;
+      }
+      return 0;
     },
     height() {
-      return this.item.heightPx;
-    }
-  }
+      if (this.item) {
+        return this.item.heightPx;
+      }
+      return 0;
+    },
+  },
 });
 
 // CONCATENATED MODULE: ./src/components/ApexChartDashItem.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_ApexChartDashItemvue_type_script_lang_js_ = (ApexChartDashItemvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+// CONCATENATED MODULE: C:/_Projects/WEBSITE/vue-responsive-dash/plugins/node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
@@ -324,29 +408,7 @@ var component = normalizeComponent(
   
 )
 
-/* harmony default export */ var ApexChartDashItem = (component.exports);
-// CONCATENATED MODULE: ./src/components/index.js
-
-
-
-
-const VueResponsiveDashApexcharts = {
-  ApexChart: ApexChartDashItem
-};
-
-Object.keys(VueResponsiveDashApexcharts).forEach(name => {
-  external_commonjs_vue_commonjs2_vue_root_Vue_default.a.component(name, VueResponsiveDashApexcharts[name]);
-});
-
-/* harmony default export */ var components = (VueResponsiveDashApexcharts);
-
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
-
-
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (components);
-
-
+/* harmony default export */ var ApexChartDashItem = __webpack_exports__["a"] = (component.exports);
 
 /***/ })
 

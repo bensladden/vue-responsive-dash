@@ -1,5 +1,3 @@
-import Vue from "vue";
-
 import HollowDotsSpinner from "./HollowDotsSpinner.vue";
 import PixelSpinner from "./PixelSpinner.vue";
 import FlowerSpinner from "./FlowerSpinner.vue";
@@ -44,13 +42,32 @@ const VueResponsiveDashEpicSpinners = {
   LoopingRhombusesSpinner,
   HalfCircleSpinner,
   AtomSpinner,
-  RandomSpinner
+  RandomSpinner,
+};
+// Declare install function executed by Vue.use()
+export function install(Vue) {
+  if (install.installed) return;
+  install.installed = true;
+  Object.keys(VueResponsiveDashEpicSpinners).forEach((name) => {
+    Vue.component(name, VueResponsiveDashEpicSpinners[name]);
+  });
+}
+
+// Create module definition for Vue.use()
+const plugin = {
+  install,
 };
 
-Object.keys(VueResponsiveDashEpicSpinners).forEach(name => {
-  Vue.component(name, VueResponsiveDashEpicSpinners[name]);
-});
-
+// Auto-install when vue is found (eg. in browser via <script> tag)
+let GlobalVue = null;
+if (typeof window !== "undefined") {
+  GlobalVue = window.Vue;
+} else if (typeof global !== "undefined") {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
 export default VueResponsiveDashEpicSpinners;
 
 export {
@@ -74,5 +91,5 @@ export {
   LoopingRhombusesSpinner,
   HalfCircleSpinner,
   AtomSpinner,
-  RandomSpinner
+  RandomSpinner,
 };

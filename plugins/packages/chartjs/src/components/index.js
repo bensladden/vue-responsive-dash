@@ -1,5 +1,3 @@
-import Vue from "vue";
-
 import BarChart from "./BarChart.vue";
 import BubbleChart from "./BubbleChart.vue";
 import DoughnutChart from "./DoughnutChart.vue";
@@ -19,15 +17,35 @@ const VueResponsiveDashChartJs = {
   PieChart,
   PolarAreaChart,
   RadarChart,
-  ScatterChart
+  ScatterChart,
 };
 
-Object.keys(VueResponsiveDashChartJs).forEach(name => {
-  Vue.component(name, VueResponsiveDashChartJs[name]);
-});
+// Declare install function executed by Vue.use()
+export function install(Vue) {
+  if (install.installed) return;
+  install.installed = true;
+  Object.keys(VueResponsiveDashChartJs).forEach((name) => {
+    Vue.component(name, VueResponsiveDashChartJs[name]);
+  });
+}
+
+// Create module definition for Vue.use()
+const plugin = {
+  install,
+};
+
+// Auto-install when vue is found (eg. in browser via <script> tag)
+let GlobalVue = null;
+if (typeof window !== "undefined") {
+  GlobalVue = window.Vue;
+} else if (typeof global !== "undefined") {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
 
 export default VueResponsiveDashChartJs;
-
 export {
   BarChart,
   BubbleChart,
@@ -37,5 +55,5 @@ export {
   PieChart,
   PolarAreaChart,
   RadarChart,
-  ScatterChart
+  ScatterChart,
 };

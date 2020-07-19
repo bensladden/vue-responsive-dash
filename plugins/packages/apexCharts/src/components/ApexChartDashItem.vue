@@ -1,16 +1,20 @@
 <template>
-  <apexchart
+  <VueApexCharts
     :width="width"
     :height="height"
     :type="type"
     :options="chartOptions"
     :series="series"
-  ></apexchart>
+  ></VueApexCharts>
 </template>
 
 <script>
+import VueApexCharts from "vue-apexcharts";
 export default {
   inject: ["$item"],
+  components: {
+    VueApexCharts,
+  },
   props: ["type", "chartOptions", "series"],
   computed: {
     item() {

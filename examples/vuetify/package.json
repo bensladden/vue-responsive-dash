@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@vue-responsive-dash/apexcharts": "^0.1.4",
+    "@vue-responsive-dash/apexcharts": "^0.1.5",
     "@vue-responsive-dash/chartjs": "^0.1.4",
     "@vue-responsive-dash/echarts": "^0.1.4",
     "@vue-responsive-dash/epic-spinners": "^0.1.4",

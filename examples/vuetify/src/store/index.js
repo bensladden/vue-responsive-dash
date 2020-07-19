@@ -5,6 +5,7 @@ import layouts from "./layouts";
 import chartjs from "./chartjs";
 import eCharts from "./eCharts";
 import epicSpinners from "./epicSpinners";
+import apexCharts from "./apexCharts"
 
 Vue.use(Vuex);
 
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
     layouts,
     chartjs,
     eCharts,
-    epicSpinners
+    epicSpinners,
+    apexCharts
   }
 });
 

@@ -39,7 +39,7 @@
   "license": "MIT",
   "devDependencies": {
     "@interactjs/types": "^1.9.20",
-    "@types/jest": "^26.0.4",
+    "@types/jest": "^26.0.7",
     "@vue/cli-plugin-babel": "^4.4.6",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-typescript": "^4.4.6",

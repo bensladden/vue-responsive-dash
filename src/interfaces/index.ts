@@ -15,6 +15,7 @@ export interface Item {
   draggable?: boolean;
   resizable?: boolean;
   moved?: boolean;
+  locked?: boolean;
 }
 
 export interface Breakpoint {

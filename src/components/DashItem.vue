@@ -218,6 +218,7 @@ export default {
     moveHold: { type: Number, default: 0 },
     resizeHold: { type: Number, default: 0 },
     dragAllowFrom: { type: String, default: null },
+    locked: { type: Boolean, default: DashItem.defaults.locked },
   },
   inject: { $layout: { default: null } },
   provide() {
@@ -237,7 +238,7 @@ export default {
   },
   computed: {
     resizingOrDragging() {
-      return this.resizing || this.dragging;
+      return (this.resizing || this.dragging) && !this.locked;
     },
     classObj() {
       return {
@@ -299,33 +300,39 @@ export default {
       }
     },
     resizeTop() {
-      return this.resizable && this.resizeEdges.includes("top");
+      return !this.locked && this.resizable && this.resizeEdges.includes("top");
     },
     resizeBottom() {
-      return this.resizable && this.resizeEdges.includes("bottom");
+      return (
+        !this.locked && this.resizable && this.resizeEdges.includes("bottom")
+      );
     },
     resizeLeft() {
-      return this.resizable && this.resizeEdges.includes("left");
+      return (
+        !this.locked && this.resizable && this.resizeEdges.includes("left")
+      );
     },
     resizeRight() {
-      return this.resizable && this.resizeEdges.includes("right");
+      return (
+        !this.locked && this.resizable && this.resizeEdges.includes("right")
+      );
     },
     resizeTopLeft() {
-      return this.resizeTop && this.resizeLeft;
+      return !this.locked && this.resizeTop && this.resizeLeft;
     },
     resizeBottomLeft() {
-      return this.resizeBottom && this.resizeLeft;
+      return !this.locked && this.resizeBottom && this.resizeLeft;
     },
     resizeTopRight() {
-      return this.resizeTop && this.resizeRight;
+      return !this.locked && this.resizeTop && this.resizeRight;
     },
     resizeBottomRight() {
-      return this.resizeBottom && this.resizeRight;
+      return !this.locked && this.resizeBottom && this.resizeRight;
     },
   },
   methods: {
     setDraggable() {
-      if (this.draggable) {
+      if (this.draggable && !this.locked) {
         this.interactInstance.draggable({
           enabled: true,
           hold: this.moveHold,
@@ -347,7 +354,7 @@ export default {
       }
     },
     setResizable() {
-      if (this.resizable) {
+      if (this.resizable && !this.locked) {
         this.interactInstance.resizable({
           enabled: true,
           hold: this.resizeHold,
@@ -431,6 +438,10 @@ export default {
       this.setDraggable();
     },
     resizable() {
+      this.setResizable();
+    },
+    locked() {
+      this.setDraggable();
       this.setResizable();
     },
     moveHold() {

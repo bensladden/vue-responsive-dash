@@ -68,6 +68,7 @@ There are also slots around the item for custom drag icons (again see examples)
 | moveHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be moved |
 | resizeHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be resized |
 | dragAllowFrom | `String` | false | `null` | Custom Css Selector which the drag/move event can start from |
+| locked | `Boolean` | false | `false` | A Locked item will remain in position and will not move up when there is space above. It is also not possible to move or resize a locked item |
 
 ### Events
 | Name | Description |

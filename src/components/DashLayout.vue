@@ -186,7 +186,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .placeholder {
   height: 100%;
   width: 100%;

@@ -20,7 +20,11 @@
       >
         <Dash-Item
           v-for="item in layout.items"
-          v-bind.sync="item"
+          :id.sync="item.id"
+          :x.sync="item.x"
+          :y.sync="item.y"
+          :width.sync="item.width"
+          :height.sync="item.height"
           :key="item.id"
           :resizable="resizable"
           :draggable="draggable"
@@ -33,6 +37,9 @@
             <div class="dragHandle"></div>
           </div>
         </Dash-Item>
+        <template v-slot:placeholder>
+          <div class="placeholderTest"></div>
+        </template>
       </Dash-Layout>
     </dashboard>
     Current Breakpoint:
@@ -302,5 +309,11 @@ export default {
   border: 2px solid #b9a342;
   border-radius: 5px;
   background-color: #b9a3423d;
+}
+.placeholderTest {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(173, 207, 77);
+  opacity: 0.2;
 }
 </style>

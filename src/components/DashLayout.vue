@@ -14,7 +14,9 @@
         :height.sync="placeholderHeight"
         :maxWidth.sync="placeholderMaxWidth"
       >
-        <div class="placeholder"></div>
+        <slot name="placeholder">
+          <div class="placeholder"></div>
+        </slot>
       </DashItem>
     </div>
     <div v-if="debug">
@@ -186,7 +188,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .placeholder {
   height: 100%;
   width: 100%;

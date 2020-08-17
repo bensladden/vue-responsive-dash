@@ -492,7 +492,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .item {
   box-sizing: border-box;
   position: absolute;

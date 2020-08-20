@@ -20,19 +20,28 @@
       >
         <Dash-Item
           v-for="item in layout.items"
-          v-bind.sync="item"
+          :id.sync="item.id"
+          :x.sync="item.x"
+          :y.sync="item.y"
+          :width.sync="item.width"
+          :height.sync="item.height"
           :key="item.id"
           :resizable="resizable"
           :draggable="draggable"
           :maxWidth="3"
           :moveHold="moveHold"
           :dragAllowFrom="allowFrom"
+          :dragIgnoreFrom="ignoreFrom"
         >
           <div class="content">
             {{ JSON.stringify(item, null, 2) }}
             <div class="dragHandle"></div>
+            <div class="dragHandle2"></div>
           </div>
         </Dash-Item>
+        <template v-slot:placeholder>
+          <div class="placeholderTest"></div>
+        </template>
       </Dash-Layout>
     </dashboard>
     Current Breakpoint:
@@ -58,7 +67,12 @@
     <button @click="enableRowHeightLimits = !enableRowHeightLimits">
       Toggle Row Height Limits ({{ enableRowHeightLimits }})
     </button>
-    <button @click="toggleAllowFrom">Toggle AllowFrom ({{ allowFrom }})</button>
+    <button @click="toggleAllowFrom">
+      Toggle Allow From ({{ allowFrom }})
+    </button>
+    <button @click="toggleIgnoreFrom">
+      Toggle Ignore From ({{ ignoreFrom }})
+    </button>
     <input type="number" min="0" max="5000" v-model.number="moveHold" />
   </div>
 </template>
@@ -81,6 +95,7 @@ export default {
       draggable: true,
       resizable: true,
       allowFrom: null,
+      ignoreFrom: null,
       moveHold: 0,
       margin: { x: 20, y: 20 },
       layouts: [
@@ -116,7 +131,7 @@ export default {
               height: 1,
             },
             { id: "2", x: 1, y: 0, width: 2, height: 1 },
-            { id: "3", x: 0, y: 1, width: 2, height: 1 },
+            { id: "3", x: 0, y: 1, width: 2, height: 1, locked: true },
             { id: "4", x: 3, y: 0, width: 2, height: 2 },
             { id: "5", x: 5, y: 0, width: 1, height: 2 },
             { id: "6", x: 6, y: 0, width: 2, height: 1 },
@@ -265,6 +280,13 @@ export default {
         this.allowFrom = ".dragHandle";
       }
     },
+    toggleIgnoreFrom() {
+      if (this.ignoreFrom) {
+        this.ignoreFrom = null;
+      } else {
+        this.ignoreFrom = ".dragHandle2";
+      }
+    },
     addItem() {
       for (let layout of this.layouts) {
         layout.items.push({
@@ -302,5 +324,18 @@ export default {
   border: 2px solid #b9a342;
   border-radius: 5px;
   background-color: #b9a3423d;
+}
+.dragHandle2 {
+  height: 20px;
+  width: 20px;
+  border: 2px solid #b94256;
+  border-radius: 5px;
+  background-color: #b942563d;
+}
+.placeholderTest {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(173, 207, 77);
+  opacity: 0.2;
 }
 </style>

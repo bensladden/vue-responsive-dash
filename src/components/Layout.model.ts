@@ -615,16 +615,22 @@ export class Layout {
     }
     return items;
   }
+  getLockedItems(items: Item[]) {
+    return this.items.filter((item) => item.locked);
+  }
   compactLayout(items: Item[]) {
     const sorted = this.sortItems(items);
-    const compareWith = [] as Item[];
+    const compareWith = this.getLockedItems(items);
     const out = Array(items.length) as Item[];
 
     for (let i = 0; i < sorted.length; i++) {
       let l = sorted[i];
-      l = this.compactItem(compareWith, l);
-      // Add to comparison array. We only collide with items before this one.
-      compareWith.push(l);
+      if (!l.locked) {
+        l = this.compactItem(compareWith, l);
+        // Add to comparison array. We only collide with items before this one.
+        compareWith.push(l);
+      }
+
       // Add to output array to make sure they still come out in the right order.
       let index = items.findIndex((item) => {
         return item.id === l.id;
@@ -667,6 +673,9 @@ export class Layout {
     y: number,
     isUserAction?: boolean
   ) {
+    if (d.locked) {
+      return items;
+    }
     const movingUp: boolean = d.y > y;
     d.x = x;
     d.y = y;
@@ -685,12 +694,21 @@ export class Layout {
       let collisionIndex = items.findIndex((item) => {
         return item.id === collision.id;
       });
-      items = this.moveItemFromCollision(
-        items,
-        d,
-        items[collisionIndex],
-        isUserAction
-      );
+      if (collision.locked) {
+        items = this.moveItemFromCollision(
+          items,
+          items[collisionIndex],
+          d,
+          isUserAction
+        );
+      } else {
+        items = this.moveItemFromCollision(
+          items,
+          d,
+          items[collisionIndex],
+          isUserAction
+        );
+      }
     }
     return items;
   }

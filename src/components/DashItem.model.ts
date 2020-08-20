@@ -26,6 +26,7 @@ export class DashItem {
   private _hover: boolean = false;
   private _resizeHold: number;
   private _moveHold: number;
+  private _locked: boolean;
 
   private _moving = false as boolean;
   private _resizing = false as boolean;
@@ -55,6 +56,7 @@ export class DashItem {
     resizeHandleSize,
     moveHold,
     resizeHold,
+    locked,
   }: {
     id: string | number;
     x?: number;
@@ -74,6 +76,7 @@ export class DashItem {
     resizeHandleSize?: number;
     moveHold?: number;
     resizeHold?: number;
+    locked?: boolean;
   }) {
     this._id = id;
 
@@ -174,6 +177,11 @@ export class DashItem {
       this._resizeHold = resizeHold;
     } else {
       this._resizeHold = 0;
+    }
+    if (typeof locked !== "undefined") {
+      this._locked = locked;
+    } else {
+      this._locked = DashItem.defaults.locked!;
     }
   }
   get id() {
@@ -377,6 +385,12 @@ export class DashItem {
   set moved(m: boolean) {
     this._moved = m;
   }
+  get locked() {
+    return this._locked;
+  }
+  set locked(l: boolean) {
+    this._locked = l;
+  }
   toItem() {
     let item = {
       id: this.id,
@@ -394,6 +408,7 @@ export class DashItem {
       heightPx: this.heightPx,
       draggable: this.draggable,
       resizable: this.resizable,
+      locked: this.locked,
     } as Item;
     return item;
   }
@@ -490,6 +505,7 @@ export class DashItem {
       maxHeight: false,
       draggable: true,
       resizable: true,
+      locked: false,
     };
     return defaults;
   }

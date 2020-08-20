@@ -218,6 +218,7 @@ export default {
     moveHold: { type: Number, default: 0 },
     resizeHold: { type: Number, default: 0 },
     dragAllowFrom: { type: String, default: null },
+    dragIgnoreFrom: { type: String, default: null },
     locked: { type: Boolean, default: DashItem.defaults.locked },
   },
   inject: { $layout: { default: null } },
@@ -337,6 +338,7 @@ export default {
           enabled: true,
           hold: this.moveHold,
           allowFrom: this.dragAllowFrom,
+          ignoreFrom: this.dragIgnoreFrom,
           listeners: {
             start: (event) => {
               this.onMoveStart(event);
@@ -451,6 +453,9 @@ export default {
       this.setResizable();
     },
     dragAllowFrom() {
+      this.setDraggable();
+    },
+    dragIgnoreFrom() {
       this.setDraggable();
     },
   },

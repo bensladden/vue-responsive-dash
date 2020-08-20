@@ -31,10 +31,12 @@
           :maxWidth="3"
           :moveHold="moveHold"
           :dragAllowFrom="allowFrom"
+          :dragIgnoreFrom="ignoreFrom"
         >
           <div class="content">
             {{ JSON.stringify(item, null, 2) }}
             <div class="dragHandle"></div>
+            <div class="dragHandle2"></div>
           </div>
         </Dash-Item>
         <template v-slot:placeholder>
@@ -65,7 +67,12 @@
     <button @click="enableRowHeightLimits = !enableRowHeightLimits">
       Toggle Row Height Limits ({{ enableRowHeightLimits }})
     </button>
-    <button @click="toggleAllowFrom">Toggle AllowFrom ({{ allowFrom }})</button>
+    <button @click="toggleAllowFrom">
+      Toggle Allow From ({{ allowFrom }})
+    </button>
+    <button @click="toggleIgnoreFrom">
+      Toggle Ignore From ({{ ignoreFrom }})
+    </button>
     <input type="number" min="0" max="5000" v-model.number="moveHold" />
   </div>
 </template>
@@ -88,6 +95,7 @@ export default {
       draggable: true,
       resizable: true,
       allowFrom: null,
+      ignoreFrom: null,
       moveHold: 0,
       margin: { x: 20, y: 20 },
       layouts: [
@@ -272,6 +280,13 @@ export default {
         this.allowFrom = ".dragHandle";
       }
     },
+    toggleIgnoreFrom() {
+      if (this.ignoreFrom) {
+        this.ignoreFrom = null;
+      } else {
+        this.ignoreFrom = ".dragHandle2";
+      }
+    },
     addItem() {
       for (let layout of this.layouts) {
         layout.items.push({
@@ -309,6 +324,13 @@ export default {
   border: 2px solid #b9a342;
   border-radius: 5px;
   background-color: #b9a3423d;
+}
+.dragHandle2 {
+  height: 20px;
+  width: 20px;
+  border: 2px solid #b94256;
+  border-radius: 5px;
+  background-color: #b942563d;
 }
 .placeholderTest {
   height: 100%;

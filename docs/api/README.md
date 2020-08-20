@@ -40,6 +40,12 @@ Note that only one layout should have the breakpointWidth `undefined`. This layo
 | maxRowHeight | `boolean | number` | no | `false` | When set to a number the rowHeight will never be greater than this number |
 | minRowHeight | `boolean | number` | no | `false` | When set to a number the rowHeight will never be less than this number |
 
+### Slots
+
+| Names | Description
+| ------- | ----- |
+| Placeholder | Slot to define a custom placholder component (default is Red square) |  
+
 ## Dash Item
 
 The dash item is responsible for displaying the items content (via slot) and also for dragging and resizing around the layout.
@@ -67,7 +73,8 @@ There are also slots around the item for custom drag icons (again see examples)
 | resizableZIndex | `Number` | false | `1` | The zIndex applied to each resizeable area to make sure it is above the items in the main slot |
 | moveHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be moved |
 | resizeHold | `Number` | false | `0` | The amount of time in ms required to hold the item before it can be resized |
-| dragAllowFrom | `String` | false | `null` | Custom Css Selector which the drag/move event can start from |
+| dragAllowFrom | `String` | false | `null` | Custom Selector which the drag/move event can start from |
+| dragIgnoreFrom | `String` | false | `null` | Custom Selector to prevent actions from starting if the pointer went down on an element matching the given selector or HTMLElement. |
 | locked | `Boolean` | false | `false` | A Locked item will remain in position and will not move up when there is space above. It is also not possible to move or resize a locked item |
 
 ### Events

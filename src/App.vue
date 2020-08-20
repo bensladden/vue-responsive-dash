@@ -25,6 +25,7 @@
           :y.sync="item.y"
           :width.sync="item.width"
           :height.sync="item.height"
+          :locked="item.locked"
           :key="item.id"
           :resizable="resizable"
           :draggable="draggable"

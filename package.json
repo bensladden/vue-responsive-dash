@@ -68,7 +68,7 @@
   "dependencies": {
     "@interactjs/actions": "^1.9.20",
     "@interactjs/auto-start": "^1.9.20",
-    "@interactjs/interact": "^1.9.20",
+    "@interactjs/interact": "^1.10.2",
     "ste-simple-events": "^1.6.13",
     "vue-element-resize-detector": "^1.0.6"
   }

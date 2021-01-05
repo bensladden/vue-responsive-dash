@@ -59,7 +59,7 @@
     "typescript": "^3.9.7",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
-    "vuepress": "^1.5.3",
+    "vuepress": "^1.8.0",
     "vuepress-plugin-typescript": "^0.3.0"
   },
   "peerDependencies": {

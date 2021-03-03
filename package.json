@@ -66,7 +66,7 @@
     "vue": "^2.6.11"
   },
   "dependencies": {
-    "@interactjs/actions": "^1.9.20",
+    "@interactjs/actions": "^1.10.5",
     "@interactjs/auto-start": "^1.9.20",
     "@interactjs/interact": "^1.9.20",
     "ste-simple-events": "^1.6.13",

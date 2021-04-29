@@ -1,0 +1,58 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "19:30"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: ste-simple-events
+    versions:
+    - 2.0.9
+    - 2.1.5
+    - 2.1.6
+  - dependency-name: "@interactjs/interact"
+    versions:
+    - 1.10.2
+    - 1.10.3
+    - 1.10.5
+    - 1.10.6
+    - 1.10.8
+    - 1.10.9
+  - dependency-name: "@interactjs/actions"
+    versions:
+    - 1.10.2
+    - 1.10.3
+    - 1.10.5
+    - 1.10.6
+    - 1.10.8
+    - 1.10.9
+  - dependency-name: "@interactjs/types"
+    versions:
+    - 1.10.2
+    - 1.10.3
+    - 1.10.5
+    - 1.10.6
+    - 1.10.8
+    - 1.10.9
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.20
+    - 26.0.21
+    - 26.0.22
+  - dependency-name: "@vuepress/shared-utils"
+    versions:
+    - 1.8.0
+    - 1.8.1
+  - dependency-name: vuepress
+    versions:
+    - 1.8.0
+    - 1.8.1
+  - dependency-name: "@vue/test-utils"
+    versions:
+    - 1.1.2
+    - 1.1.3

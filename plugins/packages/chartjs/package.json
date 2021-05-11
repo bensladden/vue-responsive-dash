@@ -21,7 +21,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "vue-chartjs": "^3.5.0"
   },
   "peerDependencies": {

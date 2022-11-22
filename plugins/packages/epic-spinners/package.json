@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-prettier": "^6.0.0",
     "epic-spinners": "^1.1.0",
     "eslint": "^6.7.2",

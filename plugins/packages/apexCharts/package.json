@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-prettier": "^6.0.0",
     "apexcharts": "^3.19.3",
     "eslint": "^6.7.2",

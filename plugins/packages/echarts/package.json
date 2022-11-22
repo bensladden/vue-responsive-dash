@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-prettier": "^6.0.0",
     "echarts": "^4.8.0",
     "echarts-gl": "^1.1.1",
